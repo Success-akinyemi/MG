@@ -86,3 +86,24 @@ label{
       transform: rotate(360deg);
   }
 }
+
+@keyframes loading-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  @apply border-8 border-second-color border-t-transparent border-r-transparent border-b-transparent border-l-second-color rounded-full;
+  animation: loading-spinner 0.8s ease infinite;
+}
+
+.spin-pending-img{
+  animation: img-spinner 0.8s ease infinite;
+}
+
+@keyframes img-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}

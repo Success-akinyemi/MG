@@ -9,6 +9,8 @@ export default {
       colors: {
         'second-color': '#4169E1',
         'second-color-hover': '#7f9efa',
+        'second-color-opa': '#4169e159',
+
         'white': '#fff',
         'gray-10': '#F7F9FD',
         'gray-20': '#D7E1F4',

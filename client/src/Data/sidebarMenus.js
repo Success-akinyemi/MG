@@ -21,12 +21,40 @@ export const sidebarMenus = [
     {
         name: 'Buy Airtime',
         link: 'buy-airtime',
-        icon: FaPhoneAlt
+        icon: FaPhoneAlt,
+        imageArray: [
+            {
+                icon: MtnImg,
+                name: 'MTN'
+            },
+            {
+                icon: AirtelImg,
+                name: 'Airtel'
+            },
+            {
+                icon: NineMobileImg,
+                name: '9Mobile'
+            },
+        ]
     },
     {
         name: 'Buy Data',
         link: 'buy-data',
-        icon:  IoWifi
+        icon:  IoWifi,
+        imageArray: [
+            {
+                icon: MtnImg,
+                name: 'MTN'
+            },
+            {
+                icon: AirtelImg,
+                name: 'Airtel'
+            },
+            {
+                icon: NineMobileImg,
+                name: '9Mobile'
+            },
+        ]
     },
     {
         name: 'Tv Subscription',

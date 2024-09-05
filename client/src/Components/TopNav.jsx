@@ -22,7 +22,7 @@ function TopNav({toggleMenu, showMenu, title}) {
             </div>
         </div>
         <div className="w-full flex items-center justify-between">
-            <div className="text-[20px] phone:text-[14px] text-gray-90">
+            <div className="text-[20px] font-semibold phone:text-[14px] text-gray-90">
                 {title}
             </div>
 

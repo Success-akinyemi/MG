@@ -21,11 +21,17 @@ import FundWallet from './Components/Modals/FundWallet'
 import Support from './Pages/Support'
 import AirtimeToCash from './Pages/AirtimeToCash'
 import TranscationHistroy from './Pages/TranscationHistroy'
+import TransactionPin from './Components/Modals/TransactionPin'
+import TransactionSuccessful from './Components/Modals/TransactionSuccessful'
+import TransactionFailed from './Components/Modals/TransactionFailed'
+import TransactionPending from './Components/Modals/TransactionPending'
 
 function App() {
   const [ selectedCard, setSelectedCard ] = useState(null)
   const [ popupBg, setPopupBg ] = useState(false)
   const [ showMenu, setShowMenu ] = useState(false)
+
+  const [ formData, setFormData ] = useState({})
 
   const toggleMenu = () => {
     setShowMenu((prev) => !prev)
@@ -45,6 +51,30 @@ function App() {
             <FundWallet setPopupBg={setPopupBg} />
           </div>
         ) 
+      case 'setTransactionPin':
+        return (
+          <div>
+            <TransactionPin setFormData={setFormData} formData={formData} setSelectedCard={setSelectedCard} />
+          </div>
+        ) 
+      case 'transactionSuccessful':
+        return (
+          <div>
+            <TransactionSuccessful selectedCard={selectedCard} />
+          </div>
+        )
+      case 'transactionFailed':
+        return (
+          <div>
+            <TransactionFailed selectedCard={selectedCard} />
+          </div>
+        )
+      case 'transactionPending':
+        return (
+          <div>
+            <TransactionPending selectedCard={selectedCard} />
+          </div>
+        )
     }
   }
 
@@ -85,22 +115,19 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Login />} />
-          {/**
-           * 
-            <Route path='/register' element={<Register />} />
-            <Route path='/forgot-password' element={<ForgotPasword />} />
-            <Route path='/signup-successful' element={<SignupSuccessful />} />
-            <Route path='/reset-password/:resetToken' element={<ResetPassword />} />
-            <Route path='/reset-email-sent' element={<ResetEmailSent />} />
-            <Route path='/:id/verify/:token' element={<VerifyUser />} />
-           */}
+          <Route path='/register' element={<Register />} />
+          <Route path='/forgot-password' element={<ForgotPasword />} />
+          <Route path='/signup-successful' element={<SignupSuccessful />} />
+          <Route path='/reset-password/:resetToken' element={<ResetPassword />} />
+          <Route path='/reset-email-sent' element={<ResetEmailSent />} />
+          <Route path='/:id/verify/:token' element={<VerifyUser />} />
           <Route path='/login' element={<Login />} />
 
           <Route path='create-pin' element={<CreatePin />} />
           <Route path='/pin-created' element={<PinCreated />} />
           <Route path='/join-whatsapp-community' element={<JoinWhatsappCommunity />} />
-          <Route path='/buy-airtime' element={<BuyAirtime toggleMenu={toggleMenu} showMenu={showMenu} />} />
-          <Route path='/buy-data' element={<BuyData toggleMenu={toggleMenu} showMenu={showMenu} />} />
+          <Route path='/buy-airtime' element={<BuyAirtime toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
+          <Route path='/buy-data' element={<BuyData toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
           
           <Route path='/dashboard' element={<Dashboard setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
           <Route path='/support' element={<Support toggleMenu={toggleMenu} showMenu={showMenu} />} />

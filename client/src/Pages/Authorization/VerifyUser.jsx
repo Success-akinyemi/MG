@@ -51,7 +51,7 @@ function VerifyUser() {
                 }
             </div>
     
-            <Link to='/login'>Procced</Link>
+            <Link to='/reset-password/123'>Procced</Link>
         </div>
       )
 }
