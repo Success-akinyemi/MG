@@ -8,8 +8,13 @@ import authRoute from './routes/web/auth.routes.js'
 import userRoute from './routes/web/user.routes.js'
 import airtimeToCashRoute from './routes/web/airtimeToCash.routes.js'
 
+//DOCs
+import swaggerUI from 'swagger-ui-express';
+import YAML from 'yamljs';
+const swaggerJSDocs = YAML.load('./api.yaml');
 
 const app = express()
+app.use('/api-doc',swaggerUI.serve,swaggerUI.setup(swaggerJSDocs))
 app.use(express.json())
 app.use(cookieParser())
 const allowedOrigins = [
