@@ -11,12 +11,13 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
     const [ activeCard, setActiveCard ] = useState('cardOne')
     const [ cardOne, setCardOne ] = useState(false)
     const [ cardTwo, setCardTwo ] = useState(false)
-    const [ cardThree, setCardthree ] = useState(false)
+    const [ cardThree, setCardThree ] = useState(false)
 
     const [ isLoading, setIsLoading ] = useState(false)
 
     const handleCardOne = () => {
-
+        setCardTwo(false)
+        setCardThree(false)
         setActiveCard('cardOne')
     }
 
@@ -36,8 +37,11 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
         setActiveCard('cardTwo')
     }
 
+    //HANDLE CARD THREE SHOULD ONLY COME AFTRE API CALL
     const handleCardThree = () => {
-        
+        setCardOne(true)
+        setCardTwo(true)
+        setCardThree(true)
         setActiveCard('cardThree')
     }
 
@@ -45,6 +49,9 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
         if(formData.proceed){
             setSelectedCard(null)
             setIsLoading(true)
+            //make api call to server here
+            //HANDLE CARD THREE SHOULD ONLY COME AFTRE API CALL
+            //set formData to empty {} after res from server
         }
     }, [formData])
 
@@ -76,12 +83,12 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
                                         <span className={`w-full h-[7px] rounded-[100px] ${activeCard === 'cardOne' ? 'bg-second-color' : cardOne ? 'bg-success' : 'bg-gray-30' }`}></span>
                                     </div>
                                     <div onClick={handleCardTwo} className="flex flex-col flex-1 cursor-pointer text-center gap-[8px]">
-                                        <p className={`text-[14px] ${activeCard === 'cardTwo' ? 'text-second-color' : cardTwo ? 'cardTwo' : 'text-gray-30'}`}>Make Payment</p>
+                                        <p className={`text-[14px] ${activeCard === 'cardTwo' ? 'text-second-color' : cardTwo ? 'text-success' : 'text-gray-30'}`}>Make Payment</p>
                                         <span className={`w-full h-[7px] rounded-[100px] ${activeCard === 'cardTwo' ? 'bg-second-color' : cardTwo ? 'bg-success' : 'bg-gray-30' }`}></span>
                                     </div>
                                     <div onClick={handleCardThree} className="flex flex-col flex-1 cursor-pointer text-center gap-[8px]">
-                                        <p className={`text-[14px] ${activeCard === 'cardThree' ? 'text-second-color' : cardThree ? 'text-success' : 'text-gray-30'}`}>View Receipt </p>
-                                        <span className={`w-full h-[7px] rounded-[100px] ${activeCard === 'cardThree' ? 'text-second-color' : cardThree ? 'bg-success' : 'bg-gray-30' }`}></span>
+                                        <p className={`text-[14px] ${activeCard === 'cardThree' ? 'text-success' : cardThree ? 'text-success' : 'text-gray-30'}`}>View Receipt </p>
+                                        <span className={`w-full h-[7px] rounded-[100px] ${activeCard === 'cardThree' ? 'bg-success' : cardThree ? 'bg-success' : 'bg-gray-30' }`}></span>
                                     </div>
                                 </div>
 

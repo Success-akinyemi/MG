@@ -10,7 +10,7 @@ function TransactionSuccessful({selectedCard}) {
   return (
     <div className="w-full card2">
         <div className="flex flex-col gap-[56px]">
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center">
                 <img src={CheckedImg} alt='transaction successful' className='w-[132px] h-[132px]' />
                 <p className="font-semibold text-[24px] text-gray-70 text-center">Transaction Successful</p>
             </div>

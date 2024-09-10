@@ -18,12 +18,16 @@ function CardTwo({ formData, setFormData, setActiveCard, setIsLoading, setSelect
             
             <div className="flex flex-col gap-6 w-full">
               <span className="flex items-center justify-between">
-                <h3 className="text-[14.5px] text-gray-70 font-normal">Network</h3>
-                <p className="text-[14.5px] font-medium text-gray-80">{formData?.networkName}</p>
+                <h3 className="text-[14.5px] text-gray-70 font-normal">Service Provider</h3>
+                <p className="text-[14.5px] font-medium text-gray-80">{formData?.providerName}</p>
               </span>
               <span className="flex items-center justify-between">
-                <h3 className="text-[14.5px] text-gray-70 font-normal">Phone Number</h3>
-                <p className="text-[14.5px] font-medium text-gray-80">{formData?.phoneNumber}</p>
+                <h3 className="text-[14.5px] text-gray-70 font-normal">Meter Number</h3>
+                <p className="text-[14.5px] font-medium text-gray-80">{formData?.meterNumber}</p>
+              </span>
+              <span className="flex items-center justify-between">
+                <h3 className="text-[14.5px] text-gray-70 font-normal">Meter Type</h3>
+                <p className="text-[14.5px] font-medium text-gray-80">{formData?.meterType}</p>
               </span>
               <span className="flex items-center justify-between">
                 <h3 className="text-[14.5px] text-gray-70 font-normal">Amount</h3>

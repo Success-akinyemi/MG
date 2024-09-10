@@ -1,7 +1,7 @@
 import PendingImg from '../../assets/pending.png'
 import ButtonTwo from '../Helpers/ButtonTwo'
 
-function TransactionPending() {
+function TransactionPending({selectedCard}) {
     const closeModal = () => {
         selectedCard(null)
     }
@@ -9,7 +9,7 @@ function TransactionPending() {
   return (
     <div className="w-full card2">
         <div className="flex flex-col gap-[56px]">
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center">
                 <img src={PendingImg} alt='transaction successful' className='spin-pending-img w-[132px] h-[132px]' />
                 <p className="font-semibold text-[24px] text-gray-70 text-center">Transaction Pending</p>
             </div>

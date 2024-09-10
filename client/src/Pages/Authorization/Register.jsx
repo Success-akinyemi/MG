@@ -77,12 +77,11 @@ function Register() {
         }
         try {
             setIsLoading(true)
-            //const res = await registerUser(formData)
-            const res = {success: true, data: ''}
+            const res = await registerUser(formData)
             if(res.success){
                 navigate("/signup-successful", {
                     state: { resMsg: `${res?.data}` },
-                  });
+                });
             }
         } catch (error) {
             

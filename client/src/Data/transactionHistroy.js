@@ -9,7 +9,8 @@ export const transactionHistroy = [
         paymentMethod: 'Transfer',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'MTN',
     },
     {
         _id: 2,
@@ -21,7 +22,8 @@ export const transactionHistroy = [
         paymentMethod: 'Wallet',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 3,
@@ -33,7 +35,8 @@ export const transactionHistroy = [
         paymentMethod: 'Card Payment',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'startimes',
     },
     {
         _id: 4,
@@ -45,7 +48,8 @@ export const transactionHistroy = [
         paymentMethod: 'Card Payment',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: '',
     },
     {
         _id: 5,
@@ -57,7 +61,8 @@ export const transactionHistroy = [
         paymentMethod: 'Wallet',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'DSTV',
     },
     {
         _id: 6,
@@ -69,7 +74,8 @@ export const transactionHistroy = [
         paymentMethod: 'Card Payment',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 7,
@@ -81,7 +87,8 @@ export const transactionHistroy = [
         paymentMethod: 'Transfer',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 8,
@@ -93,7 +100,8 @@ export const transactionHistroy = [
         paymentMethod: 'Wallet',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 9,
@@ -105,7 +113,8 @@ export const transactionHistroy = [
         paymentMethod: 'Wallet',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 10,
@@ -117,7 +126,8 @@ export const transactionHistroy = [
         paymentMethod: 'Card Payment',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 11,
@@ -129,7 +139,8 @@ export const transactionHistroy = [
         paymentMethod: 'Transfer',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 12,
@@ -141,7 +152,8 @@ export const transactionHistroy = [
         paymentMethod: 'Wallet',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 13,
@@ -153,7 +165,8 @@ export const transactionHistroy = [
         paymentMethod: 'Card Payment',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 14,
@@ -165,7 +178,8 @@ export const transactionHistroy = [
         paymentMethod: 'Transfer',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
     {
         _id: 15,
@@ -177,6 +191,7 @@ export const transactionHistroy = [
         paymentMethod: 'Transfer',
         transactionId: '17045621860850336938179613',
         date: '',
-        createdAt: '2024-01-06T18:29:00.000Z'
+        createdAt: '2024-01-06T18:29:00.000Z',
+        platform: 'Airtel',
     },
 ]

@@ -30,7 +30,7 @@ function FundWallet ({setPopupBg}) {
 
             <div className="w-full bg-white cursor-pointer flex items-center gap-2 border-[1px] border-l-gray-30 p-2 rounded-[10px]">
                 <img src={BankingImg} alt="Fund With Bank Transfer" className="w-[34px] h-[34px]" />
-                <p className="text-[16px] font-semibold text-second-color">Fund With Bank Transfer</p>
+                <p className="text-[16px] font-semibold text-second-color">Fund With Card</p>
             </div>
         </div>
     </div>

@@ -21,7 +21,7 @@ let MailGenerator = new Mailgen({
     theme: 'default',
     product: {
         name: "Subsum",
-        link: ''
+        link: 'subsum.com'
     }
 })
 

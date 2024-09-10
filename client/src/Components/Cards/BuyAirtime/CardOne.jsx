@@ -16,10 +16,6 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         const filterData = networks.filter(networks => networks.code === value)
         setFormData({ ...formData, networkCode: filterData[0].code, networkName: filterData[0].name })
     }
-
-    useEffect(() => {
-        console.log('FORM',formData)
-    } , [formData])
     
     const handleNext = () => {
         if(!formData.networkCode){
@@ -50,11 +46,11 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 <div className="flex items-center gap-3 w-full small-phone:flex-col">
                     <div className="inputGroup w-full flex-1">
                         <label className="label text-[14px]">Select Network</label>
-                        <select onChange={handleNetworkChange} className="input" id='networkCode'  >
+                        <select onChange={handleNetworkChange} className="input text-gray-60 font-semibold" id='networkCode'  >
                             <option value="">-- Select Network --</option>
                             {
                                 networks.map((item, idx) => (
-                                    <option key={idx} className="text-gray-60 text-[14px] flex items-center gap-[2px]" id="networkCode" value={item.code}>
+                                    <option key={idx} className="text-gray-60 text-[14px] flex items-center gap-[2px]" id="networkCode" value={item._id}>
                                         <img alt={item.name} src={item.icon} className="w-[17px]" />
                                         <p>{item.name}</p>
                                     </option>
@@ -64,12 +60,12 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     </div>
                     <div className="inputGroup w-full flex-1">
                         <label className="label text-[14px]">Phone Number</label>
-                        <input type="text" onChange={handleChange} defaultValue={formData?.phoneNumber} id="phoneNumber" className="input text-[14px] text-gray-60" placeholder="08094562627" />
+                        <input type="text" onChange={handleChange} defaultValue={formData?.phoneNumber} id="phoneNumber" className="input text-[14px] text-gray-60 font-semibold" placeholder="08094562627" />
                     </div>
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Amount</label>
-                    <input type="text" onChange={handleChange} defaultValue={formData?.amount} id="amount" className="input text-[14px] text-gray-60" placeholder="₦5,000" />
+                    <input type="text" onChange={handleChange} defaultValue={formData?.amount} id="amount" className="input text-[14px] text-gray-60 font-semibold" placeholder="₦5,000" />
                 </div>
             </div>
         </div>

@@ -78,7 +78,7 @@ function TranscationHistroy({toggleMenu, showMenu}) {
         {transactionHistroy.map((item) => (
             <tr key={item._id} className='border-b border-gray-30'>
                 <td className='p-2'>
-                    <div className='flex gap-2 items-center'>
+                    <Link to={`/transaction/${item._id}`} className='flex gap-2 items-center'>
                         {
                             item.status === 'Successful' ? 
                             <img className='w-4 h-4' alt={item.status} src={ErrorGreen} /> :
@@ -90,7 +90,7 @@ function TranscationHistroy({toggleMenu, showMenu}) {
                             <h2 className='text-[12px] text-gray-70 font-semibold'>{item.service}</h2>
                             <p className='text-[12px] text-gray-70'>{item.number}</p>
                         </div>
-                    </div>
+                    </Link>
                 </td>
                 <td className='p-2 text-[12px] text-gray-70 font-semibold'>
                     <div className='flex items-center justify-center phone:justify-start text-center'>
@@ -113,7 +113,7 @@ function TranscationHistroy({toggleMenu, showMenu}) {
                     </div>
                 </td>
                 <td className='phone:hidden'>
-                    <Link className='p-2 rounded-[6px] bg-gray-20 text-second-color text-[16px] font-semibold cursor-pointer'>
+                    <Link to={`/transaction/${item._id}`} className='p-2 rounded-[6px] bg-gray-20 text-second-color text-[16px] font-semibold cursor-pointer'>
                         Open
                     </Link>
                 </td>
