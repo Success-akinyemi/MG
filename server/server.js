@@ -16,7 +16,8 @@ const allowedOrigins = [
     process.env.CLIENT_URL,
     process.env.NEBOUR_URL,
     process.env.CLIENT_URL2,
-    process.env.CLIENT_URL3
+    process.env.CLIENT_URL3,
+    process.env.SERVER_URL,
 ];
 app.use((req, res, next) => {
     const origin = req.headers.origin;
