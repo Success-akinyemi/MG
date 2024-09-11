@@ -1,10 +1,10 @@
 import ErrorImg from '../../assets/error.png'
 import ButtonTwo from '../Helpers/ButtonTwo'
 
-function TransactionFailed() {
+function TransactionFailed({setSelectedCard}) {
     
     const closeModal = () => {
-        selectedCard(null)
+        setSelectedCard(null)
     }
 
   return (

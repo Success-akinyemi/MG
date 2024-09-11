@@ -4,8 +4,11 @@ import { MdOutlinePersonOutline } from "react-icons/md";
 import LogoImg from '../assets/logo.png'
 import { AiOutlineMenu } from "react-icons/ai";
 import Sidebar from "./Sidebar";
+import { useSelector } from "react-redux";
 
 function TopNav({toggleMenu, showMenu, title}) {
+    const { currentUser } = useSelector((state) => state.subSubUser);
+    const user = currentUser?.data
   return (
     <div className="flex w-full flex-col gap-3 relative">
         <div className="hidden medium-pc:flex medium-pc:items-center medium-pc:justify-between">

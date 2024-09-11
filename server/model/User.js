@@ -37,6 +37,10 @@ export const UserSchema = new mongoose.Schema({
         type: Number, 
         default: 0,
     },
+    walletBonus: {
+        type: Number, 
+        default: 0,
+    },
     transactionTotal: {
         type: Number,
         default: 0,

@@ -14,11 +14,11 @@ function VerifyUser() {
         const verify = async () => {
             try {
                 setErrorMsg(null)
-                //const res = await verifyUser({ id, token})
+                const res = await verifyUser({ id, token})
 
-                //if(res.data.success){
-                //    navigate('/login')
-                //} 
+                if(res.data.success){
+                    navigate('/login')
+                } 
             } catch (error) {
                 setErrorMsg('Unable To verify Account')
                 
@@ -51,7 +51,6 @@ function VerifyUser() {
                 }
             </div>
     
-            <Link to='/reset-password/123'>Procced</Link>
         </div>
       )
 }

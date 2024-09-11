@@ -6,11 +6,27 @@ import { LuCopy } from "react-icons/lu";
 import { PiShareFatLight } from "react-icons/pi";
 import { IoWalletOutline } from "react-icons/io5";
 import CreditCardImg from '../assets/creditCard.png'
+import { useSelector } from "react-redux";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import toast from "react-hot-toast";
 
-function Dashboard({setSelectedCard, toggleMenu, showMenu}) {
+function Dashboard({setSelectedCard, toggleMenu, showMenu, shortText}) {
+    const { currentUser } = useSelector((state) => state.subSubUser);
+    const user = currentUser?.data
 
     const handleFundWallet = () => {
         setSelectedCard('fundWallet')
+    }
+
+    function formatBalance(balance) {
+        return new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(balance);
+    }
+
+    const clicked = () => {
+        toast.success('Copied')  
     }
 
   return (
@@ -24,7 +40,7 @@ function Dashboard({setSelectedCard, toggleMenu, showMenu}) {
         <div className='relative flex min-h-full w-[80.5%] medium-pc:w-full justify-center ml-auto '>
             <div className="w-[96%] phone:w-[96%]">
                 <div className="mt-6">
-                    <TopNav toggleMenu={toggleMenu} showMenu={showMenu} title={'Welcome, Lawal Wahab'} />
+                    <TopNav toggleMenu={toggleMenu} showMenu={showMenu} title={`Welcome, ${user.firstName} ${user.lastName}`} />
                 </div>
 
                 <div className="flex items-start gap-[24px] mt-12 small-pc:flex-col phone:items-center">
@@ -34,7 +50,7 @@ function Dashboard({setSelectedCard, toggleMenu, showMenu}) {
                                 <h2 className="text-[16px] phone:text-[14px] text-gray-80">Wallet Balance</h2>
                                 <p className="flex items-center text-[36px] phone:text-[24px] text-gray-80 font-bold">
                                     <FaNairaSign className="text-[28px] phone:text-[24px]" />
-                                    300
+                                    {user?.acctBalance}
                                 </p>
                             </div>
 
@@ -47,14 +63,16 @@ function Dashboard({setSelectedCard, toggleMenu, showMenu}) {
                             <div className="flex flex-col gap-[16px]">
                                 <div className="flex flex-col gap-[4px] text-second-color text-[16px]">
                                     <p>Referral</p>
-                                    <p>Referral Code: <span className="font-semibold">18/52ha089</span></p>
+                                    <p>Referral Code: <span className="font-semibold">{shortText(user.referralLink, 20)}</span></p>
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                    <div className="text-second-color cursor-pointer text-[16px] flex items-center gap-[3px]">
-                                        <LuCopy />
-                                        Copy
-                                    </div>
+                                    <CopyToClipboard text={user.referralLink} onCopy={clicked}> 
+                                        <div className="text-second-color cursor-pointer text-[16px] flex items-center gap-[3px]">
+                                            <LuCopy />
+                                            Copy
+                                        </div>
+                                    </CopyToClipboard>
                                     <div className="text-second-color cursor-pointer text-[16px] flex items-center gap-[3px]">
 
                                     </div>
@@ -71,21 +89,21 @@ function Dashboard({setSelectedCard, toggleMenu, showMenu}) {
                                 <div className="flex items-center gap-[32px] text-gray-80">
                                     <div className="flex flex-col gap-2">
                                         <h2>Total referrals made</h2>
-                                        <p className="text-[24px] font-semibold">0</p>
+                                        <p className="text-[24px] font-semibold">{user?.referrals.length}</p>
                                     </div>
 
                                     <div className="flex flex-col gap-2">
                                         <h2>Current wallet Bonus</h2>
                                         <p className="text-[24px] font-semibold flex items-center">
                                             <FaNairaSign className="text-[18px]" />
-                                            <span>0.00</span>
+                                            <span>${formatBalance(user.walletBonus ? user.walletBonus : 0)}</span>
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="flex cursor-pointer items-center gap-[3px] text-second-color text-[16px]">
                                     <IoWalletOutline />
-                                    <p>Cashout</p>
+                                    <p onClick={() => setSelectedCard('withdrawalCashOut')}>Cashout</p>
                                 </div>
                             </div>
                         </div>

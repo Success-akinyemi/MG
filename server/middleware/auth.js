@@ -46,3 +46,46 @@ export const Protect = async (req, res, next) => {
       }
     }
   };
+
+//validate transaction pin
+export const ValidateTransactionPin = async (req, res, next) => {
+  const { pin } = req.body
+  const token = req.cookies.subsumtoken;
+  //console.log('PROTECT TOKEN>>', token)
+
+  if (!token) {
+    return res.status(401).json({ success: false, data: 'Not Allowed Please Login' });
+  }
+
+  try {
+    const user = await new Promise((resolve, reject) => {
+      jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(decoded);
+      });
+    });
+
+    req.user = user;
+
+    const { id } = user;
+    const isUser = await UserModel.findById(id);
+    const isMatchPin = await isUser.matchPin(pin);
+    if (!isMatchPin) {
+
+      return res.status(404).json({ success: false, data: 'Invalid Transcation Pin'});
+    }
+
+
+    req.user = isUser
+
+    next();
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(403).json({ success: false, data: 'Token expired, please login again' });
+    } else {
+      return res.status(403).json({ success: false, data: 'User Forbidden Please Login' });
+    }
+  }
+};

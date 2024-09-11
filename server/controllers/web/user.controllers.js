@@ -1,5 +1,52 @@
 import UserModel from "../../model/User.js";
 
+function convertToNumber(str) {
+    return parseFloat(str);
+}
+
+function isNumber(value) {
+    return Number.isFinite(value);
+}
+
+//USER CREATE PIN
+export async function createPin(req, res) {
+    const { _id } = req.user
+    const { pin } = req.body
+    try {
+        const getUser = await UserModel.findById({ _id: _id })
+        const numPin = convertToNumber(pin)
+
+        const checkPin = isNumber(numPin)
+
+        if(!checkPin){
+            return res.status(400).json({ success: false, data: 'Pin must be a number'})
+        }
+        const easyPinPattern = /^(1234|2345|3456|4567|5678|6789|7890|9876|8765|7654|6543|5432|4321|1111|2222|3333|4444|5555|6666|7777|8888|9999)$/;
+        if(easyPinPattern.test(!pin)){
+            return res.status(400).json({ success: false, data: 'Pin Is Easy please use a diffrent one'})
+        }
+
+        getUser.pin = pin
+        await getUser.save()
+
+        res.status(201).json({ success: true, data: 'Pin Created Successfull'})
+    } catch (error) {
+        console.log('UANBLE TO CREATE PIN', error)
+        return res.status(500).json({ success: false, data: 'Unable to create pin'})
+    }
+}
+
+//USER UPDATE PIN
+export async function updatePin(req, res) {
+    const { _id } = req.user
+    try {
+        
+    } catch (error) {
+        console.log('UANBLE TO UPDATE PIN', error)
+        return res.status(500).json({ success: false, data: 'Unable to update pin'})
+    }
+}
+
 //GET ALL USERS FOR ADMIN
 export async function getAllUsers(req, res){
     try {
@@ -72,6 +119,36 @@ export async function updateUser(req, res){
     } catch (error) {
         console.log('UNABLE TO UPDATE USER DATA', error);
         return res.status(500).json({ success: false, data: error.message || 'Unable to update user data' });
+    }
+}
+
+//USER CASHOUT FROM CASHOUT ACCOUNT
+export async function cashoutBonus(req, res) {
+    const { _id } = req.user
+    const { cashoutAmount } = req.body
+    try {
+        const getUser = await UserModel.findById({ _id })
+
+        const makeNumber = convertToNumber(cashoutAmount)
+        const isANumber = isNumber(makeNumber) 
+
+        if(!isANumber){
+            return res.status(406).json({ success: false, data: 'Invalid Amount'})
+        }
+
+        if(getUser.walletBonus < isANumber){
+            return res.status(406).json({ success: false, data: 'Insufficient Fund'})
+        }
+
+        getAllUsers.acctBalance += isANumber
+        getAllUsers.walletBonus -= isANumber
+        getAllUsers.save()
+
+
+        res.status(206).json({ success: true, data: 'Cash Bonus withdrawal successful'})
+    } catch (error) {
+        console.log('UNABLE TO PROCESS CASHOUT', error)
+        res.status(500).json({ success: false, data: 'Unable to process cashout request' })
     }
 }
 

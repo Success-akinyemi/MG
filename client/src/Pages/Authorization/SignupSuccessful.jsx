@@ -4,7 +4,7 @@ import EnvelopImg from '../../assets/envelop.png'
 
 function SignupSuccessful() {
   const location = useLocation();
-  //const msg = location.state.resMsg !== '' || location.state ? location.state.resMsg : 'An email has been Sent to your account for confirmation. Please click the link to finalize your account setup successfully';
+  const servermsg = location.state.resMsg !== '' || location.state ? location.state.resMsg : 'An email has been Sent to your account for confirmation. Please click the link to finalize your account setup successfully';
   const msg = 'An email has been Sent to your account for confirmation. Please click the link to finalize your account setup successfully';  
 
   return (
@@ -26,10 +26,11 @@ function SignupSuccessful() {
                       {msg}
                   </p>
                 </div>
+
             </div>
+            <p className="font-semibold text-[14px] text-center text-second-color">{servermsg}</p>
         </div>
 
-        <Link to='/123/verify/456'>Procced</Link>
     </div>
   )
 }

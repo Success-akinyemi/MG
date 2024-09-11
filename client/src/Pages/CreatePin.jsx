@@ -6,6 +6,7 @@ import Button from "../Components/Helpers/Button"
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
+import { createNewPin } from "../Helpers/api"
 
 function CreatePin() {
     const navigate = useNavigate()
@@ -40,13 +41,11 @@ function CreatePin() {
         setFormData({...setFormData, pin: pinInput.join('')})
         try {
             setIsLoading(true)
-            console.log(formData)
             if(!formData.pin){
                 toast.error('Enter Pin')
                 return
             }
-            //const res = await CreatePin(formData)
-            const res = { success: true }
+            const res = await createNewPin(formData)
             if(res.success){
                 navigate('/pin-created')
             }

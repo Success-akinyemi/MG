@@ -1,10 +1,10 @@
 import CheckedImg from '../../assets/checked.png'
 import ButtonTwo from '../Helpers/ButtonTwo'
 
-function TransactionSuccessful({selectedCard}) {
+function TransactionSuccessful({setSelectedCard}) {
 
     const closeModal = () => {
-        selectedCard(null)
+        setSelectedCard(null)
     }
 
   return (

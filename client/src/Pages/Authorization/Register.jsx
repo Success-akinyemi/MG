@@ -30,7 +30,7 @@ function Register() {
         setShowconfirmPassword((prev) => !prev)
     }
 
-    useEffect(() => {console.log(formData)}, [formData])
+    //useEffect(() => {console.log(formData)}, [formData])
 
     const handleSignup = async (e) => {
         e.preventDefault()
@@ -78,6 +78,7 @@ function Register() {
         try {
             setIsLoading(true)
             const res = await registerUser(formData)
+            
             if(res.success){
                 navigate("/signup-successful", {
                     state: { resMsg: `${res?.data}` },

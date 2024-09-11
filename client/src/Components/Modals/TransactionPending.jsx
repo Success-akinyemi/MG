@@ -1,9 +1,9 @@
 import PendingImg from '../../assets/pending.png'
 import ButtonTwo from '../Helpers/ButtonTwo'
 
-function TransactionPending({selectedCard}) {
+function TransactionPending({setSelectedCard}) {
     const closeModal = () => {
-        selectedCard(null)
+        setSelectedCard(null)
     }
 
   return (

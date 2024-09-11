@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SideImg from '../../assets/left-section.png'
 import { Link, useNavigate } from "react-router-dom"
 import { IoIosArrowBack } from "react-icons/io";
@@ -10,9 +10,12 @@ import { loginUser } from "../../Helpers/api";
 import LoadingBtn from "../../Components/Helpers/LoadingBtn";
 import toast from "react-hot-toast";
 import LogoImg from '../../assets/logo.png'
+import { useDispatch } from "react-redux";
+import { signInSuccess } from "../../Redux/user/userSlice";
 
 function Login() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [ showPassword, setShowPassword ] = useState(false)
   const [ formData, setFormData ] = useState({})
   const [ isLoading, setIsLoading ] = useState(false)
@@ -26,40 +29,40 @@ function Login() {
       setShowPassword((prev) => !prev)
   }
 
+  useEffect(() => {console.log(formData)}, [formData])
   const handleLogin = async (e) => {
     e.preventDefault()
-    if(!formData.email){
+    if(!formData.emailOrMobile){
       toast.error('Enter Email')
       return
     }
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if(!emailPattern.test(formData.email)){
-        toast.error('Please enter a valid email')
-        return
-    }
+    //const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    //if(!emailPattern.test(formData.emailOrMobile)){
+    //    toast.error('Please enter a valid email')
+    //    return
+    //}
     if(!formData.password){
       toast.error('Enter Password')
       return
     }
     try {
       setIsLoading(true)
-      //const res = await loginUser(formData)
-        const res = { isVerified: true, pinSet: false }
+      const res = await loginUser(formData)
       if(res.isVerified === false){
         navigate("/signup-successful", {
           state: { resMsg: res?.data },
         });
       }else if(res.pinSet === false){
-        //localStorage.setItem('subsumtoken', res?.token)
-        navigate('/dashboard')
-        //dispatch(signInSuccess(res?.data))
+        localStorage.setItem('subsumtoken', res?.token)
+        dispatch(signInSuccess(res?.data))
+        navigate('/create-pin')
       }
       else{  
 
         
         localStorage.setItem('subsumtoken', res?.token)
+        dispatch(signInSuccess(res?.data))
         navigate('/dashboard')
-        //dispatch(signInSuccess(res?.data))
       }
     } catch (error) {
       
@@ -107,7 +110,7 @@ function Login() {
                             <div className='flex flex-col gap-4 w-full'>
                                 <div className='inputGroup'>
                                     <label className='label'>Email Address</label>
-                                    <input className='input' type='email' id='email' onChange={handleChange} placeholder='wabdotmail@gmail.com' />
+                                    <input className='input' type='text' id='emailOrMobile' onChange={handleChange} placeholder='wabdotmail@gmail.com' />
                                 </div>
                                 <div className='inputGroup relative'>
                                     <label className='label'>Password</label>

@@ -28,6 +28,7 @@ import TransactionPending from './Components/Modals/TransactionPending'
 import TvSubscription from './Pages/TvSubscription'
 import PayElectricBill from './Pages/PayElectricBill'
 import TransactionDetailPage from './Pages/TransactionDetailPage'
+import WithdrawalCashOut from './Components/Modals/WithdrawalCashOut'
 
 function App() {
   const [ selectedCard, setSelectedCard ] = useState(null)
@@ -35,6 +36,20 @@ function App() {
   const [ showMenu, setShowMenu ] = useState(false)
 
   const [ formData, setFormData ] = useState({})
+
+  function truncateText(text, maxLength) {
+    if (text.length <= maxLength) {
+        return text;
+    }
+
+    const truncated = text.slice(0, maxLength);
+    const lastSpaceIndex = truncated.lastIndexOf(' ');
+    
+    // Adjust to the last space to avoid cutting off in the middle of a word
+    const result = lastSpaceIndex > -1 ? truncated.slice(0, lastSpaceIndex) : truncated;
+
+    return result + '...';
+  }
 
   const toggleMenu = () => {
     setShowMenu((prev) => !prev)
@@ -51,7 +66,7 @@ function App() {
        case 'fundWallet' : 
         return (
           <div>
-            <FundWallet setPopupBg={setPopupBg} />
+            <FundWallet setPopupBg={setPopupBg} formData={formData} setFormData={setFormData} setSelectedCard={setSelectedCard} />
           </div>
         ) 
       case 'setTransactionPin':
@@ -63,19 +78,25 @@ function App() {
       case 'transactionSuccessful':
         return (
           <div>
-            <TransactionSuccessful selectedCard={selectedCard} />
+            <TransactionSuccessful setSelectedCard={setSelectedCard} />
           </div>
         )
       case 'transactionFailed':
         return (
           <div>
-            <TransactionFailed selectedCard={selectedCard} />
+            <TransactionFailed setSelectedCard={setSelectedCard} />
           </div>
         )
       case 'transactionPending':
         return (
           <div>
-            <TransactionPending selectedCard={selectedCard} />
+            <TransactionPending setSelectedCard={setSelectedCard} />
+          </div>
+        )
+      case 'withdrawalCashOut':
+        return (
+          <div>
+            <WithdrawalCashOut setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />
           </div>
         )
     }
@@ -140,7 +161,7 @@ function App() {
           <Route path='/buy-data' element={<BuyData toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
           <Route path='/tv-subscription' element={<TvSubscription toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} /> 
           <Route path='/pay-electric-bill' element={<PayElectricBill toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} /> 
-          <Route path='/dashboard' element={<Dashboard setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
+          <Route path='/dashboard' element={<Dashboard shortText={truncateText} setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
           <Route path='/support' element={<Support toggleMenu={toggleMenu} showMenu={showMenu} />} />
           <Route path='/airtime-to-cash' element={<AirtimeToCash toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
           <Route path='/profile' element={<Profile setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />

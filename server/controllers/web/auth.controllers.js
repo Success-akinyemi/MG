@@ -16,18 +16,21 @@ const mailGenerator = new Mailgen({
 //REGISTER NEW USER
 export async function register(req, res) {
     console.log('REGISTRATION BODY>>>',req.body);
-    const { email, firstName, lastName, password, ConfirmPassword, referredBy } = req.body;
+    const { email, firstName, lastName, password, confirmPassword, referredBy } = req.body;
 
 
-    if (!email || !password || !firstName ||!lastName || !ConfirmPassword ) {
+    if (!email || !password || !firstName ||!lastName || !confirmPassword ) {
         return res.status(400).json({ success: false, data: 'Please provide all required fields' });
     }
-
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if(!emailPattern.test(email)){
+        res.status(400).json({ success: false, data: 'Please enter a valid email address'})
+    }
     if (password.length < 6) {
         return res.status(400).json({ success: false, data: 'Passwords must be at least 6 characters long' });
     }
 
-    if (password !== ConfirmPassword) {
+    if (password !== confirmPassword) {
         return res.status(400).json({ success: false, data: 'Passwords do not match' });
     }
 
@@ -124,6 +127,7 @@ export async function verifyNewUser(req, res, next){
         //await UserModel.updateOne({ _id: user._id, verified: true})
         user.verified = true;
         await user.save()
+        const deleteToken = await TokenModel.findByIdAndDelete({ _id: token._id })
         
         sendToken(user, 200, res)
 
@@ -216,13 +220,13 @@ export async function login(req, res){
             }
         }
 
-
+        const pinSet = user.pin ? true : false 
         //sendToken(user, 200, res)
         const token = user.getSignedToken();
         const expiryDate = new Date(Date.now() + 10 * 60 * 60 * 1000)
-        const { resetPasswordToken, resetPasswordExpire, password: hashedPassword, ...userData } = user._doc
+        const { resetPasswordToken, resetPasswordExpire, password: hashedPassword, pin, ...userData } = user._doc
         //res.status(200).json({ success: true, token: token, isVerified: true, data: {success: true, data: userData }})
-        res.cookie('subsumtoken', token, { httpOnly: true, expires: expiryDate, sameSite: 'None', secure: true } ).status(201).json({ success: true, token: token, isVerified: true, data: {success: true, data: userData }})
+        res.cookie('subsumtoken', token, { httpOnly: true, expires: expiryDate, sameSite: 'None', secure: true } ).status(201).json({ success: true, token: token, isVerified: true, pinSet: pinSet, data: {success: true, data: userData }})
     } catch (error) {
         console.log('ERROR LOGGING USER', error)
         res.status(500).json({ success: false, data: error.message})
