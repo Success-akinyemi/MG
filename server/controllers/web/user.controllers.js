@@ -39,8 +39,36 @@ export async function createPin(req, res) {
 //USER UPDATE PIN
 export async function updatePin(req, res) {
     const { _id } = req.user
+    const { oldPin, pin, confirmPin } = req.body
     try {
-        
+        const getUser = await UserModel.findById({ _id: _id })
+        const numPin = convertToNumber(pin)
+
+        const checkPin = isNumber(numPin)
+
+        if(!checkPin){
+            return res.status(400).json({ success: false, data: 'Pin must be a number'})
+        }
+
+        const isMatchOldPin = await getUser.matchPin(oldPin);
+
+
+        if(!isMatchOldPin){
+            return res.status(400).json({ success: false, data: 'Current Pin is not correct'})
+        }
+
+        const easyPinPattern = /^(1234|2345|3456|4567|5678|6789|7890|9876|8765|7654|6543|5432|4321|1111|2222|3333|4444|5555|6666|7777|8888|9999)$/;
+        if(easyPinPattern.test(!pin)){
+            return res.status(400).json({ success: false, data: 'Pin Is Easy please use a diffrent one'})
+        }
+        if(pin !== confirmPin){
+            return res.status(400).json({ success: false, data: 'Pin and Confirm Pin do not match'})
+        }
+
+        getUser.pin = pin
+        await getUser.save()
+
+        res.status(201).json({ success: true, data: 'Pin Updated Successfull'})
     } catch (error) {
         console.log('UANBLE TO UPDATE PIN', error)
         return res.status(500).json({ success: false, data: 'Unable to update pin'})
@@ -94,7 +122,8 @@ export async function adminUpdateUser(req, res){
 
 //USER ENDPOINT TO UPDATE ACCOUNT
 export async function updateUser(req, res){
-    const { _id, username, firstName, lastName, mobile, email } = req.body
+    const { username, firstName, lastName, mobile } = req.body
+    const { _id } = req.user
     try {
         const findUser = await UserModel.findById({ _id: _id });
         if(!findUser){
@@ -109,12 +138,11 @@ export async function updateUser(req, res){
                     firstName,
                     lastName,
                     mobile,
-                    email,
                 }
             },
             { new: true }
         );
-        const { resetPasswordToken, resetPasswordExpire, password: hashedPassword, ...userData } = updateUser._doc
+        const { resetPasswordToken, resetPasswordExpire, password: hashedPassword, pin, ...userData } = updateUser._doc
         return res.status(200).json({ success: true, data: {success: true, data: userData} });
     } catch (error) {
         console.log('UNABLE TO UPDATE USER DATA', error);

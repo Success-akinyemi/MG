@@ -4,8 +4,10 @@ import PictureProfileCard from "../Components/Helpers/PictureProfileCard";
 import ProfileDetailsCard from "../Components/Helpers/ProfileDetailsCard";
 import { useState } from "react";
 import SetNewPin from "../Components/SetNewPin";
+import SetNewPassword from "../Components/SetNewPassword";
 
-function Profile({setSelectedCard, toggleMenu, showMenu}) {
+
+function Profile({setSelectedCard, toggleMenu, showMenu, formData, setFormData, shortText}) {
     const [ cardState, setCardState ] = useState('changePin')
 
     const setModal = () => {
@@ -30,7 +32,7 @@ function Profile({setSelectedCard, toggleMenu, showMenu}) {
                     <div className="flex flex-col gap-4 tablet:w-[95%] tablet:items-center tablet:justify-center">
                         <PictureProfileCard />
 
-                        <ProfileDetailsCard setModal={setModal} />
+                        <ProfileDetailsCard setModal={setModal} shortText={shortText} />
                     </div>
 
                     <div className="flex flex-col gap-[11px] w-[432px] tablet:w-[95%]">
@@ -61,12 +63,9 @@ function Profile({setSelectedCard, toggleMenu, showMenu}) {
                         <div className="w-full tablet:mb-12">
                             {
                                 cardState === 'changePin' ? (
-                                    <SetNewPin />
+                                    <SetNewPin formData={formData} setFormData={setFormData} />
                                 ) : (
-                                    <div>
-                                        {console.log('jek',cardState)}
-
-                                    </div>
+                                    <SetNewPassword formData={formData} setFormData={setFormData} />
                                 )
                             }
                         </div>

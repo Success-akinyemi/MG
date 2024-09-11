@@ -55,6 +55,7 @@ function Login() {
       }else if(res.pinSet === false){
         localStorage.setItem('subsumtoken', res?.token)
         dispatch(signInSuccess(res?.data))
+        setFormData({})
         navigate('/create-pin')
       }
       else{  
@@ -62,6 +63,7 @@ function Login() {
         
         localStorage.setItem('subsumtoken', res?.token)
         dispatch(signInSuccess(res?.data))
+        setFormData({})
         navigate('/dashboard')
       }
     } catch (error) {

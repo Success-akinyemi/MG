@@ -49,7 +49,7 @@ export const Protect = async (req, res, next) => {
 
 //validate transaction pin
 export const ValidateTransactionPin = async (req, res, next) => {
-  const { pin } = req.body
+  const { transactionPin } = req.body
   const token = req.cookies.subsumtoken;
   //console.log('PROTECT TOKEN>>', token)
 
@@ -71,7 +71,7 @@ export const ValidateTransactionPin = async (req, res, next) => {
 
     const { id } = user;
     const isUser = await UserModel.findById(id);
-    const isMatchPin = await isUser.matchPin(pin);
+    const isMatchPin = await isUser.matchPin(transactionPin);
     if (!isMatchPin) {
 
       return res.status(404).json({ success: false, data: 'Invalid Transcation Pin'});

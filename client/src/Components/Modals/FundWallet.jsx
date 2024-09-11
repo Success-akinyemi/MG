@@ -24,15 +24,17 @@ function FundWallet ({ setPopupBg, formData, setFormData,setSelectedCard }) {
             toast.error('Enter Amount')
             return
         }
+        if(formData?.amount < 500){
+            toast.error('Minimium Amount is 500')
+            return
+        }
         try {
             setIsLoading(true)
             const res = await payWithPaystack(formData) 
             if(res.status === 406){
                 setSelectedCard('transactionFailed')
             }
-            if(res.status === 206){
-                setSelectedCard('transactionSuccessful')
-            }
+
         } catch (error) {
             
         } finally {
@@ -45,15 +47,17 @@ function FundWallet ({ setPopupBg, formData, setFormData,setSelectedCard }) {
             toast.error('Enter Amount')
             return
         }
+        if(formData?.amount < 500){
+            toast.error('Minimium Amount is 500')
+            return
+        }
         try {
             setIsLoading(true)
             const res = await payWithMonnify(formData) 
             if(res.status === 406){
                 setSelectedCard('transactionFailed')
             }
-            if(res.status === 206){
-                setSelectedCard('transactionSuccessful')
-            }
+
         } catch (error) {
             
         } finally {

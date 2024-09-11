@@ -19,7 +19,7 @@ function WithdrawalCashOut({setSelectedCard, formData, setFormData}) {
         try {
             setIsLoading(true)
             const res = await cashoutBonus(formData)
-            console.log(res)
+            //console.log(res)
             if(res.status === 406){
                 setSelectedCard('transactionFailed')
             }

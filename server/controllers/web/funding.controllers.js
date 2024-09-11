@@ -19,6 +19,10 @@ export async function payWithPaystack(req, res) {
         if(!isANumber){
             return res.status(406).json({ success: false, data: 'Invalid Amount'})
         }
+        
+        if(isANumber < 500){
+            return res.status(400).json({ success: false, data: 'Minimium Amount is 500'})
+        }
 
     } catch (error) {
         console.log('UNABLE TO INITIALIZE PAYSTACK PAYMENT', error)
@@ -36,6 +40,10 @@ export async function payWithMonnify(req, res) {
 
         if(!isANumber){
             return res.status(406).json({ success: false, data: 'Invalid Amount'})
+        }
+
+        if(isANumber < 500){
+            return res.status(400).json({ success: false, data: 'Minimium Amount is 500'})
         }
 
     } catch (error) {

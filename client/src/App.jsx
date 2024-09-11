@@ -60,7 +60,7 @@ function App() {
       case 'editProfile' : 
         return (
           <div>
-            <EditProfile/>
+            <EditProfile formData={formData} setFormData={setFormData} setSelectedCard={setSelectedCard} />
           </div>
         )
        case 'fundWallet' : 
@@ -164,7 +164,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard shortText={truncateText} setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
           <Route path='/support' element={<Support toggleMenu={toggleMenu} showMenu={showMenu} />} />
           <Route path='/airtime-to-cash' element={<AirtimeToCash toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
-          <Route path='/profile' element={<Profile setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
+          <Route path='/profile' element={<Profile setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} shortText={truncateText} formData={formData} setFormData={setFormData} />} />
           <Route path='/transaction-histroy' element={<TranscationHistroy setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
           <Route path='/transaction/:id' element={<TransactionDetailPage setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
 

@@ -79,7 +79,35 @@ export async function createNewPin(formData){
     } catch (error) {
         const errorMsg = error.response.data.data || 'Unable to create new pin'
         toast.error(errorMsg)
-        //console.log('RESET PASSWORD', error)
+        //console.log('CREATE NEW PIN', error)
+    }
+}
+
+export async function updatePin(formData){
+    try {
+        const res = await axios.post(`/user/updatePin`, formData, {withCredentials: true})
+        //console.log('update pin',res)
+        if(res.data){
+            return res.data
+        }
+    } catch (error) {
+        const errorMsg = error.response.data.data || 'Unable to update new pin'
+        toast.error(errorMsg)
+        //console.log('UPDATE PIN', error)
+    }
+}
+
+export async function updatePassword(formData){
+    try {
+        const res = await axios.post(`/user/updatePassword`, formData, {withCredentials: true})
+        //console.log('update password',res)
+        if(res.data){
+            return res.data
+        }
+    } catch (error) {
+        const errorMsg = error.response.data.data || 'Unable to update new password'
+        toast.error(errorMsg)
+        //console.log('UPDATE PASSWORD', error)
     }
 }
 
@@ -97,6 +125,22 @@ export async function updateTransactionPin(formData){
     }
 }
 
+//update user endpoint
+export async function updateUser(formData){
+    try {
+        const res = await axios.post(`/user/updateUser`, formData, {withCredentials: true})
+        //console.log('update user',res)
+        if(res.data){
+            return res.data
+        }
+    } catch (error) {
+        const errorMsg = error.response.data.data || 'Unable to update user details'
+        toast.error(errorMsg)
+        //console.log('UPDATE USER', error)
+    }
+}
+
+//User cashout bounus wallet
 export async function cashoutBonus(formData){
     try {
         const res = await axios.post(`/user/cashoutBonus`, formData, {withCredentials: true})

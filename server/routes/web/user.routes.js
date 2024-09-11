@@ -7,7 +7,7 @@ const router = express.Router()
 router.post('/createPin', Protect, controllers.createPin )
 router.post('/updatePin', Protect, controllers.updatePin )
 router.post('/cashoutBonus', Protect, controllers.cashoutBonus)
-router.post('/updateUser',)
+router.post('/updateUser', Protect, controllers.updateUser)
 
 
 

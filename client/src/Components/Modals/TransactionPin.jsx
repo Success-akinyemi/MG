@@ -23,7 +23,7 @@ function TransactionPin({formData, setFormData, setSelectedCard}) {
         <div className="flex flex-col gap-3">
             <div className="inputGroup">
                     <label className="label">Transaction Pin</label>
-                    <input onChange={handleChange} className="input" id="transactionPin" placeholder="****" type="password" />
+                    <input onChange={handleChange} className="input" max={4} id="transactionPin" placeholder="****" type="password" />
             </div>
         </div>
 
