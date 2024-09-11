@@ -46,25 +46,26 @@ function Login() {
       return
     }
     try {
-      setIsLoading(true)
-      const res = await loginUser(formData)
-      if(res.isVerified === false){
-        navigate("/signup-successful", {
-          state: { resMsg: res?.data },
-        });
-      }else if(res.pinSet === false){
-        localStorage.setItem('subsumtoken', res?.token)
-        dispatch(signInSuccess(res?.data))
-        setFormData({})
-        navigate('/create-pin')
-      }
-      else{  
+        navigate('/login')
+      //setIsLoading(true)
+      //const res = await loginUser(formData)
+      //if(res.isVerified === false){
+       // navigate("/signup-successful", {
+        //  state: { resMsg: res?.data },
+        //});
+      //}else if(res.pinSet === false){
+       // localStorage.setItem('subsumtoken', res?.token)
+        //dispatch(signInSuccess(res?.data))
+        //setFormData({})
+        //navigate('/create-pin')
+      //}
+      //else{  
 
         
-        localStorage.setItem('subsumtoken', res?.token)
-        dispatch(signInSuccess(res?.data))
-        setFormData({})
-        navigate('/dashboard')
+       // localStorage.setItem('subsumtoken', res?.token)
+        //dispatch(signInSuccess(res?.data))
+        //setFormData({})
+        //navigate('/dashboard')
       }
     } catch (error) {
       
