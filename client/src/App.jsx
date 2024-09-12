@@ -29,6 +29,8 @@ import TvSubscription from './Pages/TvSubscription'
 import PayElectricBill from './Pages/PayElectricBill'
 import TransactionDetailPage from './Pages/TransactionDetailPage'
 import WithdrawalCashOut from './Components/Modals/WithdrawalCashOut'
+import { AuthorizeUser } from './Auth/ProtectRoute'
+import LandingPage from './Pages/LandingPage'
 
 function App() {
   const [ selectedCard, setSelectedCard ] = useState(null)
@@ -144,7 +146,7 @@ function App() {
           //blog page
           //faq
 
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<LandingPage />} />
           <Route path='/register' element={<Register />} />
           <Route path='/forgot-password' element={<ForgotPasword />} />
           <Route path='/signup-successful' element={<SignupSuccessful />} />
@@ -153,20 +155,46 @@ function App() {
           <Route path='/:id/verify/:token' element={<VerifyUser />} />
           <Route path='/login' element={<Login />} />
 
-          <Route path='create-pin' element={<CreatePin />} />
-          <Route path='/pin-created' element={<PinCreated />} />
-          <Route path='/join-whatsapp-community' element={<JoinWhatsappCommunity />} />
+          <Route element={<AuthorizeUser />} >
+            <Route path='create-pin' element={<CreatePin />} />
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/pin-created' element={<PinCreated />} />
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/join-whatsapp-community' element={<JoinWhatsappCommunity />} />
+          </Route>
           
-          <Route path='/buy-airtime' element={<BuyAirtime toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
-          <Route path='/buy-data' element={<BuyData toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
-          <Route path='/tv-subscription' element={<TvSubscription toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} /> 
-          <Route path='/pay-electric-bill' element={<PayElectricBill toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} /> 
-          <Route path='/dashboard' element={<Dashboard shortText={truncateText} setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
-          <Route path='/support' element={<Support toggleMenu={toggleMenu} showMenu={showMenu} />} />
-          <Route path='/airtime-to-cash' element={<AirtimeToCash toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
-          <Route path='/profile' element={<Profile setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} shortText={truncateText} formData={formData} setFormData={setFormData} />} />
-          <Route path='/transaction-histroy' element={<TranscationHistroy setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
-          <Route path='/transaction/:id' element={<TransactionDetailPage setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
+          <Route element={<AuthorizeUser />} >
+            <Route path='/buy-airtime' element={<BuyAirtime toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/buy-data' element={<BuyData toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/tv-subscription' element={<TvSubscription toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} /> 
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/pay-electric-bill' element={<PayElectricBill toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} /> 
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/dashboard' element={<Dashboard shortText={truncateText} setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/support' element={<Support toggleMenu={toggleMenu} showMenu={showMenu} />} />
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/airtime-to-cash' element={<AirtimeToCash toggleMenu={toggleMenu} showMenu={showMenu} setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />} />
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/profile' element={<Profile setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} shortText={truncateText} formData={formData} setFormData={setFormData} />} />
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/transaction-histroy' element={<TranscationHistroy setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
+          </Route>
+          <Route element={<AuthorizeUser />} >
+            <Route path='/transaction/:id' element={<TransactionDetailPage setSelectedCard={setSelectedCard} toggleMenu={toggleMenu} showMenu={showMenu} />} />
+          </Route>
 
         </Routes>
       </BrowserRouter>
