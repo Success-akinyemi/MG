@@ -1,6 +1,15 @@
 import mongoose from "mongoose";
 
 const TransctionHistroySchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: [true, 'User id is required']
+    },
+    email: {
+        type: String,
+        required: [true, 'User Email Address is required']
+    },
     service: {
         type: String,
         required: [true, 'Type of Service is required']
@@ -25,6 +34,9 @@ const TransctionHistroySchema = new mongoose.Schema({
     transactionId: {
         type: String,
         unique: [true, 'Transaction with this Id already Exist']
+    },
+    credit: {
+        type: Boolean
     }
 },
 {

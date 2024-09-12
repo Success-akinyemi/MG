@@ -27,6 +27,9 @@
   .pad7{
     @apply pt-[12px] pb-[12px] pr-[30px] pl-[30px] ;
   }
+  .pad8{
+    @apply pt-[8.19px] pl-[24.56px] pb-[8.19px] pr-[24.56px]
+  }
 
   .page1{
     @apply bg-gray-10 flex items-center flex-col min-h-[100vh] w-full tablet:bg-white

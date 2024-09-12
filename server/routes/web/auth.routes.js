@@ -6,8 +6,8 @@ const router = express.Router()
 router.post('/register', controllers.register)
 router.post('/login', controllers.login)
 router.post('/forgotPassword', controllers.forgotPassword)
-router.route('/:id/verify/:token').post(controllers.verifyNewUser)
-router.route('/resetPassword/:resetToken').post(controllers.resetPassword)
+router.post('/:id/verify/:token', controllers.verifyNewUser)
+router.post('/resetPassword/:resetToken', controllers.resetPassword)
 router.get('/signout', controllers.signout)
 
 //PUT ROUTES

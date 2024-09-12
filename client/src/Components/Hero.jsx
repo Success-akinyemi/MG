@@ -6,6 +6,7 @@ import EducationImg from '../assets/education.png'
 import OthersImg from '../assets/others.png'
 import { Cursor, useTypewriter } from 'react-simple-typewriter'
 import Button from './Helpers/Button'
+import DashboardImg from '../assets/dashboardFrame.png'
 
 function Hero() {
     const [text] = useTypewriter({
@@ -16,7 +17,7 @@ function Hero() {
     });
 
   return (
-    <div className="w-full flex">
+    <div className="w-full flex items-center">
         <div className="flex flex-col mr-auto">
             <div className='text-[32px] font-bold flex flex-col'>
                 <h2>The <span className="text-second-color">BEST</span> place to subscribe / buy</h2>
@@ -80,7 +81,7 @@ function Hero() {
         </div>
 
         <div className='flex ml-auto'>
-
+            <img alt='picture of dashboard' src={DashboardImg} className='w-[518px] phone:w-[80%]' />
         </div>
     </div>
   )

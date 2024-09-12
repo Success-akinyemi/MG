@@ -7,7 +7,7 @@ import cors from 'cors';
 import authRoute from './routes/web/auth.routes.js';
 import userRoute from './routes/web/user.routes.js';
 import airtimeToCashRoute from './routes/web/airtimeToCash.routes.js';
-import FundingRoutes from './routes/web/funding.routes.js';
+import fundingRoutes from './routes/web/funding.routes.js';
 
 //DOCs
 import swaggerUI from 'swagger-ui-express';
@@ -59,7 +59,7 @@ app.get('/', (req, res) => {
 app.use('/api/web/auth', authRoute);
 app.use('/api/web/user', userRoute);
 app.use('/api/web/airtimeToCash', airtimeToCashRoute);
-app.use('/api/web/funding', FundingRoutes);
+app.use('/api/web/funding', fundingRoutes);
 
 // Start server
 const PORT = process.env.PORT || 9000;

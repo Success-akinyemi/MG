@@ -6,13 +6,42 @@ import { LuCopy } from "react-icons/lu";
 import { PiShareFatLight } from "react-icons/pi";
 import { IoWalletOutline } from "react-icons/io5";
 import CreditCardImg from '../assets/creditCard.png'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import toast from "react-hot-toast";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { verifyPaymentTransactions } from "../Helpers/api";
+import { signInSuccess } from "../Redux/user/userSlice";
 
 function Dashboard({setSelectedCard, toggleMenu, showMenu, shortText}) {
+    const location = useLocation();
+    const dispatch = useDispatch()
     const { currentUser } = useSelector((state) => state.subSubUser);
     const user = currentUser?.data
+
+    //verify funding
+    useEffect(() => {
+        const query = new URLSearchParams(location.search);
+        const paymentReference = query.get('reference' || 'paymentReference');
+    
+        if (paymentReference) {
+          const postPaymentReference = async (reference) => {
+            try {
+              const res = await verifyPaymentTransactions({ paymentReference: reference });
+              //console.log('Server response:', res.data);
+              if(res.success){
+                toast.success('Account Funding Successful')
+                dispatch(signInSuccess(res))
+              }
+            } catch (error) {
+              console.error('Error posting payment reference:', error);
+            }
+          };
+    
+          postPaymentReference(paymentReference);
+        }
+    }, [location]);
 
     const handleFundWallet = () => {
         setSelectedCard('fundWallet')
@@ -96,7 +125,7 @@ function Dashboard({setSelectedCard, toggleMenu, showMenu, shortText}) {
                                         <h2>Current wallet Bonus</h2>
                                         <p className="text-[24px] font-semibold flex items-center">
                                             <FaNairaSign className="text-[18px]" />
-                                            <span>${formatBalance(user.walletBonus ? user.walletBonus : 0)}</span>
+                                            <span>{formatBalance(user.walletBonus ? user.walletBonus : 0)}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -109,7 +138,7 @@ function Dashboard({setSelectedCard, toggleMenu, showMenu, shortText}) {
                         </div>
                     </div>
 
-                    <div className="flex items-start w-[504px] h-[248px] phone:w-[95%] phone:h-[180.32px] phone:mt-8 bg-gray-20 rounded-[24px] overflow-hidden relative">
+                    <div className="flex items-start w-[504px] h-[248px] phone:w-[95%] phone:h-[180.32px] phone:mt-8 phone:mb-6 bg-gray-20 rounded-[24px] overflow-hidden relative">
                         <p className="absolute top-[44px] phone:top-[34px] left-[46px] text-gray-80 text-[16px] phone:[10.16px]">
                             Cards
                         </p>

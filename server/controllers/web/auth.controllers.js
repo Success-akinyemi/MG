@@ -8,7 +8,7 @@ import Mailgen from "mailgen";
 const mailGenerator = new Mailgen({
     theme: 'default',
     product: {
-        name: 'Subsum',
+        name: 'Subssum',
         link: `${process.env.MAIL_WEBSITE_LINK}`
     }
 })
@@ -81,7 +81,7 @@ export async function register(req, res) {
                 userEmail: user.email,
                 subject: 'SIGNUP SUCCESSFUL',
                 intro: 'PLEASE VERIFY EMAIL',
-                instructions: 'You Have Successfully Signed Up to Subsum, Please Click on the Button Below to verify your Email Address. Note Email is Valid for One (1) Hour.',
+                instructions: 'You Have Successfully Signed Up to Subssum, Please Click on the Button Below to verify your Email Address. Note Email is Valid for One (1) Hour.',
                 outro: `
                 If you cannot click the reset button, copy and paste the url here in your browser ${verifyUrl}
                   \n  
@@ -185,7 +185,7 @@ export async function login(req, res){
                         body: {
                             intro: 'PLEASE VERIFY EMAIL',
                             action: {
-                                instructions: `Your Subsum Account is not yet valid, Please Click on the Button Below to verify your Email Address. Note Email is Valid for One (1) Hour.`,
+                                instructions: `Your Subssum Account is not yet valid, Please Click on the Button Below to verify your Email Address. Note Email is Valid for One (1) Hour.`,
                                 button: {
                                     color: '#33b5e5',
                                     text: 'Verify Your Email',
@@ -195,7 +195,7 @@ export async function login(req, res){
                             outro: `
                                 If you cannot click the reset button, copy and paste the url here in your browser ${verifyUrl}
         
-                                If you did not SignUp to Subsum, please ignore this email and report.
+                                If you did not SignUp to Subssum, please ignore this email and report.
                             `
                         },
                     };

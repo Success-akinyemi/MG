@@ -46,7 +46,6 @@ function Login() {
       return
     }
     try {
-        navigate('/login')
       setIsLoading(true)
       const res = await loginUser(formData)
       if(res.isVerified === false){

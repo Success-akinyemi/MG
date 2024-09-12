@@ -1,8 +1,8 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
-//axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
+//axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
 
 export async function registerUser(formData){
     try {
@@ -161,14 +161,13 @@ export async function cashoutBonus(formData){
 export async function payWithPaystack(formData){
     try {
         const res = await axios.post(`/funding/payWithPaystack`, formData, {withCredentials: true})
-        //console.log('cash out pin',res)
-        if(res.data){
-            return res.data
-        }
+        const url = res.data.authorizationUrl
+        window.location.href = url
+
     } catch (error) {
-        const res = error.response || 'Unable to cashout bonus'
+        const res = error.response || 'Unable to pay with paystack'
         toast.error(res.data.data)
-        //console.log('RESET PASSWORD', error)
+        //console.log('|PAYSTACK ERROR', error)
         return res
     }
 }
@@ -177,14 +176,29 @@ export async function payWithPaystack(formData){
 export async function payWithMonnify(formData){
     try {
         const res = await axios.post(`/funding/payWithMonnify`, formData, {withCredentials: true})
-        //console.log('cash out pin',res)
         if(res.data){
-            return res.data
+            const authorizationUrl = res.data.authorizationUrl;
+            window.location.href = authorizationUrl; 
         }
     } catch (error) {
-        const res = error.response || 'Unable to cashout bonus'
+        const res = error.response || 'Unable to pay with monnify'
         toast.error(res.data.data)
-        //console.log('RESET PASSWORD', error)
+        //console.log('MONNIFY ERROR', error)
         return res
+    }
+}
+
+//Verify payment
+export async function verifyPaymentTransactions({paymentReference}){
+    try {
+        const res = await axios.post(`/funding/verifyPaymentTransactions`, {paymentReference}, {withCredentials: true})
+        if(res.data.success){
+            return res.data
+        }
+
+    } catch (error) {
+        const errorMsg = error.response.data.data || 'Unable to Verify Payment request'
+        toast.error(errorMsg)
+        //console.log('PAYMENT REQUEST', error)
     }
 }

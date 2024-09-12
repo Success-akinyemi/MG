@@ -6,6 +6,7 @@ const router = express.Router()
 
 router.post('/payWithPaystack', Protect,  controllers.payWithPaystack)
 router.post('/payWithMonnify', Protect,  controllers.payWithMonnify)
+router.post('/verifyPaymentTransactions', Protect,  controllers.verifyPaymentTransactions)
 
 
 
