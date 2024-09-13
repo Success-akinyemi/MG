@@ -145,7 +145,7 @@ export async function payWithMonnify(req, res) {
         const response = await axios.post(
             `${monnifyUrl}/api/v1/merchant/transactions/init-transaction`,
             {
-                amount: amount,
+                amount: makeNumber,
                 customerName: `${firstName} ${lastName}`,
                 customerEmail: `${email}`,
                 paymentReference: generatedUniqueCode,

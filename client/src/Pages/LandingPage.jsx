@@ -1,5 +1,7 @@
+import Features from "../Components/Features"
 import Navbar from "../Components/Helpers/Navbar"
 import Hero from "../Components/Hero"
+import IntergrateApi from "../Components/IntergrateApi"
 import OurServices from "../Components/OurServices"
 import WhyChoseUs from "../Components/WhyChoseUs"
 
@@ -18,6 +20,14 @@ function LandingPage() {
 
         <div className="mt-[8rem] flex items-center justify-center">
             <OurServices />
+        </div>
+
+        <div className="mt-[8rem] flex items-center justify-center">
+            <Features />
+        </div>
+
+        <div className="mt-[8rem] flex items-center justify-center">
+            <IntergrateApi />
         </div>
     </div>
   )
