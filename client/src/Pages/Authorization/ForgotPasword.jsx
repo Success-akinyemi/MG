@@ -23,8 +23,7 @@ function ForgotPasword() {
         }
         try {
           setIsLoading(true)
-            //const res = await forgotPassword(formData)
-            const res = {success: true}
+            const res = await forgotPassword(formData)
             if(res?.success) {
               navigate("/reset-email-sent", {
                 state: { resMsg: `${res?.msg}` },

@@ -4,8 +4,8 @@ import EnvelopImg from '../../assets/envelop.png'
 
 function ResetEmailSent() {
     const location = useLocation();
-    //const msg = location.state ? location.state.resMsg :  'We have sent an email with password reset information to you' ;
-    const msg = 'We have sent an email with password reset information to you' ;
+    const msg = location.state ? location.state.resMsg :  'We have sent an email with password reset information to you' ;
+    //const msg = 'We have sent an email with password reset information to you' ;
 
     return (
       <div className='page1 w-full h-[100vh]'>
@@ -30,7 +30,6 @@ function ResetEmailSent() {
               </div>
           </div>
 
-          <Link to='/reset-password/123'>Procced</Link>
       </div>
     )
 }

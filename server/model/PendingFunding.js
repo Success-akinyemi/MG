@@ -10,6 +10,10 @@ const PendingFundingSchema = new mongoose.Schema({
         required: [true, 'Transaction refrence is required'],
         unique: [true, 'Transaction refrence already exist']
     },
+    monnifyRef: {
+        type: String,
+        unique: [true, 'monnifyRef refrence already exist']
+    },
     createdAt:{
         type: Date,
         default: Date.now(),

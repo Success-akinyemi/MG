@@ -45,7 +45,7 @@ export async function verifyUser({ id, token}){
 export async function forgotPassword(formData){
     try {
         const res = await axios.post('/auth/forgotPassword', formData, {withCredentials: true})
-        //console.log('forgot password',res)
+        console.log('forgot password',res)
         if(res.data){
             return res.data
         }

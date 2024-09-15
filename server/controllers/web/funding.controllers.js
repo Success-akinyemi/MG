@@ -165,7 +165,7 @@ export async function payWithMonnify(req, res) {
 
         console.log(response.data.responseBody)
         const newPendingFunding = await PendingFundingModel.create({
-            source: 'monnify', transactionRef: response.data.responseBody.transactionReference
+            source: 'monnify', transactionRef: response.data.responseBody.paymentReference, monnifyRef: response.data.responseBody.transactionReference
             })
 
             res.send({ authorizationUrl: response.data.responseBody.checkoutUrl });
@@ -268,7 +268,7 @@ export async function verifyPaymentTransactions(req, res){
             }
 
             const response = await axios.get(
-                `${monnifyUrl}/api/v2/transactions/${encodeURIComponent(paymentReference)}`, 
+                `${process.env.MONNIFY_API}/api/v2/transactions/${encodeURIComponent(pendingFundingExist.monnifyRef)}`, 
                 {
                     headers: {
                         'Content-Type': 'application/json',

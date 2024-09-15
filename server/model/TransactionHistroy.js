@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 const TransctionHistroySchema = new mongoose.Schema({
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'users',
+        type: String,
         required: [true, 'User id is required']
     },
     email: {

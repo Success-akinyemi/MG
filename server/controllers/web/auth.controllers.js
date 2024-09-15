@@ -267,7 +267,7 @@ export async function google(req, res){
 //USER FORGOT PASSWORD REQUEST
 export async function forgotPassword (req, res, next){
     const { email } = req.body
-
+    console.log('EMAIL', email)
     if(!email){
         return res.status(404).json({ success: false, data: 'Provide your registered email address'})
     }
