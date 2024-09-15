@@ -31,6 +31,10 @@ import TransactionDetailPage from './Pages/TransactionDetailPage'
 import WithdrawalCashOut from './Components/Modals/WithdrawalCashOut'
 import { AuthorizeUser } from './Auth/ProtectRoute'
 import LandingPage from './Pages/LandingPage'
+import ContactUs from './Pages/ContactUs'
+import FAQ from './Pages/FAQ'
+import Blogs from './Pages/Blogs'
+import BlogPage from './Pages/BlogPage'
 
 function App() {
   const [ selectedCard, setSelectedCard ] = useState(null)
@@ -140,13 +144,11 @@ function App() {
       <Toaster position='top-center'></Toaster>
       <BrowserRouter>
         <Routes>
-          //landing page
-          //contact page
-          //blog
-          //blog page
-          //faq
-
           <Route path='/' element={<LandingPage />} />
+          <Route path='/contact' element={<ContactUs />} />
+          <Route path='/faq' element={<FAQ />} />
+          <Route path='/blogs' element={<Blogs />} /> 
+          <Route path='/blog/:id' element={<BlogPage />} /> 
           <Route path='/register' element={<Register />} />
           <Route path='/forgot-password' element={<ForgotPasword />} />
           <Route path='/signup-successful' element={<SignupSuccessful />} />

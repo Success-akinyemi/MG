@@ -29,15 +29,15 @@ function OurServices() {
             <p className="text-[16px] font-normal text-gray-90">Services</p>
             <img src={StarImg} alt="star" />
           </div>
-          <h2 className="text-[36.84px] font-bold text-gray-90">Your All-in-One Subscription Hub</h2>
+          <h2 className="text-[36.84px] font-bold text-gray-90 text-center">Your All-in-One Subscription Hub</h2>
 
-          <p className="text-[20.46px] text-gray-70 font-normal w-[80%] text-center items-center justify-center">
+          <p className="text-[20.46px] tablet:text-[18px] phone:text-[16px] text-gray-70 font-normal w-[80%] text-center items-center justify-center">
             Say goodbye to the hassle of multiple apps and platforms, and hello to the simplicity and convenience of managing your subscriptions with us.
           </p>
         </div>
 
-        <div className='flex items-center justify-center gap-[24.56px]'>
-            <div className='w-[279.34px] h-[398px] p-3 flex flex-col rounded-[24.56px] border-[1px] border-gray-30'>
+        <div className='flex items-center justify-center gap-[24.56px] flex-wrap'>
+            <div className='w-[279.34px] h-[398px] phone:w-[94%] phone:h-auto p-3 flex flex-col rounded-[24.56px] border-[1px] border-gray-30'>
                 <div className='w-full bg-gray-20 p-3 rounded-[24.56px] gap-[9.2px] flex flex-col'>
                   <div className='flex items-center gap-[9.2px]'>
                     <img src={AirtelImg} alt="airtel" className='flex-1' />
@@ -55,7 +55,7 @@ function OurServices() {
                 </div>
             </div>
 
-            <div className='w-[279.34px] h-[398px] p-2 flex flex-col rounded-[24.56px] border-[1px] border-gray-30'>
+            <div className='w-[279.34px] h-[398px] phone:w-[94%] phone:h-auto p-2 flex flex-col rounded-[24.56px] border-[1px] border-gray-30'>
                 <div className='w-full bg-gray-20 p-3 rounded-[24.56px] gap-[9.2px] flex flex-col'>
                   <div className='flex items-center gap-[9.2px]'>
                     <img src={DstvImg} alt="Dstv" className='flex-1' />
@@ -73,7 +73,7 @@ function OurServices() {
                 </div>
             </div>
 
-            <div className='w-[279.34px] h-[398px] p-2 flex flex-col rounded-[24.56px] border-[1px] border-gray-30'>
+            <div className='w-[279.34px] h-[398px] phone:w-[94%] phone:h-auto p-2 flex flex-col rounded-[24.56px] border-[1px] border-gray-30'>
                 <div className='w-full bg-gray-20 p-3 rounded-[24.56px] gap-[9.2px] flex flex-col'>
                   <div className='flex items-center gap-[9.2px]'>
                     <img src={NecoImg} alt="neco" className='flex-1' />
@@ -91,7 +91,7 @@ function OurServices() {
                 </div>
             </div>
 
-            <div className='w-[279.34px] h-[398px] p-2 flex flex-col rounded-[24.56px] border-[1px] border-gray-30'>
+            <div className='w-[279.34px] h-[398px] phone:w-[94%] phone:h-auto p-2 flex flex-col rounded-[24.56px] border-[1px] border-gray-30'>
                 <div className='w-full bg-gray-20 p-3 rounded-[24.56px] gap-[9.2px] flex flex-col'>
                   <div className='flex items-center gap-[9.2px]'>
                     <img src={IeImg} alt="Ikorodu Electric" className='flex-1' />

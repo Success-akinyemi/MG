@@ -1,10 +1,67 @@
 import { useSelector } from 'react-redux';
 import BgImg from '../../assets/bg.png'
 import { IoCameraOutline } from "react-icons/io5";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+import { app } from '../../firebase'
+import { useEffect, useRef, useState } from 'react';
 
 function PictureProfileCard() {
   const { currentUser } = useSelector((state) => state.subSubUser);
   const user = currentUser?.data
+
+  const [ image, setImage ] =  useState(undefined)
+  const [ imageUploadProgress, setImageUploadProgress ] = useState(0)
+  const [ imageError, setImageError ] = useState(false)
+  const [ imgUrl, setImgUrl ] = useState()
+
+  const fileRef = useRef(null)
+  useEffect(() => {
+      if(image){
+          handleFileUpload(image);
+      }
+  }, [image])
+
+  const handleFileUpload = async (image) => {
+      const storage = getStorage(app)
+      const fileName = new Date().getTime() + image.name;
+      const storageRef = ref(storage, fileName)
+      const uploadTask = uploadBytesResumable(storageRef, image);
+      uploadTask.on(
+          'state_changed',
+          (snapShot) => {
+              const progress = (snapShot.bytesTransferred / snapShot.totalBytes) * 100;
+              setImageUploadProgress(Math.round(progress));
+          },
+          (error) => {
+              //console.log('ERROR', error)
+              setImageError(true)   
+          },
+          () => {
+              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => 
+                setImgUrl( downloadURL)
+              );
+          }
+      );
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (imgUrl) {
+        try {
+          const res = await '';
+
+        } catch (error) {
+          setImgUrl()
+        } finally {
+          setImgUrl()
+        }
+      }
+    };
+  
+    fetchData(); 
+  }, [imgUrl]); 
+  
+
 
   return (
     <div className="card1 tablet:w-full">

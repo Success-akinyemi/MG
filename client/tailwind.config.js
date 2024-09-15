@@ -7,6 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        'primary-color': '#000080',
         'second-color': '#4169E1',
         'second-color-hover': '#7f9efa',
         'second-color-opa': '#4169e159',
@@ -32,6 +33,9 @@ export default {
         'color-2': '#3C517C',
         'color-3': '#A9BADA',
         'color-4': '#6882B6',
+
+        'custom-gradient': 'linear-gradient(to bottom, rgba(215, 225, 244, 0) 0%, #D7E1F4 100%)',
+        'gradient-2': 'linear-gradient(to right, #4169E1 100%, #000080 100%)',
       },
       screens: {
         'medium-pc' : {'max': '1300px'},
