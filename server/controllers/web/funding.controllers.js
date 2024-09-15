@@ -163,7 +163,7 @@ export async function payWithMonnify(req, res) {
             }
         )
 
-        console.log(response.data.responseBody.checkoutUrl)
+        console.log(response.data.responseBody)
         const newPendingFunding = await PendingFundingModel.create({
             source: 'monnify', transactionRef: response.data.responseBody.transactionReference
             })
@@ -185,12 +185,15 @@ export async function verifyPaymentTransactions(req, res){
         }
 
         const pendingFundingExist = await PendingFundingModel.findOne({ transactionRef: paymentReference })
+        if(pendingFundingExist){
+            console.log('TRANSACVTION FOUND', pendingFundingExist)
+        }
         if(!pendingFundingExist){
             console.log('TRANSACTIONS EXPIRED')
             return res.end()
           }
         
-        const transactionExist = await TransctionHistroyModel.findOne({ transactionId: reference })
+        const transactionExist = await TransctionHistroyModel.findOne({ transactionId: paymentReference })
             
         if(transactionExist){
           console.log('TRANSACTIONS ALREADY VERIFIED')
@@ -265,7 +268,7 @@ export async function verifyPaymentTransactions(req, res){
             }
 
             const response = await axios.get(
-                `${monnifyUrl}/api/v2/transactions/${encodeURIComponent(transactionReference)}`, 
+                `${monnifyUrl}/api/v2/transactions/${encodeURIComponent(paymentReference)}`, 
                 {
                     headers: {
                         'Content-Type': 'application/json',

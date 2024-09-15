@@ -14,7 +14,13 @@ function AuthorizeUser() {
     useEffect(() => {
       if (!tokenExist && !user) {
         toast.error('PLEASE LOGIN');
+        navigate('/login')
+        return
       } else {
+        if(!token){
+          navigate('/login')
+          return
+        }
         const decodedToken = jwtDecode(token);
   
         // Check if the token is expired

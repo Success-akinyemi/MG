@@ -22,6 +22,7 @@ function Sidebar() {
             setIsLoading(true)
             const res = await signoutUser()
             if(res.success){
+                localStorage.removeItem('subsumtoken')
                 navigate('/')
             }
         } catch (error) {

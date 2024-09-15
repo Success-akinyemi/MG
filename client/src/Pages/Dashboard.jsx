@@ -23,7 +23,11 @@ function Dashboard({setSelectedCard, toggleMenu, showMenu, shortText}) {
     //verify funding
     useEffect(() => {
         const query = new URLSearchParams(location.search);
-        const paymentReference = query.get('reference' || 'paymentReference');
+        //const paymentReference = query.get('reference' || 'paymentReference');
+        const paystack = query.get('reference');
+        const monnify = query.get('paymentReference');
+
+        const paymentReference = paystack ? paystack : monnify
     
         if (paymentReference) {
           const postPaymentReference = async (reference) => {

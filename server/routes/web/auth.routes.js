@@ -8,7 +8,7 @@ router.post('/login', controllers.login)
 router.post('/forgotPassword', controllers.forgotPassword)
 router.post('/:id/verify/:token', controllers.verifyNewUser)
 router.post('/resetPassword/:resetToken', controllers.resetPassword)
-router.get('/signout', controllers.signout)
+router.post('/signout', controllers.signout)
 
 //PUT ROUTES
 
