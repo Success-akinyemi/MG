@@ -1,8 +1,8 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
-//axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
+//axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
 
 export async function registerUser(formData){
     try {
@@ -23,6 +23,18 @@ export async function loginUser(formData){
         return res.data
     } catch (error) {
         const errorMsg = error.response.data.data || 'Unable to Login User'
+        toast.error(errorMsg)
+        //console.log('LOGIN ERROR', error)
+    }
+}
+
+//GOOGLE LOGIN
+export async function oAuth(formData){
+    try {
+        const res = await axios.post('/auth/google', formData, {withCredentials: true})
+        return res.data
+    } catch (error) {
+        const errorMsg = error.response.data.data || 'Unable to Login User via Google'
         toast.error(errorMsg)
         //console.log('LOGIN ERROR', error)
     }

@@ -117,7 +117,7 @@ function Register() {
                 </div>
 
                 <form onSubmit={handleSignup} className='flex flex-col gap-[24px] w-full'>
-                    <Google isLoading={isLoading} text={'Sign up with Google'} />
+                    <Google setIsLoading={setIsLoading} isLoading={isLoading} text={'Sign up with Google'} />
 
                     <div className='flex items-center justify-center gap-[14px] w-full'>
                         <hr className='border-[1px] border-gray-40 w-full' />

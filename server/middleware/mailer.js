@@ -20,8 +20,8 @@ let transporter = nodemailer.createTransport(nodeConfig);
 let MailGenerator = new Mailgen({
     theme: 'default',
     product: {
-        name: "Subsum",
-        link: 'subsum.com'
+        name: "Subssum",
+        link: 'https://subssum-client.vercel.app'
     }
 })
 

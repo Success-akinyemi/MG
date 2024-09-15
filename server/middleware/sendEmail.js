@@ -6,7 +6,7 @@ config();
 
 const sendEmail = (options) => {
     const transporter = nodemailer.createTransport({
-        service: process.env.EMAIL_SERVICE,
+        service: 'gmail',
         auth: {
             user: process.env.NODEMAILER_USER,
             pass: process.env.NODEMAILER_PW

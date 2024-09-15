@@ -44,12 +44,12 @@ function App() {
   const [ formData, setFormData ] = useState({})
 
   function truncateText(text, maxLength) {
-    if (text.length <= maxLength) {
+    if (text?.length <= maxLength) {
         return text;
     }
 
-    const truncated = text.slice(0, maxLength);
-    const lastSpaceIndex = truncated.lastIndexOf(' ');
+    const truncated = text?.slice(0, maxLength);
+    const lastSpaceIndex = truncated?.lastIndexOf(' ');
     
     // Adjust to the last space to avoid cutting off in the middle of a word
     const result = lastSpaceIndex > -1 ? truncated.slice(0, lastSpaceIndex) : truncated;

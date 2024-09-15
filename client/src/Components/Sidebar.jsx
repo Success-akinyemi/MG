@@ -5,8 +5,11 @@ import { MdLogout } from "react-icons/md";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { useState } from 'react';
 import { signoutUser } from '../Helpers/api';
+import { signOut } from '../Redux/user/userSlice';
+import { useDispatch } from 'react-redux';
 
 function Sidebar() {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation();
     const [ isLoading, setIsLoading ] = useState(false)
@@ -23,6 +26,7 @@ function Sidebar() {
             const res = await signoutUser()
             if(res.success){
                 localStorage.removeItem('subsumtoken')
+                dispatch(signOut())
                 navigate('/')
             }
         } catch (error) {
@@ -40,7 +44,7 @@ function Sidebar() {
                 sidebarMenus.map((item, idx) => {
                     const Icon = item.icon;
                     return (
-                    <div className='flex flex-col gap-4'>
+                    <div key={idx} className='flex flex-col gap-4'>
                         <Link key={idx} to={item.link ? `/${item.link}` : ''} className={`w-full h-[46px] p-3 flex items-center gap-[14px] rounded-[12px] text-[16px] ${isActive(`/${item.link}`) ? 'bg-second-color text-white' : 'text-second-color'}`}>
                             <Icon className={`text-[21px] ${isActive(`/${item.link}`) ? 'text-white' : 'text-second-color'}`} />
                             {item.name}

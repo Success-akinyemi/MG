@@ -236,27 +236,36 @@ export async function login(req, res){
 //SIGNUP AND LOGIN WITH GOOGLE
 export async function google(req, res){
     const { name, email, photo } = req.body
+    console.log(req.body)
     try {
         const user = await UserModel.findOne({ email: email })
         if(user){
+            user.verified = true
+            await user.save()
             const token = user.getSignedToken();
-            const { resetPasswordToken, resetPasswordExpire, password: hashedPassword, ...userData } = user._doc
+            const pinSet = user.pin ? true : false 
+            const { resetPasswordToken, resetPasswordExpire, password: hashedPassword, pin, ...userData } = user._doc
             const expiryDate = new Date(Date.now() + 10 * 60 * 60 * 1000)
-            res.cookie('accessToken', token, { httpOnly: true, expires: expiryDate, sameSite: 'None', secure: true}).status(201).json({ success: true, data: userData })
+            res.cookie('subsumtoken', token, { httpOnly: true, expires: expiryDate, sameSite: 'None', secure: true}).status(201).json({ success: true, token: token, isVerified: true, pinSet: pinSet, data: {success: true, data: userData }})
         } else {
             const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
-            const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+            //const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+            const referralLink = `${process.env.CLIENT_URL}/register?ref=${user._id}`;
             const newUser = new UserModel({
                 username: name,
+                firstName: name,
                 email: email,
-                password: hashedPassword,
-                profilePicture: photo
+                password: generatedPassword,
+                profile: photo,
+                verified: true,
+                referralLink: referralLink
             })
             await newUser.save()
             const token = user.getSignedToken();
-            const { resetPasswordToken, resetPasswordExpire, password: hashedAndSavedPassword, ...userData }= newUser._doc
+            const pinSet = user.pin ? true : false 
+            const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = user._doc
             const expiryDate = new Date(Date.now() + 10 * 60 * 60 * 1000)
-            res.cookie('accessToken', token, { httpOnly: true, expires: expiryDate, sameSite: 'None', secure: true}).status(201).json({ success: true, data: userData })
+            res.cookie('subsumtoken', token, { httpOnly: true, expires: expiryDate, sameSite: 'None', secure: true}).status(201).json({ success: true, token: token, isVerified: true, pinSet: pinSet, data: {success: true, data: userData }})
         }
     } catch (error) {
         console.log('ERROR SINGIN USER WITH GOOGLE', error)
@@ -308,13 +317,19 @@ export async function forgotPassword (req, res, next){
 
             const emailTemplate = mailGenerator.generate(emailContent)
             const emailText = mailGenerator.generatePlaintext(emailContent)
+
+            try {
+                await sendEmail({
+                    to: user.email,
+                    subject: 'Password Reset Request',
+                    text: emailTemplate
+                })
+                res.status(200).json({success: true, msg: 'Email sent', data: email })
+                
+            } catch (error) {
+                console.log('FORGOT PASSWORD EMAIL ERROR?>', error)
+            }
             
-            await sendEmail({
-                to: user.email,
-                subject: 'Password Reset Request',
-                text: emailTemplate
-            })
-            res.status(200).json({success: true, msg: 'Email sent', data: email })
         } catch (error) {
             user.resetPasswordToken = undefined
             user.resetPasswordExpire = undefined

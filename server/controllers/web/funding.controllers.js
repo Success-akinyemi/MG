@@ -50,7 +50,7 @@ export async function payWithPaystack(req, res) {
           const { authorization_url, reference } = response.data.data;
           console.log('refrence',reference)
           const newPendingFunding = await PendingFundingModel.create({
-            source: 'paystack', transactionRef: reference
+            source: 'paystack', transactionRef: reference, monnifyRef: reference
             })
           
           res.send({ authorizationUrl: authorization_url });
@@ -177,6 +177,7 @@ export async function payWithMonnify(req, res) {
 
 export async function verifyPaymentTransactions(req, res){
     const { paymentReference } = req.body
+    const { _id } = req.user
     console.log('REFF',paymentReference)
     try {
         if(!paymentReference){
@@ -294,7 +295,7 @@ export async function verifyPaymentTransactions(req, res){
     
                 
                 const transactionData = {
-                    paidBy: findUser._id,
+                    userId: findUser._id,
                     email: findUser.email,
                     service: 'Account Funding',
                     number: data.transactionReference,

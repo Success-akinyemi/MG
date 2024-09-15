@@ -99,7 +99,7 @@ function Login() {
                 </div>
 
                 <form onSubmit={handleLogin} className='flex flex-col gap-[24px] w-full'>
-                    <Google isLoading={isLoading} text={'Login with Gmail'} />
+                    <Google isLoading={isLoading} setIsLoading={setIsLoading} text={'Login with Gmail'} />
 
                     <div className='flex items-center justify-center gap-[14px] w-full'>
                         <hr className='border-[1px] border-gray-40 w-full' />

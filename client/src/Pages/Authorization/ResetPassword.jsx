@@ -14,9 +14,9 @@ function ResetPassword() {
     const path = location.pathname.split("/")[2];
     const resetToken = path;
     const [ formData, setformData ] = useState({ resetToken: resetToken }) 
-  const [ passwordVisible, setPasswordVisible ] = useState(false)
-  const [ confirmPasswordVisible, setConfirmPasswordVisible ] = useState(false)
-  const [ isLoading, setIsLoading ] = useState(false)
+    const [ passwordVisible, setPasswordVisible ] = useState(false)
+    const [ confirmPasswordVisible, setConfirmPasswordVisible ] = useState(false)
+    const [ isLoading, setIsLoading ] = useState(false)
 
   const seePassword = () => {
     setPasswordVisible((prev) => !prev)
@@ -59,8 +59,8 @@ const seeConfirmPassword = () => {
 
       try {
           setIsLoading(true)
-          //const res = await resetPassword(formData)
-          const res = {success: true}
+          const res = await resetPassword(formData)
+          //const res = {success: true}
           if(res.success){
               toast.success(res?.data)
               navigate("/login");
