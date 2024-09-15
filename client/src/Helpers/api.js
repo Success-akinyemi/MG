@@ -1,8 +1,8 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-//axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
-axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
+axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
+//axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
 
 export async function registerUser(formData){
     try {
@@ -70,6 +70,21 @@ export async function resetPassword(formData){
     }
 }
 
+//USER SIGNOUT
+export async function signoutUser(){
+    try {
+        const res = await axios.post(`/auth/signout`, {withCredentials: true})
+        //console.log('signout',res)
+        if(res.data){
+            return res.data
+        }
+    } catch (error) {
+        const errorMsg = error.response.data.data || 'Unable to Proccess signout request'
+        toast.error(errorMsg)
+        //console.log('SIGNOUT REQUEST', error)
+    }
+}
+
 export async function createNewPin(formData){
     try {
         const res = await axios.post(`/user/createPin`, formData, {withCredentials: true})
@@ -130,6 +145,21 @@ export async function updateTransactionPin(formData){
 export async function updateUser(formData){
     try {
         const res = await axios.post(`/user/updateUser`, formData, {withCredentials: true})
+        //console.log('update user',res)
+        if(res.data){
+            return res.data
+        }
+    } catch (error) {
+        const errorMsg = error.response.data.data || 'Unable to update user details'
+        toast.error(errorMsg)
+        //console.log('UPDATE USER', error)
+    }
+}
+
+//update user profile picture endpoint
+export async function updateUserProfilePicture({imgUrl}){
+    try {
+        const res = await axios.post(`/user/updateUserProfilePicture`, {imgUrl}, {withCredentials: true})
         //console.log('update user',res)
         if(res.data){
             return res.data

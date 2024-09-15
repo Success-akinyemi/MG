@@ -1,15 +1,35 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import LogoImg from '../assets/logo.png'
 import { sidebarMenus } from '../Data/sidebarMenus'
 import { MdLogout } from "react-icons/md";
 import { RiArrowRightSLine } from "react-icons/ri";
+import { useState } from 'react';
+import { signoutUser } from '../Helpers/api';
 
 function Sidebar() {
+    const navigate = useNavigate()
     const location = useLocation();
-  
+    const [ isLoading, setIsLoading ] = useState(false)
     const isActive = (path) => {
       return location.pathname === path;
     };
+
+    const handleSignout = async () => {
+        if(isLoading){
+            return
+        }
+        try {
+            setIsLoading(true)
+            const res = await signoutUser()
+            if(res.success){
+                navigate('/')
+            }
+        } catch (error) {
+            
+        } finally {
+            setIsLoading(false)
+        }
+    }
   return (
     <div className="pad5 w-[304px] phone:w-[90%] h-[100vh] bg-gray-20 flex flex-col">
         <img src={LogoImg} alt='subsum logo' className='w-[162px] h-[31px]' />
@@ -49,7 +69,7 @@ function Sidebar() {
             }
         </div>
 
-        <div className='flex items-center gap-2 mt-auto cursor-pointer hover:text-error'>
+        <div onClick={handleSignout} className='flex items-center gap-2 mt-auto cursor-pointer hover:text-error'>
             <MdLogout className='text-[22px] text-second-color' />
             <p className='text-[20px] text-second-color'>Logout</p>
         </div>

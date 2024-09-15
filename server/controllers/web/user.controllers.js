@@ -75,6 +75,37 @@ export async function updatePin(req, res) {
     }
 }
 
+//UPDATE USER PASSWORD
+export async function updatePassword(req, res) {
+    const { _id } = req.user
+    const { oldPassword, password, confirmPassword } = req.body
+    try {
+        const getUser = await UserModel.findById({ _id: _id })
+        const isMatchOldPin = await getUser.matchPasswords(oldPassword);
+
+
+        if(!isMatchOldPin){
+            return res.status(400).json({ success: false, data: 'Current Password is not correct'})
+        }
+
+        const specialChars = /[!@#$%^&*()_+{}[\]\\|;:'",.<>?]/;
+        if (!specialChars.test(password)) {
+            return res.status(400).json({ success: false, data: 'Passwords must contain at least one special character' });
+        }
+        if(password !== confirmPassword){
+            return res.status(400).json({ success: false, data: 'Password and Confirm Password do not match'})
+        }
+
+        getUser.password = password
+        await getUser.save()
+
+        res.status(201).json({ success: true, data: 'Password Updated Successfull'})
+    } catch (error) {
+        console.log('UANBLE TO UPDATE PASSWORD', error)
+        return res.status(500).json({ success: false, data: 'Unable to update Password'})
+    }
+}
+
 //GET ALL USERS FOR ADMIN
 export async function getAllUsers(req, res){
     try {
@@ -138,6 +169,33 @@ export async function updateUser(req, res){
                     firstName,
                     lastName,
                     mobile,
+                }
+            },
+            { new: true }
+        );
+        const { resetPasswordToken, resetPasswordExpire, password: hashedPassword, pin, ...userData } = updateUser._doc
+        return res.status(200).json({ success: true, data: {success: true, data: userData} });
+    } catch (error) {
+        console.log('UNABLE TO UPDATE USER DATA', error);
+        return res.status(500).json({ success: false, data: error.message || 'Unable to update user data' });
+    }
+}
+
+//USER ENDPOINT TO UPDATE PROFILE PICTURE
+export async function updateUserProfilePicture(req, res){
+    const { imgUrl } = req.body
+    const { _id } = req.user
+    try {
+        const findUser = await UserModel.findById({ _id: _id });
+        if(!findUser){
+            return res.status(404).json({ success: false, data: 'No user with this id found'})
+        }
+
+        const updateUser = await UserModel.findByIdAndUpdate(
+            _id,
+            {
+                $set: {
+                    profile: imgUrl
                 }
             },
             { new: true }
