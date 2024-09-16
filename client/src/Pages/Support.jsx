@@ -2,8 +2,15 @@ import { Link } from 'react-router-dom'
 import Sidebar from '../Components/Sidebar'
 import TopNav from '../Components/TopNav'
 import { help } from '../Data/helpAndSupport'
+import { useEffect } from 'react';
+import { loadTawkTo, openTawkChat } from '../Components/Helpers/Tawk';
 
 function Support({toggleMenu, showMenu}) {
+
+    useEffect(() => {
+        loadTawkTo();
+      }, []);
+    
   return (
     <div className="flex w-full min-h-[100vh]">
         <div className="relative flex w-[304px] h-full overflow-y-hidden medium-pc:hidden">
@@ -25,7 +32,7 @@ function Support({toggleMenu, showMenu}) {
                                 const Img = item.img
                                 const Icon = item.icon
                                 return (
-                                    <div key={item.id} className='rounded-[24px] border-[1px] w-[340px] phone:w-[320px] small-phone:w-[95%] p-3 flex items-center gap-[14px] border-gray-30'>
+                                    <div key={item.id} onClick={ item?.id === 2 ? openTawkChat : ''} className='rounded-[24px] border-[1px] w-[340px] phone:w-[320px] small-phone:w-[95%] p-3 flex items-center gap-[14px] border-gray-30'>
                                         <div className={`${item.style} w-[66px] h-[66px] rounded-[18px] flex items-center justify-center`}>
                                             <Img className='text-white text-[24px]' />
                                         </div>

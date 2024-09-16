@@ -6,7 +6,8 @@ function TransactionPin({formData, setFormData, setSelectedCard}) {
         setFormData({ ...formData, [e.target.id]: e.target.value })
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         if(!formData.transactionPin){
             toast.error('Enter Transaction Pin')
             return
@@ -14,7 +15,7 @@ function TransactionPin({formData, setFormData, setSelectedCard}) {
         setFormData({ ...formData, proceed: true })
     } 
   return (
-    <div className="w-full card2 flex flex-col gap-6 relative">
+    <form onClick={handleSubmit} className="w-full card2 flex flex-col gap-6 relative z-50">
         <div onClick={() => setSelectedCard(null)} className="absolute right-0 p-2 cursor-pointer border-[1px] border-gray-70 text-gray-90 rounded-full h-[30px] w-[30px] text-[30px] flex items-center justify-center">
             <span>&times;</span>
         </div>
@@ -27,8 +28,8 @@ function TransactionPin({formData, setFormData, setSelectedCard}) {
             </div>
         </div>
 
-        <ButtonTwo onClick={handleSubmit} text={'Submit'} />
-    </div>
+        <ButtonTwo onClick={() => handleSubmit} text={'Submit'} />
+    </form>
   )
 }
 

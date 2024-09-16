@@ -20,10 +20,6 @@ const DataPlanSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Plan Name is required']
     },
-    planType: {
-        type: String,
-        required: [true, 'Plan Type is required (MB or GB)']
-    },
     price: {
         type: Number,
         required: [true, 'Price is required']

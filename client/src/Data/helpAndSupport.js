@@ -18,7 +18,7 @@ export const help = [
     },
     {
         id: 2,
-        link: '/chat-live',
+        //link: '/chat-live',
         title: 'Live Chat',
         text: 'Chat Now',
         img: PiChatsCircle,

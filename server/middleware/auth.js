@@ -89,3 +89,5 @@ export const ValidateTransactionPin = async (req, res, next) => {
     }
   }
 };
+
+//validates Admin User

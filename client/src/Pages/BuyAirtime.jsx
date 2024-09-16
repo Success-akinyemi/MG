@@ -6,6 +6,7 @@ import CardThree from "../Components/Cards/BuyAirtime/CardThree"
 import CardTwo from "../Components/Cards/BuyAirtime/CardTwo"
 import toast from "react-hot-toast"
 import Loading from "../Components/Modals/Loading"
+import { buyAirtime } from "../Helpers/api"
 
 function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormData}) {
     const [ activeCard, setActiveCard ] = useState('cardOne')
@@ -46,14 +47,28 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
     }
 
     useEffect(() => {
-        if(formData.proceed){
-            setSelectedCard(null)
-            setIsLoading(true)
-            //make api call to server here
-            //HANDLE CARD THREE SHOULD ONLY COME AFTRE API CALL
-            //set formData to empty {} after res from server
-        }
-    }, [formData])
+        const handleAirtimePurchase = async () => {
+            if (formData.proceed) {
+                setSelectedCard(null);
+                setIsLoading(true);
+    
+                try {
+                    const res = await buyAirtime(formData); // Make API call here
+                    console.log('BUY Airtime', res)
+                    // HANDLE CARD THREE SHOULD ONLY COME AFTER API CALL
+                    // You can manage state updates based on `res` here
+                    // Set formData to empty {} after successful response from server
+    
+                } catch (error) {
+                } finally {
+                    setIsLoading(false);
+                }
+            }
+        };
+    
+        handleAirtimePurchase(); 
+    }, [formData]);
+    
 
   return (
             <div className="flex w-full min-h-[100vh]">

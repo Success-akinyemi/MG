@@ -1,8 +1,8 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-//axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
-axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
+axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
+//axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
 
 export async function registerUser(formData){
     try {
@@ -242,5 +242,39 @@ export async function verifyPaymentTransactions({paymentReference}){
         const errorMsg = error.response.data.data || 'Unable to Verify Payment request'
         toast.error(errorMsg)
         //console.log('PAYMENT REQUEST', error)
+    }
+}
+
+//DATA
+//Buy data
+export async function buyData(formData){
+    try {
+        const res = await axios.post(`/data/buyData`, formData, {withCredentials: true})
+        //console.log('buy data',res)
+        if(res.data){
+            return res.data
+        }
+    } catch (error) {
+        const res = error.response || 'Unable to buy data'
+        toast.error(res.data.data)
+        //console.log('BUY DATA', error)
+        return res
+    }
+}
+
+//AIRTIME
+//Buy airtime
+export async function buyAirtime(formData){
+    try {
+        const res = await axios.post(`/airtime/buyAirtime`, formData, {withCredentials: true})
+        //console.log('buy data',res)
+        if(res.data){
+            return res.data
+        }
+    } catch (error) {
+        const res = error.response || 'Unable to buy data'
+        toast.error(res.data.data)
+        //console.log('BUY DATA', error)
+        return res
     }
 }

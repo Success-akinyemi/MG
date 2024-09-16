@@ -6,6 +6,7 @@ import Sidebar from "../Components/Sidebar"
 import TopNav from "../Components/TopNav"
 import { useEffect, useState } from "react"
 import Loading from "../Components/Modals/Loading"
+import { buyData } from "../Helpers/api"
 
 function BuyData({toggleMenu, showMenu, formData, setFormData, setSelectedCard}) {
     const [ activeCard, setActiveCard ] = useState('cardOne')
@@ -51,14 +52,29 @@ function BuyData({toggleMenu, showMenu, formData, setFormData, setSelectedCard})
     }
 
     useEffect(() => {
-        if(formData.proceed){
-            setSelectedCard(null)
-            setIsLoading(true)
-            //make api call to server here
-            //HANDLE CARD THREE SHOULD ONLY COME AFTRE API CALL
-            //set formData to empty {} after res from server
-        }
-    }, [formData])
+        const handleDataPurchase = async () => {
+            if (formData.proceed) {
+                setSelectedCard(null);
+                setIsLoading(true);
+    
+                try {
+                    const res = await buyData(formData); // Make API call here
+                    console.log('BUY DATA', res)
+                    // HANDLE CARD THREE SHOULD ONLY COME AFTER API CALL
+                    // You can manage state updates based on `res` here
+                    // Set formData to empty {} after successful response from server
+    
+                } catch (error) {
+                    
+                } finally {
+                    setIsLoading(false);
+                }
+            }
+        };
+    
+        handleDataPurchase(); 
+    }, [formData]);
+
   return (
     <div className="flex w-full min-h-[100vh]">
         {

@@ -8,6 +8,10 @@ import authRoute from './routes/web/auth.routes.js';
 import userRoute from './routes/web/user.routes.js';
 import airtimeToCashRoute from './routes/web/airtimeToCash.routes.js';
 import fundingRoutes from './routes/web/funding.routes.js';
+import dataRoutes from './routes/web/data.routes.js';
+import airtimeRoutes from './routes/web/airtime.routes.js';
+
+
 
 //DOCs
 import swaggerUI from 'swagger-ui-express';
@@ -60,6 +64,8 @@ app.use('/api/web/auth', authRoute);
 app.use('/api/web/user', userRoute);
 app.use('/api/web/airtimeToCash', airtimeToCashRoute);
 app.use('/api/web/funding', fundingRoutes);
+app.use('/api/web/data', dataRoutes)
+app.use('/api/web/airtime', airtimeRoutes)
 
 // Start server
 const PORT = process.env.PORT || 9000;
