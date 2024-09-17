@@ -4,8 +4,8 @@ import { Protect } from '../../middleware/auth.js'
 
 const router = express.Router()
 
-router.post('/fetchAllUserTransactions', Protect, controllers.fetchAllUserTransactions)
-router.post('/fetchAUserTransaction/:id', Protect, controllers.fetchAUserTransaction )
+router.get('/fetchAllUserTransactions', Protect, controllers.fetchAllUserTransactions)
+router.get('/fetchAUserTransaction/:id', Protect, controllers.fetchAUserTransaction )
 
 
 

@@ -8,12 +8,15 @@ import NineMobileImg from '../assets/9mobile2.png'
 import DSTVIMG from '../assets/dstv.png'
 import StartimesImg from '../assets/startimes.png'
 import ShowMaxImg from '../assets/showmax.png'
+import { useFetchUserTransaction } from "../Helpers/fetch.hooks";
 
 
 
 function TransactionDetailPage({ toggleMenu, showMenu }) {
-    const location = useLocation()
-    const pathName = location.pathname.split('/')[2]
+  const loc = useLocation()
+  const pathName = loc.pathname.split('/')[2]
+    const { isFetchingUserTransction, userTransaction } = useFetchUserTransaction(pathName)
+
     
   return (
     <div className="flex w-full min-h-[100vh]">

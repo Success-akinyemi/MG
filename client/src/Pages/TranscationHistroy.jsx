@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import FilterImg from '../assets/filter.png'
 import Sidebar from '../Components/Sidebar'
 import TopNav from '../Components/TopNav'
-import { transactionHistroy } from '../Data/transactionHistroy'
+//import { transactionHistroy } from '../Data/transactionHistroy'
 import { TbCurrencyNaira } from "react-icons/tb";
 import ErrorRed from '../assets/error-red.png'
 import ErrorYellow from '../assets/error-yellow.png'
@@ -12,6 +12,8 @@ import { useFetchUserTransaction } from '../Helpers/fetch.hooks';
 
 function TranscationHistroy({toggleMenu, showMenu}) {
     const { isFetchingUserTransction, userTransaction } = useFetchUserTransaction()
+    console.log('first', userTransaction?.data )
+    const transactionHistroy = userTransaction?.data
     
     const getOrdinalSuffix = (day) => {
         if (day > 3 && day < 21) return 'th'; // Special case for 11-13
@@ -78,7 +80,7 @@ function TranscationHistroy({toggleMenu, showMenu}) {
     </thead>
 
     <tbody className='w-full text-center phone:text-start'>
-        {transactionHistroy.map((item) => (
+        {transactionHistroy?.map((item) => (
             <tr key={item._id} className='border-b border-gray-30'>
                 <td className='p-2'>
                     <Link to={`/transaction/${item._id}`} className='flex gap-2 items-center'>
