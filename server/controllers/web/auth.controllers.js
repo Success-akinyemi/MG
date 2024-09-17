@@ -240,6 +240,7 @@ export async function google(req, res){
     try {
         const user = await UserModel.findOne({ email: email })
         if(user){
+            console.log('USER EXIST')
             user.verified = true
             await user.save()
             const token = user.getSignedToken();
@@ -248,9 +249,9 @@ export async function google(req, res){
             const expiryDate = new Date(Date.now() + 10 * 60 * 60 * 1000)
             res.cookie('subsumtoken', token, { httpOnly: true, expires: expiryDate, sameSite: 'None', secure: true}).status(201).json({ success: true, token: token, isVerified: true, pinSet: pinSet, data: {success: true, data: userData }})
         } else {
+            console.log('USER IS NEW')
             const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
             //const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
-            const referralLink = `${process.env.CLIENT_URL}/register?ref=${user._id}`;
             const newUser = new UserModel({
                 username: name,
                 firstName: name,
@@ -258,12 +259,14 @@ export async function google(req, res){
                 password: generatedPassword,
                 profile: photo,
                 verified: true,
-                referralLink: referralLink
             })
             await newUser.save()
-            const token = user.getSignedToken();
-            const pinSet = user.pin ? true : false 
-            const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = user._doc
+            const referralLink = `${process.env.CLIENT_URL}/register?ref=${newUser._id}`;
+            newUser.referralLink = referralLink
+            await newUser.save()
+            const token = newUser.getSignedToken();
+            const pinSet = newUser.pin ? true : false 
+            const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = newUser._doc
             const expiryDate = new Date(Date.now() + 10 * 60 * 60 * 1000)
             res.cookie('subsumtoken', token, { httpOnly: true, expires: expiryDate, sameSite: 'None', secure: true}).status(201).json({ success: true, token: token, isVerified: true, pinSet: pinSet, data: {success: true, data: userData }})
         }

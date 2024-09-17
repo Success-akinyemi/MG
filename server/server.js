@@ -10,6 +10,8 @@ import airtimeToCashRoute from './routes/web/airtimeToCash.routes.js';
 import fundingRoutes from './routes/web/funding.routes.js';
 import dataRoutes from './routes/web/data.routes.js';
 import airtimeRoutes from './routes/web/airtime.routes.js';
+import transactionsRoutes from './routes/web/transactions.routes.js';
+
 
 
 
@@ -66,6 +68,7 @@ app.use('/api/web/airtimeToCash', airtimeToCashRoute);
 app.use('/api/web/funding', fundingRoutes);
 app.use('/api/web/data', dataRoutes)
 app.use('/api/web/airtime', airtimeRoutes)
+app.use('/api/web/transactions', transactionsRoutes)
 
 // Start server
 const PORT = process.env.PORT || 9000;

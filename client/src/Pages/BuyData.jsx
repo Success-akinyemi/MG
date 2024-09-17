@@ -58,14 +58,17 @@ function BuyData({toggleMenu, showMenu, formData, setFormData, setSelectedCard})
                 setIsLoading(true);
     
                 try {
-                    const res = await buyData(formData); // Make API call here
+                    const res = await buyData(formData); 
                     console.log('BUY DATA', res)
+                    if(res.status === 406 || 500){
+                        setSelectedCard('transactionFailed')
+                    }
                     // HANDLE CARD THREE SHOULD ONLY COME AFTER API CALL
                     // You can manage state updates based on `res` here
                     // Set formData to empty {} after successful response from server
     
                 } catch (error) {
-                    
+
                 } finally {
                     setIsLoading(false);
                 }

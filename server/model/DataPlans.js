@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const DataPlanSchema = new mongoose.Schema({
     networkCode: {
-        type: Number,
+        type: String,
         required: [true, 'Network Code is required']
     },
     networkName: {

@@ -6,20 +6,20 @@ import NINEMOBILE from '../assets/9mobile.png'
 
 export const network = [
     {
-        _id: 4,
-        code: '4',
+        _id: 3,
+        code: '3',
         name: 'Etisalat',
         icon: NINEMOBILE
     },
     {
-        _id: 3,
-        code: '3',
+        _id: 2,
+        code: '2',
         name: 'Glo',
         icon: GLOIMG
     },
     {
-        _id: 2,
-        code: '2',
+        _id: 4,
+        code: '4',
         name: 'Airtel',
         icon: AIRTELIMG
     },

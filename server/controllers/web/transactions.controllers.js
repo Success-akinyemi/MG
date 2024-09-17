@@ -2,7 +2,7 @@ import TransctionHistroyModel from "../../model/TransactionHistroy.js"
 
 
 //FETCH ALL USER TRANSCATIONS
-export async function fetchAllUserTractions(req, res) {
+export async function fetchAllUserTransactions(req, res) {
     const { _id } = req.user
     try {
         const getAllTransctions = await TransctionHistroyModel.find({ userId: _id })
@@ -15,7 +15,7 @@ export async function fetchAllUserTractions(req, res) {
 }
 
 //FETCH A TRANSACTION OF A USER
-export async function fetchAUserTraction(req, res) {
+export async function fetchAUserTransaction(req, res) {
     const { _id } = req.user
     const { id } = req.params
     try {

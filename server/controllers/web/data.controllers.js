@@ -1,15 +1,25 @@
 import DataPlansModel from "../../model/DataPlans.js"
+import UserModel from "../../model/User.js";
 
 export async function buyData(req, res){
     console.log('DATA BODY', req.body)
-    const { networkCode, phoneNumber, planId, planName } = req.body
-    //discountAllowed dataPrice
+    const { networkCode, phoneNumber, planId, planName, status } = req.body
+    const { _id } = req.user
     try {
         const mobileRegex = /^(090|080|070)\d{8}$/;
         if (!mobileRegex.test(phoneNumber)) {
             return res.status(400).json({ success: false, data: 'Invalid phone number' });
         }
+        const getUser = await UserModel.findById({ _id: _id})
         const dataPlan = await DataPlansModel.findById({ _id: planId })
+        if(!dataPlan){
+            console.log('DATA PLAN COULD NOT BE FOUND')
+            res.status(406).end()
+        }
+        if(dataPlan.price > getUser.acctBalance){
+            return res.status(406).json({ success: false, data: 'Insufficient Wallet Balance' })
+        }
+
 
         console.log('DATA', dataPlan)
         
@@ -73,7 +83,7 @@ export async function updateDataPlans(req, res) {
             { new: true }
         );
         console.log(updatedDataPlan);
-        return res.status(200).json({ success: true, data: `${updatedDataPlan?.networkName} ${updatedDataPlan?.planName}${updatedDataPlan?.planType} has been updated successfully` });
+        return res.status(200).json({ success: true, data: `${updatedDataPlan?.planName} has been updated successfully` });
     } catch (error) {
         console.log('UNABLE TO UPDATE DATA PLAN', error);
         return res.status(500).json({ success: false, data: error.message || 'Unable to create new data plan' });

@@ -7,9 +7,12 @@ import { TbCurrencyNaira } from "react-icons/tb";
 import ErrorRed from '../assets/error-red.png'
 import ErrorYellow from '../assets/error-yellow.png'
 import ErrorGreen from '../assets/error-green.png'
+import { useFetchUserTransaction } from '../Helpers/fetch.hooks';
 
 
 function TranscationHistroy({toggleMenu, showMenu}) {
+    const { isFetchingUserTransction, userTransaction } = useFetchUserTransaction()
+    
     const getOrdinalSuffix = (day) => {
         if (day > 3 && day < 21) return 'th'; // Special case for 11-13
         switch (day % 10) {
