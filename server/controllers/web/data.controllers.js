@@ -1,8 +1,9 @@
 import DataPlansModel from "../../model/DataPlans.js"
 import UserModel from "../../model/User.js";
+import axios from 'axios'
 
 export async function buyData(req, res){
-    console.log('DATA BODY', req.body)
+    //console.log('DATA BODY', req.body)
     const { networkCode, phoneNumber, planId, planName, status } = req.body
     const { _id } = req.user
     try {
@@ -20,8 +21,25 @@ export async function buyData(req, res){
             return res.status(406).json({ success: false, data: 'Insufficient Wallet Balance' })
         }
 
+        const getData = await axios.post(
+            `${process.env.HUSMODATA_URL}/data`,
+            {
+                "network": dataPlan?.networkCode,
+                "mobile_number": phoneNumber,
+                "plan": dataPlan?.dataCode,
+                "Ported_number": true
+            },
+            {
+                headers: {
+                    "Authorization": `Token ${process.env.HUSMODATA_API_KEY}`,
+                    "Content-Type": 'application/json',
+                    "Accept" : '*/*'
+                },
+            }
+        )
 
-        console.log('DATA', dataPlan)
+        console.log('API RESPONSE FOR DATA', getData?.data)
+        
         
     } catch (error) {
         console.log('UNABLE TO BUY DATA', error)

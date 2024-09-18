@@ -1,15 +1,24 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import LogoImg from '../../../assets/logo.png'
 import Button from '../../Helpers/Button'
 import ButtonTwo from '../../Helpers/ButtonTwo'
+import LoadingBtn from '../../Helpers/LoadingBtn';
 
 function CardThree({ formData, setFormData, setActiveCard, transactionData }) {
+  const [ isLoading, setIsLoading ] = useState(false)
+
   useEffect(() => {
     setFormData({ ...formData, proceed: false });
   }, []);
 
-  const handleDownloadRecipt = () => {
-
+  const handleDownloadRecipt = (id) => {
+    try {
+      setIsLoading(true)
+    } catch (error) {
+      
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const getOrdinalSuffix = (day) => {
@@ -81,9 +90,17 @@ const formatDate = (dateString) => {
           </div>
 
           <div className="w-full border-[1px] border-l-gray-30 bg-white rounded-[12px] flex flex-col p-4 gap-4">
-            <ButtonTwo onClick={handleDownloadRecipt} text={'Download Recept'} />
-
-            <Button bg={false} name={'Report Transaction'} link={'support'} styles={`text-error bg-gray-10 border-[2px]`} />
+            {
+              isLoading ? (
+                <LoadingBtn />
+              ) : (
+                <>
+                  <ButtonTwo onClick={() => handleDownloadRecipt(transactionData.transactionId)} text={'Download Recept'} />
+    
+                  <Button bg={false} name={'Report Transaction'} link={'support'} styles={`text-error bg-gray-10 border-[2px]`} />
+                </>
+              )
+            }
           </div>
 
         </div>

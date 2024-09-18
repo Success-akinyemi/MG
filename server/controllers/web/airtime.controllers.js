@@ -1,52 +1,66 @@
 import TransctionHistroyModel from "../../model/TransactionHistroy.js";
 import UserModel from "../../model/User.js";
-import axios from 'axios'
+import fetch from 'node-fetch';  // Ensure you're using node-fetch or another fetch polyfill
 
-export async function buyAirtime(req, res){
-    //console.log('DATA BODY', req.body)
-    const { networkCode, phoneNumber, amount, transactionId, networkName, totalAmount, status } = req.body
-    const { _id, email } = req.user
+export async function buyAirtime(req, res) {
+    console.log('first HELLO');
+    const { networkCode, phoneNumber, amount, transactionId, networkName, totalAmount, status } = req.body;
+    const { _id, email } = req.user;
+
     try {
         const mobileRegex = /^(090|080|070)\d{8}$/;
         if (!mobileRegex.test(phoneNumber)) {
             return res.status(400).json({ success: false, data: 'Invalid phone number' });
         }
-        const getUser = await UserModel.findById({ _id: _id})
 
-        if(amount < 50){
-            return res.status(406).json({ success: false, data: 'Minimium airtime purchase amount is 50' })
+        const getUser = await UserModel.findById(_id);
+
+        if (amount < 50) {
+            return res.status(406).json({ success: false, data: 'Minimum airtime purchase amount is 50' });
         }
 
-        if(amount > getUser.acctBalance){
-            return res.status(406).json({ success: false, data: 'Insufficient Wallet Balance' })
+        if (amount > getUser.acctBalance) {
+            return res.status(406).json({ success: false, data: 'Insufficient Wallet Balance' });
         }
 
         const data = {
-          network: networkCode,
-          mobile_number: phoneNumber,
-          amount: amount,
-          airtime_type: 'VTU',
-          Ported_number: true
+            network: networkCode,
+            mobile_number: phoneNumber,
+            amount: Number(amount),
+            airtime_type: 'VTU',
+            Ported_number: true
         };
 
-        const config = {
-          headers: {
-            'Authorization': `Token ${process.env.HUSMODATA_API_KEY}`,
-            'Content-Type': 'application/json'
-          }
+        // Make the POST request with fetch
+        const response = await fetch(`${process.env.HUSMODATA_URL}/topup`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token ${process.env.HUSMODATA_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const runBuyAirtime = await response.json();
+
+        console.log('API URL:', `${process.env.HUSMODATA_URL}/topup`);
+        console.log('API KEY:', process.env.HUSMODATA_API_KEY);
+        console.log('Data being sent to API:', data);
+        console.log('API RESPONSE:', runBuyAirtime);
+
+        // Debug response structure
+        if (!runBuyAirtime || !runBuyAirtime.results) {
+            return res.status(500).json({ success: false, data: 'Unexpected API response' });
         }
 
-        const runBuyAirtime = await axios.post(`${process.env.HUSMODATA_URL}/topup`, data, config)
-        
-        const airtimeResponse = runBuyAirtime?.data?.results[0]
+        const airtimeResponse = runBuyAirtime.results[0];
 
-        if(airtimeResponse.Status === 'successful'){
+        if (airtimeResponse.Status === 'successful') {
+            // Debit user
+            getUser.acctBalance -= totalAmount;
+            await getUser.save();
 
-            //DEBIT USER
-            getUser.acctBalance -= totalAmount
-            await getUser.save()
-
-            //New Transaction
+            // Create new transaction
             const newTransaction = await TransctionHistroyModel.create({
                 userId: _id,
                 email: email,
@@ -59,26 +73,23 @@ export async function buyAirtime(req, res){
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,
                 serviceId: airtimeResponse.id
-            })
-            //console.log('DATA', getUser)
-            console.log('AIRTIME RESPONSE FROM HUSMODATA AIRTIME API>>',runBuyAirtime.data)
+            });
 
             const { amount, ...transactionData } = newTransaction._doc;
-            const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = getUser._doc
-            return res.status(206).json({ 
-                                            success: true, 
-                                            msg: `NGN${airtimeResponse.amount} ${airtimeResponse.plan_network} Airttime purchase successful`,
-                                            data: { success: true, data: userData },
-                                            transaction: transactionData
-                                        })
+            const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = getUser._doc;
+
+            return res.status(206).json({
+                success: true,
+                msg: `NGN${airtimeResponse.amount} ${airtimeResponse.plan_network} Airtime purchase successful`,
+                data: { success: true, data: userData },
+                transaction: transactionData
+            });
+        } else {
+            return res.status(400).json({ success: false, data: 'Airtime purchase failed' });
         }
 
-
-        console.log('AIRTIME RESPONSE FROM HUSMODATA AIRTIME API>>',runBuyAirtime.data)
-        console.log('DATA', getUser)
-        res.status(200).json({ success: true, data: '' })
     } catch (error) {
-        console.log('UNABLE TO BUY DATA', error)
-        res.status(500).json({ success: false, data: error.message || 'Unable to buy data'})
+        console.log('UNABLE TO BUY AIRTIME', error);
+        return res.status(500).json({ success: false, data: error.message || 'Unable to buy airtime' });
     }
 }
