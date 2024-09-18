@@ -3,6 +3,7 @@ import LogoImg from '../../../assets/logo.png'
 import Button from '../../Helpers/Button'
 import ButtonTwo from '../../Helpers/ButtonTwo'
 import LoadingBtn from '../../Helpers/LoadingBtn';
+import { downloadReciept } from '../../../Helpers/api';
 
 function CardThree({ formData, setFormData, setActiveCard, transactionData }) {
   const [ isLoading, setIsLoading ] = useState(false)
@@ -11,9 +12,10 @@ function CardThree({ formData, setFormData, setActiveCard, transactionData }) {
     setFormData({ ...formData, proceed: false });
   }, []);
 
-  const handleDownloadRecipt = (id) => {
+  const handleDownloadRecipt = async (id) => {
     try {
       setIsLoading(true)
+      const res = await downloadReciept({id})
     } catch (error) {
       
     } finally {

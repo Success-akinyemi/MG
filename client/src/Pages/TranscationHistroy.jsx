@@ -107,7 +107,7 @@ function TranscationHistroy({toggleMenu, showMenu}) {
                         <td className='p-2 text-[12px] text-gray-70 font-semibold'>
                             <div className='flex items-center justify-center phone:justify-start text-center'>
                                 <TbCurrencyNaira className='text-[18px]' />
-                                {item.amount}
+                                {item.totalAmount}
                             </div>
                         </td>
                         <td className='p-2 text-[12px] text-gray-70 font-semibold text-center phone:hidden' >

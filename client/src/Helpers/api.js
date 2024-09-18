@@ -282,9 +282,9 @@ export async function buyAirtime(formData){
 
 //TRANSACTIONS
 //Download Transaction reciept
-export async function downloadReciept(formData){
+export async function downloadReciept({id}){
     try {
-        const res = await axios.post(`/transactions/downloadReciept`, formData, {withCredentials: true})
+        const res = await axios.post(`/transactions/downloadReciept`, {id}, {withCredentials: true})
         //console.log('buy data',res)
         if(res.data){
             return res
