@@ -6,6 +6,9 @@ import { useEffect } from "react"
 function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
 
     const networks = network
+    useEffect(() => {
+        setFormData({ ...formData, proceed: false });
+    }, []);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value })
@@ -24,6 +27,11 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         }
         if(!formData.phoneNumber){
             toast.error('Enter Phone Number')
+            return
+        }
+        const mobileRegex = /^(090|080|070)\d{8}$/;
+        if (!mobileRegex.test(formData.phoneNumber)) {
+            toast.error('Invalid phone number format')
             return
         }
         if(!formData.amount){

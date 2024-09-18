@@ -13,6 +13,10 @@ const TransctionHistroySchema = new mongoose.Schema({
         type: String,
         required: [true, 'Type of Service is required']
     },
+    platform: {
+        type: String,
+        required: [true, 'Platform is required']
+    },
     number: {
         type: String,
     },
@@ -25,7 +29,7 @@ const TransctionHistroySchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Initiated', 'Successful', 'Failed']
+        //enum: ['Initiated', 'Successful', 'Failed']
     },
     paymentMethod: {
         type: String
@@ -33,6 +37,9 @@ const TransctionHistroySchema = new mongoose.Schema({
     transactionId: {
         type: String,
         unique: [true, 'Transaction with this Id already Exist']
+    },
+    serviceId: {
+        type: String
     },
     credit: {
         type: Boolean

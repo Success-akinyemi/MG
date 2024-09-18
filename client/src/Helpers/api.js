@@ -1,8 +1,8 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
-//axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
+//axios.defaults.baseURL = 'https://subssum-server.onrender.com/api/web'
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
 
 export async function registerUser(formData){
     try {
@@ -252,7 +252,7 @@ export async function buyData(formData){
         const res = await axios.post(`/data/buyData`, formData, {withCredentials: true})
         //console.log('buy data',res)
         if(res.data){
-            return res.data
+            return res
         }
     } catch (error) {
         const res = error.response || 'Unable to buy data'
@@ -269,7 +269,7 @@ export async function buyAirtime(formData){
         const res = await axios.post(`/airtime/buyAirtime`, formData, {withCredentials: true})
         //console.log('buy data',res)
         if(res.data){
-            return res.data
+            return res
         }
     } catch (error) {
         const res = error.response || 'Unable to buy data'

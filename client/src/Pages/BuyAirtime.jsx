@@ -7,13 +7,17 @@ import CardTwo from "../Components/Cards/BuyAirtime/CardTwo"
 import toast from "react-hot-toast"
 import Loading from "../Components/Modals/Loading"
 import { buyAirtime } from "../Helpers/api"
+import { signInSuccess } from "../Redux/user/userSlice"
+import { useDispatch } from "react-redux"
 
 function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormData}) {
+    const dispatch = useDispatch()
     const [ activeCard, setActiveCard ] = useState('cardOne')
     const [ cardOne, setCardOne ] = useState(false)
     const [ cardTwo, setCardTwo ] = useState(false)
     const [ cardThree, setCardThree ] = useState(false)
-
+    const [ transactionData, setTransactionData ] = useState()
+ 
     const [ isLoading, setIsLoading ] = useState(false)
 
     const handleCardOne = () => {
@@ -38,14 +42,6 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
         setActiveCard('cardTwo')
     }
 
-    //HANDLE CARD THREE SHOULD ONLY COME AFTRE API CALL
-    const handleCardThree = () => {
-        setCardOne(true)
-        setCardTwo(true)
-        setCardThree(true)
-        setActiveCard('cardThree')
-    }
-
     useEffect(() => {
         const handleAirtimePurchase = async () => {
             if (formData.proceed) {
@@ -53,11 +49,25 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
                 setIsLoading(true);
     
                 try {
-                    const res = await buyAirtime(formData); // Make API call here
+                    const res = await buyAirtime(formData);
                     console.log('BUY Airtime', res)
+                    if(res.status === 406 || 500){
+                        setSelectedCard('transactionFailed')
+                    }
+
+                    if(res.status === 206){
+                        toast.success(res.data.msg)
+                        dispatch(signInSuccess(res?.data?.data))
+                        setFormData({})
+                        setCardOne(true)
+                        setCardTwo(true)
+                        setCardThree(true)
+                        setActiveCard('cardThree')
+                        setTransactionData(res?.data?.transaction)
+                        setSelectedCard('transactionSuccessful')
+                    }
+
                     // HANDLE CARD THREE SHOULD ONLY COME AFTER API CALL
-                    // You can manage state updates based on `res` here
-                    // Set formData to empty {} after successful response from server
     
                 } catch (error) {
                 } finally {
@@ -101,7 +111,7 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
                                         <p className={`text-[14px] ${activeCard === 'cardTwo' ? 'text-second-color' : cardTwo ? 'text-success' : 'text-gray-30'}`}>Make Payment</p>
                                         <span className={`w-full h-[7px] rounded-[100px] ${activeCard === 'cardTwo' ? 'bg-second-color' : cardTwo ? 'bg-success' : 'bg-gray-30' }`}></span>
                                     </div>
-                                    <div onClick={handleCardThree} className="flex flex-col flex-1 cursor-pointer text-center gap-[8px]">
+                                    <div className="flex flex-col flex-1 cursor-pointer text-center gap-[8px]">
                                         <p className={`text-[14px] ${activeCard === 'cardThree' ? 'text-success' : cardThree ? 'text-success' : 'text-gray-30'}`}>View Receipt </p>
                                         <span className={`w-full h-[7px] rounded-[100px] ${activeCard === 'cardThree' ? 'bg-success' : cardThree ? 'bg-success' : 'bg-gray-30' }`}></span>
                                     </div>
@@ -120,7 +130,7 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
                                     }
                                     {
                                         activeCard === 'cardThree' && (
-                                            <CardThree setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} />
+                                            <CardThree setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} transactionData={transactionData} />
                                         )
                                     }
                                 </div>

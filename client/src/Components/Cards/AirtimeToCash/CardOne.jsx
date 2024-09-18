@@ -9,6 +9,9 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         setFormData({ ...formData, [e.target.id]: e.target.value })
     }
     useEffect(() => {
+        setFormData({ ...formData, proceed: false });
+    }, []);
+    useEffect(() => {
         console.log('FORM',formData)
     } , [formData])
     

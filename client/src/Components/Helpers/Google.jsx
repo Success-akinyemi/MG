@@ -3,14 +3,12 @@ import GoogleImg from '../../assets/google.png'
 import { app } from '../../firebase'
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
-import { useState } from 'react'
 import { oAuth } from '../../Helpers/api'
 import { signInSuccess } from '../../Redux/user/userSlice'
 
 function Google({text, isLoading, setIsLoading}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [ formData, setFormData ] = useState({})
 
   const handleOAuth = async () => {
     try {
@@ -20,12 +18,16 @@ function Google({text, isLoading, setIsLoading}) {
 
         const result =  await signInWithPopup(auth, provider)
 
-        setFormData({ ...formData, name: result?.user.displayName, email: result?.user.email, photo: result?.user.photoURL })
+        const formData = {
+          name: result?.user.displayName,
+          email: result?.user.email,
+          photo: result?.user.photoURL,
+        };
+
         const res = await oAuth(formData)
         if(res.pinSet === false){
           localStorage.setItem('subsumtoken', res?.token)
           dispatch(signInSuccess(res?.data))
-          setFormData({})
           navigate('/create-pin')
         }
         else{  
@@ -33,7 +35,6 @@ function Google({text, isLoading, setIsLoading}) {
           
          localStorage.setItem('subsumtoken', res?.token)
           dispatch(signInSuccess(res?.data))
-          setFormData({})
           navigate('/dashboard')
         }
     } catch (error) {

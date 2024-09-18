@@ -1,11 +1,16 @@
 import ButtonTwo from "../../Helpers/ButtonTwo"
 import PlaneImg from '../../../assets/plane.png'
 import CardImg from '../../../assets/cardCheck.png'
+import { useEffect } from "react"
 
 function CardTwo({ formData, setFormData, setActiveCard, setIsLoading, setSelectedCard }) {
   const handlePayWithWallet = () => {
     setSelectedCard('setTransactionPin')
   }
+
+  useEffect(() => {
+    setFormData({ ...formData, proceed: false });
+}, []);
   
   const handleSetPin = () => {
     setIsLoading(true)

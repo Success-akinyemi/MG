@@ -15,8 +15,8 @@ import { useFetchUserTransaction } from "../Helpers/fetch.hooks";
 function TransactionDetailPage({ toggleMenu, showMenu }) {
   const loc = useLocation()
   const pathName = loc.pathname.split('/')[2]
-    const { isFetchingUserTransction, userTransaction } = useFetchUserTransaction(pathName)
-
+  const { isFetchingUserTransction, userTransaction } = useFetchUserTransaction(pathName)
+  console.log('first', userTransaction?.data )
     
   return (
     <div className="flex w-full min-h-[100vh]">

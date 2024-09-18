@@ -1,8 +1,43 @@
+import { useEffect } from 'react';
 import LogoImg from '../../../assets/logo.png'
 import Button from '../../Helpers/Button'
 import ButtonTwo from '../../Helpers/ButtonTwo'
 
 function CardThree({ formData, setFormData, setActiveCard }) {
+  useEffect(() => {
+    setFormData({ ...formData, proceed: false });
+}, []);
+
+const getOrdinalSuffix = (day) => {
+  if (day > 3 && day < 21) return 'th'; // Special case for 11-13
+  switch (day % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+  }
+};
+
+// Utility function to format the date
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  
+  // Get the day, month, year, and time components
+  const day = date.getDate();
+  const month = date.toLocaleString('default', { month: 'long' });
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  
+  // Convert hours to 12-hour format and determine AM/PM
+  const isPM = hours >= 12;
+  const formattedHours = ((hours + 11) % 12 + 1); // Convert to 12-hour format
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  const period = isPM ? 'PM' : 'AM';
+  
+  // Format the date string
+  return `${day}${getOrdinalSuffix(day)} ${month}, ${year}, ${formattedHours}:${formattedMinutes}${period}`;
+};
 
   const handleDownloadRecipt = () => {
 
@@ -17,7 +52,7 @@ function CardThree({ formData, setFormData, setActiveCard }) {
           <div className='w-full flex flex-col gap-2'>
             <span className='flex items-center justify-between'>
               <h3 className='font-normal text-[14px] text-gray-70'>Date</h3>
-              <p className={`text-[14px] text-gray-80 font-medium`}></p>
+              <p className={`text-[14px] text-gray-80 font-medium`}>{formData()}</p>
             </span>
             <span className='flex items-center justify-between'>
               <h3 className='font-normal text-[14px] text-gray-70'>Status</h3>

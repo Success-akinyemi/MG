@@ -12,7 +12,7 @@ import { useFetchUserTransaction } from '../Helpers/fetch.hooks';
 
 function TranscationHistroy({toggleMenu, showMenu}) {
     const { isFetchingUserTransction, userTransaction } = useFetchUserTransaction()
-    console.log('first', userTransaction?.data )
+    
     const transactionHistroy = userTransaction?.data
     
     const getOrdinalSuffix = (day) => {
@@ -79,51 +79,60 @@ function TranscationHistroy({toggleMenu, showMenu}) {
         </tr>
     </thead>
 
-    <tbody className='w-full text-center phone:text-start'>
-        {transactionHistroy?.map((item) => (
-            <tr key={item._id} className='border-b border-gray-30'>
-                <td className='p-2'>
-                    <Link to={`/transaction/${item._id}`} className='flex gap-2 items-center'>
-                        {
-                            item.status === 'Successful' ? 
-                            <img className='w-4 h-4' alt={item.status} src={ErrorGreen} /> :
-                            item.status === 'Initiated' ? 
-                            <img className='w-4 h-4' alt={item.status} src={ErrorYellow} /> :
-                            <img className='w-4 h-4' alt={item.status} src={ErrorRed} />
-                        }
-                        <div className='flex flex-col gap-[10px]'>
-                            <h2 className='text-[12px] text-gray-70 font-semibold'>{item.service}</h2>
-                            <p className='text-[12px] text-gray-70'>{item.number}</p>
-                        </div>
-                    </Link>
-                </td>
-                <td className='p-2 text-[12px] text-gray-70 font-semibold'>
-                    <div className='flex items-center justify-center phone:justify-start text-center'>
-                        <TbCurrencyNaira className='text-[18px]' />
-                        {item.amount}
-                    </div>
-                </td>
-                <td className='p-2 text-[12px] text-gray-70 font-semibold text-center phone:hidden' >
-                    <div className='flex items-center justify-center text-center w-full'>
-                        <TbCurrencyNaira className='text-[18px]' />
-                        {item.totalAmount}
-                    </div>
-                </td>
-                <td className={`p-2 ${item.status === 'Successful' ? 'text-success' : item.status === 'Initiated' ? 'text-warning' : 'text-error'} text-[12px] font-semibold`}>{item.status}</td>
-                <td className='p-2 text-[12px] text-gray-70 font-semibold phone:hidden'>{item.paymentMethod}</td>
-                <td className='p-2 tablet:hidden'>
-                    <div className='flex flex-col gap-[10px]'>
-                        <h2 className='text-[12px] text-gray-70 font-semibold'>{item.transactionId}</h2>
-                        <p className='text-[12px] text-gray-70 font-semibold'>{formatDate(item?.createdAt)}</p>
-                    </div>
-                </td>
-                <td className='phone:hidden'>
-                    <Link to={`/transaction/${item._id}`} className='p-2 rounded-[6px] bg-gray-20 text-second-color text-[16px] font-semibold cursor-pointer'>
-                        Open
-                    </Link>
-                </td>
-            </tr>
-        ))}
+    <tbody className='relative w-full text-center phone:text-start'>
+        {
+            isFetchingUserTransction ? (
+                <div className='absolute flex w-full top-12 items-center justify-center'>
+                     <div className="loading-spinner flex items-center justify-center h-16 w-16 rounded-full left-0 top-0"></div>   
+                </div>
+            ) : (
+
+                transactionHistroy?.map((item) => (
+                    <tr key={item._id} className='border-b border-gray-30'>
+                        <td className='p-2'>
+                            <Link to={`/transaction/${item._id}`} className='flex gap-2 items-center'>
+                                {
+                                    item.status === 'Successful' ? 
+                                    <img className='w-4 h-4' alt={item.status} src={ErrorGreen} /> :
+                                    item.status === 'Initiated' ? 
+                                    <img className='w-4 h-4' alt={item.status} src={ErrorYellow} /> :
+                                    <img className='w-4 h-4' alt={item.status} src={ErrorRed} />
+                                }
+                                <div className='flex flex-col gap-[10px]'>
+                                    <h2 className='text-[12px] text-gray-70 font-semibold'>{item.service}</h2>
+                                    <p className='text-[12px] text-gray-70'>{item.number}</p>
+                                </div>
+                            </Link>
+                        </td>
+                        <td className='p-2 text-[12px] text-gray-70 font-semibold'>
+                            <div className='flex items-center justify-center phone:justify-start text-center'>
+                                <TbCurrencyNaira className='text-[18px]' />
+                                {item.amount}
+                            </div>
+                        </td>
+                        <td className='p-2 text-[12px] text-gray-70 font-semibold text-center phone:hidden' >
+                            <div className='flex items-center justify-center text-center w-full'>
+                                <TbCurrencyNaira className='text-[18px]' />
+                                {item.totalAmount}
+                            </div>
+                        </td>
+                        <td className={`p-2 ${item.status === 'Successful' ? 'text-success' : item.status === 'Initiated' ? 'text-warning' : 'text-error'} text-[12px] font-semibold`}>{item.status}</td>
+                        <td className='p-2 text-[12px] text-gray-70 font-semibold phone:hidden'>{item.paymentMethod}</td>
+                        <td className='p-2 tablet:hidden'>
+                            <div className='flex flex-col gap-[10px]'>
+                                <h2 className='text-[12px] text-gray-70 font-semibold'>{item.transactionId}</h2>
+                                <p className='text-[12px] text-gray-70 font-semibold'>{formatDate(item?.createdAt)}</p>
+                            </div>
+                        </td>
+                        <td className='phone:hidden'>
+                            <Link to={`/transaction/${item._id}`} className='p-2 rounded-[6px] bg-gray-20 text-second-color text-[16px] font-semibold cursor-pointer'>
+                                Open
+                            </Link>
+                        </td>
+                    </tr>
+                ))
+            ) 
+        }
     </tbody>
 </table>
                 </div>
