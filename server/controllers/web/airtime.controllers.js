@@ -32,7 +32,7 @@ export async function buyAirtime(req, res) {
         };
 
         // Make the POST request with fetch
-        const response = await fetch(`${process.env.HUSMODATA_URL}/topup`, {
+        const response = await fetch(`${process.env.HUSMODATA_URL}/topup/`, {
             method: 'POST',
             headers: {
                 'Authorization': `Token ${process.env.HUSMODATA_API_KEY}`,
@@ -43,17 +43,12 @@ export async function buyAirtime(req, res) {
 
         const runBuyAirtime = await response.json();
 
-        console.log('API URL:', `${process.env.HUSMODATA_URL}/topup`);
-        console.log('API KEY:', process.env.HUSMODATA_API_KEY);
-        console.log('Data being sent to API:', data);
-        console.log('API RESPONSE:', runBuyAirtime);
+        //console.log('API URL:', `${process.env.HUSMODATA_URL}/topup`);
+        //console.log('API KEY:', process.env.HUSMODATA_API_KEY);
+        //console.log('Data being sent to API:', data);
+        //console.log('API RESPONSE:', runBuyAirtime);
 
-        // Debug response structure
-        if (!runBuyAirtime || !runBuyAirtime.results) {
-            return res.status(500).json({ success: false, data: 'Unexpected API response' });
-        }
-
-        const airtimeResponse = runBuyAirtime.results[0];
+        const airtimeResponse = runBuyAirtime;
 
         if (airtimeResponse.Status === 'successful') {
             // Debit user

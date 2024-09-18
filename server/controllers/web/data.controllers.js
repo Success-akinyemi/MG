@@ -4,8 +4,8 @@ import axios from 'axios'
 
 export async function buyData(req, res){
     //console.log('DATA BODY', req.body)
-    const { networkCode, phoneNumber, planId, planName, status } = req.body
-    const { _id } = req.user
+    const { networkCode, phoneNumber, planId, planName, transactionId, status } = req.body
+    const { _id, email } = req.user
     try {
         const mobileRegex = /^(090|080|070)\d{8}$/;
         if (!mobileRegex.test(phoneNumber)) {
@@ -22,7 +22,7 @@ export async function buyData(req, res){
         }
 
         const getData = await axios.post(
-            `${process.env.HUSMODATA_URL}/data`,
+            `${process.env.HUSMODATA_URL}/data/`,
             {
                 "network": dataPlan?.networkCode,
                 "mobile_number": phoneNumber,
@@ -38,7 +38,40 @@ export async function buyData(req, res){
             }
         )
 
-        console.log('API RESPONSE FOR DATA', getData?.data)
+        //console.log('API RESPONSE FOR DATA', getData?.data)
+        const dataResponse = getData?.data
+        if (dataResponse.Status === 'successful') {
+            // Debit user
+            getUser.acctBalance -= Number(dataPlan.price);
+            await getUser.save();
+
+            // Create new transaction
+            const newTransaction = await TransctionHistroyModel.create({
+                userId: _id,
+                email: email,
+                service: `${dataResponse?.plan_name} ${dataResponse?.plan_network} data`,
+                platform: dataResponse.plan_network,
+                number: dataResponse.mobile_number,
+                amount: dataResponse.plan_amount,
+                totalAmount: dataPlan.price,
+                status: dataResponse.Status,
+                paymentMethod: 'Wallet',
+                transactionId: transactionId,
+                serviceId: dataResponse.id
+            });
+
+            const { amount, ...transactionData } = newTransaction._doc;
+            const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = getUser._doc;
+
+            return res.status(206).json({
+                success: true,
+                msg: `${dataResponse.plan_name} ${dataResponse.plan_network} Data purchase successful`,
+                data: { success: true, data: userData },
+                transaction: transactionData
+            });
+        } else {
+            return res.status(400).json({ success: false, data: 'Data purchase failed' });
+        }
         
         
     } catch (error) {
