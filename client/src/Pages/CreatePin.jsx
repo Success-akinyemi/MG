@@ -58,7 +58,7 @@ function CreatePin() {
 
   return (
     <div className='page1 w-full h-[100vh'>
-    <Navbar />
+    <Navbar showBtn={false} />
 
     <form onSubmit={handleCreatePin} className="flex flex-col gap-[24px] w-[500px] phone:w-[90%]">
 
