@@ -92,9 +92,9 @@ function TranscationHistroy({toggleMenu, showMenu}) {
                         <td className='p-2'>
                             <Link to={`/transaction/${item._id}`} className='flex gap-2 items-center'>
                                 {
-                                    item.status === 'Successful' ? 
+                                    item.status.toLowerCase() === 'successful' ? 
                                     <img className='w-4 h-4' alt={item.status} src={ErrorGreen} /> :
-                                    item.status === 'Initiated' ? 
+                                    item.status.toLowerCase() === 'initiated' ? 
                                     <img className='w-4 h-4' alt={item.status} src={ErrorYellow} /> :
                                     <img className='w-4 h-4' alt={item.status} src={ErrorRed} />
                                 }
@@ -116,7 +116,7 @@ function TranscationHistroy({toggleMenu, showMenu}) {
                                 {item.totalAmount}
                             </div>
                         </td>
-                        <td className={`p-2 ${item.status === 'Successful' ? 'text-success' : item.status === 'Initiated' ? 'text-warning' : 'text-error'} text-[12px] font-semibold`}>{item.status}</td>
+                        <td className={`p-2 ${item.status.toLowerCase() === 'successful' ? 'text-success' : item.status.toLowerCase() === 'initiated' ? 'text-warning' : 'text-error'} text-[12px] font-semibold`}>{item.status}</td>
                         <td className='p-2 text-[12px] text-gray-70 font-semibold phone:hidden'>{item.paymentMethod}</td>
                         <td className='p-2 tablet:hidden'>
                             <div className='flex flex-col gap-[10px]'>
