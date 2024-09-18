@@ -32,4 +32,14 @@ export async function fetchAUserTransaction(req, res) {
     }
 }
 
+//DOWNLOAD TRANSACTION RECIEPT
+export async function downloadReciept(req, res) {
+    try {
+        
+    } catch (error) {
+        console.log('UNABLE TO DOWNLOAD TRANSACTION RECIEPT', error)
+        res.status(500).json({ success: false, data: 'Unable to generate transaction reciept'})
+    }
+}
+
 //UPDTAE USER TRANSACTIONS

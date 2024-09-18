@@ -278,3 +278,21 @@ export async function buyAirtime(formData){
         return res
     }
 }
+
+
+//TRANSACTIONS
+//Download Transaction reciept
+export async function buyAirtime(formData){
+    try {
+        const res = await axios.post(`/transactions/downloadReciept`, formData, {withCredentials: true})
+        //console.log('buy data',res)
+        if(res.data){
+            return res
+        }
+    } catch (error) {
+        const res = error.response || 'Unable to buy data'
+        toast.error(res.data.data)
+        //console.log('BUY DATA', error)
+        return res
+    }
+}
