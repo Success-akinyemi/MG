@@ -5,7 +5,7 @@ export async function convertAirtimeToCash(req, res){
         if(!networkCode || !phoneNumber || !amount || !airtimeSharePin){
             return res.status(400).json({ success: false, data: 'Please Fill all Input Feilds'})
         }
-        const mobileRegex = /^(090|080|070)\d{8}$/;
+        const mobileRegex = /^(090|091|080|081|070|071)\d{8}$/;
         
         if (!mobileRegex.test(phoneNumber)) {
             return res.status(400).json({ success: false, data: 'Invalid phone number' });

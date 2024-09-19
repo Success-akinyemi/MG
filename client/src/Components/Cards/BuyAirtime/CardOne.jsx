@@ -29,7 +29,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter Phone Number')
             return
         }
-        const mobileRegex = /^(090|080|070)\d{8}$/;
+        const mobileRegex = /^(090|091|080|081|070|071)\d{8}$/;
         if (!mobileRegex.test(formData.phoneNumber)) {
             toast.error('Invalid phone number format')
             return

@@ -35,6 +35,7 @@ import ContactUs from './Pages/ContactUs'
 import FAQ from './Pages/FAQ'
 import Blogs from './Pages/Blogs'
 import BlogPage from './Pages/BlogPage'
+import ReportTransaction from './Components/Modals/ReportTransaction'
 
 function App() {
   const [ selectedCard, setSelectedCard ] = useState(null)
@@ -103,6 +104,12 @@ function App() {
         return (
           <div>
             <WithdrawalCashOut setSelectedCard={setSelectedCard} formData={formData} setFormData={setFormData} />
+          </div>
+        )
+      case 'reportTransaction':
+        return (
+          <div>
+            <ReportTransaction formData={formData} setFormData={setFormData} setSelectedCard={setSelectedCard} />
           </div>
         )
     }

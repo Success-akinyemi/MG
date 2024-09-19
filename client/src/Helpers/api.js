@@ -284,10 +284,18 @@ export async function buyAirtime(formData){
 //Download Transaction reciept
 export async function downloadReciept({id}){
     try {
-        const res = await axios.post(`/transactions/downloadReciept`, {id}, {withCredentials: true})
+        const res = await axios.post(`/transactions/downloadReciept`, {id}, { responseType: 'blob', withCredentials: true })
         //console.log('buy data',res)
-        if(res.data){
-            return res
+        if(res?.data){
+            // Create a Blob directly from the response data
+            const blob = new Blob([res.data], { type: 'application/pdf' });
+            //window.location.reload()
+            // Use window.open to open a new window with the PDF content
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        } else {
+            console.error('PDF data not received from the server');
+            // Handle the case where the server did not provide the PDF data
         }
     } catch (error) {
         const res = error.response || 'Unable to buy data'

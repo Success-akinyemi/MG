@@ -8,7 +8,7 @@ export async function buyData(req, res){
     const { networkCode, phoneNumber, planId, planName, transactionId, status } = req.body
     const { _id, email } = req.user
     try {
-        const mobileRegex = /^(090|080|070)\d{8}$/;
+        const mobileRegex = /^(090|091|080|081|070|071)\d{8}$/;
         if (!mobileRegex.test(phoneNumber)) {
             return res.status(400).json({ success: false, data: 'Invalid phone number' });
         }

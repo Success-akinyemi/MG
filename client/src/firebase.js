@@ -1,5 +1,26 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCwkFkjIzEND8JLdEk_Ch2hD-jVInomcYo",
+  authDomain: "subssum-78f77.firebaseapp.com",
+  projectId: "subssum-78f77",
+  storageBucket: "subssum-78f77.appspot.com",
+  messagingSenderId: "778776029836",
+  appId: "1:778776029836:web:d231f7c60c5708c84229a9"
+};
+
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+
+
+/**
+ * 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -19,3 +40,5 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+ * 
+ */

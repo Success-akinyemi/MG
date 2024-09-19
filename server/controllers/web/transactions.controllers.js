@@ -3,6 +3,36 @@ import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import UserModel from "../../model/User.js";
 
+const getOrdinalSuffix = (day) => {
+    if (day > 3 && day < 21) return 'th'; // Special case for 11-13
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
+};
+
+// Utility function to format the date
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    
+    // Get the day, month, year, and time components
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    
+    // Convert hours to 12-hour format and determine AM/PM
+    const isPM = hours >= 12;
+    const formattedHours = ((hours + 11) % 12 + 1); // Convert to 12-hour format
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const period = isPM ? 'PM' : 'AM';
+    
+    // Format the date string
+    return `${day}${getOrdinalSuffix(day)} ${month}, ${year}, ${formattedHours}:${formattedMinutes}${period}`;
+};
 
 //FETCH ALL USER TRANSCATIONS
 export async function fetchAllUserTransactions(req, res) {
@@ -38,6 +68,7 @@ export async function fetchAUserTransaction(req, res) {
 //DOWNLOAD TRANSACTION RECIEPT
 export async function downloadReciept(req, res) {
     const { id } = req.body
+    console.log('first', id)
     try {
         const findTransaction = await TransctionHistroyModel.findOne({ transactionId: id })
         
@@ -62,19 +93,26 @@ export async function downloadReciept(req, res) {
          doc.font('Times-Roman')
              .fontSize(10) 
              .text(`Receipt: ${findTransaction.transactionId}`, { align: 'center' })
-             //.text(`Date: ${booking.preparedby}`, { align: 'center' });
+             .text(`Date: ${formatDate(findTransaction.createdAt)}`, { align: 'center' });
          
-         doc.moveDown(0.7);
+         doc.moveDown(2);
          doc.font('Times-Roman')
              .fontSize(11)
              .text('Customer Name:', { align: 'left' })
-             .text(`Name: ${findUser.firstName ? findUser.firstName : ''} ${findUser.lastName ? findUser.lastName : ''}`)
+             .text(`${findUser.firstName ? findUser.firstName : ''} ${findUser.lastName ? findUser.lastName : ''}`)
+             .moveDown(0.5)
              .text(`Service: ${findTransaction.service}`)
+             .moveDown(0.5)
              .text(`Platform: ${findTransaction.platform}`)
+             .moveDown(0.5)
              .text(`Number: ${findTransaction.number}`)
+             .moveDown(0.5)
              .text(`Amount: ${findTransaction.totalAmount}`)
+             .moveDown(0.5)
              .text(`Status: ${findTransaction.status}`)
+             .moveDown(0.5)
              .text(`Payment Method: ${findTransaction.paymentMethod}`)
+             .moveDown(0.5)
              .text(`Transaction Id: ${findTransaction.transactionId}`)
              
              

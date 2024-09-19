@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import LogoImg from '../../../assets/logo.png'
 import Button from '../../Helpers/Button'
 import ButtonTwo from '../../Helpers/ButtonTwo'
 
-function CardThree({ formData, setFormData, setActiveCard }) {
+function CardThree({ formData, setFormData, setActiveCard, transactionData }) {
+  const [ isLoading, setIsLoading ] = useState(false)
   useEffect(() => {
     setFormData({ ...formData, proceed: false });
 }, []);
@@ -39,9 +40,16 @@ const formatDate = (dateString) => {
   return `${day}${getOrdinalSuffix(day)} ${month}, ${year}, ${formattedHours}:${formattedMinutes}${period}`;
 };
 
-  const handleDownloadRecipt = () => {
-
+const handleDownloadRecipt = async (id) => {
+  try {
+    setIsLoading(true)
+    const res = await downloadReciept({id})
+  } catch (error) {
+    
+  } finally {
+    setIsLoading(false)
   }
+}
 
   return (
     <div className="card3">
@@ -52,11 +60,11 @@ const formatDate = (dateString) => {
           <div className='w-full flex flex-col gap-2'>
             <span className='flex items-center justify-between'>
               <h3 className='font-normal text-[14px] text-gray-70'>Date</h3>
-              <p className={`text-[14px] text-gray-80 font-medium`}>{formData()}</p>
+              <p className={`text-[14px] text-gray-80 font-medium`}>{formatDate(transactionData?.createdAt)}</p>
             </span>
             <span className='flex items-center justify-between'>
               <h3 className='font-normal text-[14px] text-gray-70'>Status</h3>
-              <p className={`text-[14px] text-gray-80 font-medium`}></p>
+              <p className={`text-[14px] text-gray-80 font-medium`}>{transactionData?.status}</p>
             </span>
             <span className='flex items-center justify-between'>
               <h3 className='font-normal text-[14px] text-gray-70'>Transaction Details</h3>
@@ -64,26 +72,34 @@ const formatDate = (dateString) => {
             </span>
             <span className='flex items-center justify-between'>
               <h3 className='font-normal text-[14px] text-gray-70'>Service</h3>
-              <p className={`text-[14px] text-gray-80 font-medium`}></p>
+              <p className={`text-[14px] text-gray-80 font-medium`}>{transactionData?.service}</p>
             </span>
             <span className='flex items-center justify-between'>
               <h3 className='font-normal text-[14px] text-gray-70'>Network</h3>
-              <p className={`text-[14px] text-gray-80 font-medium`}></p>
+              <p className={`text-[14px] text-gray-80 font-medium`}>{transactionData?.platform}</p>
             </span>
             <span className='flex items-center justify-between'>
               <h3 className='font-normal text-[14px] text-gray-70'>transaction ID</h3>
-              <p className={`text-[14px] text-gray-80 font-medium`}></p>
+              <p className={`text-[14px] text-gray-80 font-medium`}>{transactionData.transactionId}</p>
             </span>
             <span className='flex items-center justify-between'>
               <h3 className='font-normal text-[14px] text-gray-70'>Total</h3>
-              <p className={`text-[14px] text-gray-80 font-medium`}></p>
+              <p className={`text-[14px] text-gray-80 font-medium`}>{transactionData?.totalAmount}</p>
             </span>
           </div>
 
           <div className="w-full border-[1px] border-l-gray-30 bg-white rounded-[12px] flex flex-col p-4 gap-4">
-            <ButtonTwo onClick={handleDownloadRecipt} text={'Download Recept'} />
-
-            <Button bg={false} name={'Report Transaction'} link={'support'} styles={`text-error bg-gray-10 border-[2px]`} />
+            {
+              isLoading ? (
+                <LoadingBtn />
+              ) : (
+                <>
+                  <ButtonTwo onClick={() => handleDownloadRecipt(transactionData.transactionId)} text={'Download Recept'} />
+    
+                  <Button bg={false} name={'Report Transaction'} link={'support'} styles={`text-error bg-gray-10 border-[2px]`} />
+                </>
+              )
+            }
           </div>
 
         </div>
