@@ -143,7 +143,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     <input type="number" id="amount" className="input text-[14px] text-gray-60 font-semibold bg-gray-30 border-[1px] border-[#C7DBEF]" disabled value={formData?.amount} />
                 </div>
 
-                {/**verifiy meter number */}
+                {/**verifiy smart card number */}
                 {
                     formData?.smartCardNumber?.length >= 10 && formData?.serviceProviderCode && smartCardName === '' && (
                         <div className="flex items-center gap-3">

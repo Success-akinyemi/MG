@@ -333,3 +333,15 @@ export async function validateCardNumber({id, number}) {
         return res
     }
 }
+
+//ELECTRICITY
+//validate meter number
+export async function validateMeterNumber({providerCode, meterNumber}) {
+    try {
+        const res = await axios.post('/electric/validateMeterNumber', {providerCode, meterNumber}, {withCredentials: true})
+        return res
+    } catch (error) {
+        console.log('UNable to validate name:', error)
+        return res
+    }
+}

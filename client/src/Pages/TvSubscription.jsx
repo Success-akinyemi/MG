@@ -50,6 +50,7 @@ function TvSubscription({toggleMenu, showMenu, formData, setFormData, setSelecte
                 try {
                     const res = await buyCableTvPlan(formData)
                     if(res.status === 406 || 500){
+                        setFormData({ ...formData, proceed: false })
                         setSelectedCard('transactionFailed')
                     }
 

@@ -1,9 +1,11 @@
 import toast from "react-hot-toast"
 import ButtonTwo from "../../Helpers/ButtonTwo"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { electricProviders, meterType } from "../../../Data/electricProviders"
+import { validateMeterNumber } from "../../../Helpers/api"
 
 function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
+    const [ meterName, setMeterName ] = useState('') 
 
     const meterTypeUsed = meterType
     const providers = electricProviders
@@ -36,6 +38,26 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         }
     }
     
+        //useEffect to verify smart card name here
+        useEffect(() => {
+            const fetchData = async () => {
+                if (formData?.meterNumber?.length >= 10 && formData?.providerCode) {
+                    try {
+                        setMeterName('')
+                        const res = await validateMeterNumber({ providerCode: formData?.providerCode, meterNumber: formData?.meterNumber });
+                        console.log('first', res.data.data)
+                        if(res.data.data && typeof res.data.data === 'object'){
+                            setMeterName(res.data.data.name)
+                        }
+                    } catch (error) {
+                        console.error("Error fetching data:", error);
+                    }
+                }
+            };
+        
+            fetchData();
+        }, [formData?.smartCardNumber, formData?.serviceProviderCode])
+
     const handleNext = () => {
         if(!formData.meterNumber){
             toast.error('Enter Meter Number')
@@ -102,6 +124,25 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     <label className="label text-[14px]">Amount</label>
                     <input type="text" onChange={handleChange} id="amount" defaultValue={formData?.amount} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="₦5,000" />
                 </div>
+
+                {/**verifiy meter number */}
+                {
+                    formData?.meterNumber?.length >= 10 && formData?.providerCode && meterName === '' && (
+                        <div className="flex items-center gap-3">
+                            <div className=''>
+                                <div className="loading-spinner-small border-[8px] flex items-center justify-center h-[8px] w-[8px] rounded-full"></div>   
+                            </div>
+                            <p className="text-second-color text-[14px] font-semibold">Fetching Details...</p>
+                        </div>
+                    )
+                }
+                {
+                    meterName && (
+                        <p className="text-second-color text-[14px] font-semibold">METER NAME: {meterName}</p>
+                    )
+                }
+
+
             </div>
         </div>
 

@@ -12,6 +12,8 @@ import dataRoutes from './routes/web/data.routes.js';
 import airtimeRoutes from './routes/web/airtime.routes.js';
 import transactionsRoutes from './routes/web/transactions.routes.js';
 import cabletvRoutes from './routes/web/cabletv.routes.js'
+import electricRoutes from './routes/web/electricity.routes.js'
+
 
 
 
@@ -70,6 +72,7 @@ app.use('/api/web/data', dataRoutes)
 app.use('/api/web/airtime', airtimeRoutes)
 app.use('/api/web/transactions', transactionsRoutes)
 app.use('/api/web/cabletv', cabletvRoutes)
+app.use('/api/web/electric', electricRoutes)
 
 // Start server
 const PORT = process.env.PORT || 9000;
