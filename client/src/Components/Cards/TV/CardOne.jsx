@@ -2,11 +2,17 @@ import toast from "react-hot-toast"
 import ButtonTwo from "../../Helpers/ButtonTwo"
 import { useEffect, useState } from "react"
 import { providers } from "../../../Data/serviceProviders"
+import { useFetchCableTvPlans } from "../../../Helpers/fetch.hooks"
+import { validateCardNumber } from "../../../Helpers/api"
 
 function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
+    const { cabletvplan, isFetchingCableTvPlans } = useFetchCableTvPlans()
     const [ availbaleBundle, setAvailableBundle] = useState([])
+    const [ smartCardName, setSmartCardName ] = useState('')
 
     const serviceProvider = providers
+    const cabletvplans = cabletvplan?.data
+    //console.log('first', cabletvplan?.data)
 
     useEffect(() => {
         console.log('FORM',formData)
@@ -16,17 +22,63 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         setFormData({ ...formData, [e.target.id]: e.target.value })
     }
 
-    const handleNetworkChange = (e) => {
+    const handleProvideChange = (e) => {
         const value = e.target.value
-        const filterData = serviceProvider.find(provider => provider._id === value)
+        if (value === 'null') {
+            setFormData({ ...formData, serviceProviderCode: '', serviceProviderName: '' })
+            setAvailableBundle([])
+        }
+        const filterData = serviceProvider.find(provider => provider?.code === value)
         setFormData({ ...formData, serviceProviderCode: filterData?.code, serviceProviderName: filterData?.name })
         
-        //filter for bundles
+        //filter for cable plans
+        if(value){
+            const filterPlans = cabletvplans?.filter(plan => plan?.platformCode.toString() === value);
+            setAvailableBundle(filterPlans);
+        }
     }
     
-    const handleBundleChange = (e) => {}
+    const handleBundleChange = (e) => {
+        const value = e.target.value;
+        if (value === 'null') {
+            setFormData({
+                ...formData,
+                planId: '',
+                planName: '',
+                amount: ''
+            })
+        }
+        const selectedPlan = availbaleBundle?.find(plan => plan?._id === value);
+        if (selectedPlan) {
+            setFormData({
+                ...formData,
+                planId: selectedPlan?._id,
+                planName: selectedPlan?.planName,
+                amount: selectedPlan?.price,
+                desc: `${selectedPlan.planName} for - ${selectedPlan.price}`
+            })
+        }
+    }
 
     //useEffect to verify smart card name here
+    useEffect(() => {
+        const fetchData = async () => {
+            if (formData?.smartCardNumber?.length >= 10 && formData?.serviceProviderCode) {
+                try {
+                    setSmartCardName('')
+                    const res = await validateCardNumber({ id: formData?.serviceProviderCode, number: formData?.smartCardNumber });
+                    console.log('first', res.data.data)
+                    if(res.data.data && typeof res.data.data === 'object'){
+                        setSmartCardName(res.data.data.name)
+                    }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            }
+        };
+    
+        fetchData();
+    }, [formData?.smartCardNumber, formData?.serviceProviderCode])
 
     const handleNext = () => {
         if(!formData.serviceProviderCode){
@@ -37,7 +89,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter smart card Number')
             return
         }
-        //check for selected bundle (bundlePlan bundleId) and smart card name
+        if(!formData.planId){
+            toast.error('Select a subscription bundle')
+            return
+        }
         const timeStamp = Date.now()
         setFormData({ ...formData, status: 'Initiated' , totalAmount: formData?.amount, transactionId: timeStamp })
         setActiveCard('cardTwo')
@@ -54,11 +109,11 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 <div className="flex items-center gap-3 w-full small-phone:flex-col">
                     <div className="inputGroup w-full flex-1">
                         <label className="label text-[14px]">Select Provider</label>
-                        <select onChange={handleNetworkChange} className="input text-gray-60 font-semibold" id='serviceProvider'  >
-                            <option value="">-- Select Provider --</option>
+                        <select onChange={handleProvideChange} className="input text-gray-60 font-semibold" id='serviceProvider'  >
+                            <option value="null">-- Select Provider --</option>
                             {
                                 serviceProvider.map((item, idx) => (
-                                    <option key={idx} className="text-gray-60 font-semibold text-[14px] flex items-center gap-[2px]" id="serviceProvider" value={item._id}>
+                                    <option disabled={item?.disabled} key={idx} className="text-gray-60 font-semibold text-[14px] flex items-center gap-[2px]" id="serviceProvider" value={item.code}>
                                         <p>{item.name}</p>
                                     </option>
                                 ))
@@ -73,11 +128,11 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 <div className="inputGroup gap-[6px]">
                         <label className="label text-[14px]">Plan</label>
                         <select onChange={handleBundleChange} className="input text-gray-60 font-semibold" id='bundleId'  >
-                            <option value="">-- Select Bundle --</option>
+                            <option value="null">-- Select Bundle --</option>
                             {
-                                availbaleBundle.map((item, idx) => (
+                                availbaleBundle?.map((item, idx) => (
                                     <option key={idx} className="text-gray-60 text-[14px] flex items-center gap-[2px]" id="bundleId" value={item._id}>
-                                        <p>{item.networkName} - {item.planName} for {item.validity} - {item.price}</p>
+                                        <p> {item.planName} for - {item.price}</p>
                                     </option>
                                 ))
                             }
@@ -85,8 +140,26 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Amount</label>
-                    <input type="number" id="amount" className="input text-[14px] text-gray-60 font-semibold bg-gray-30 border-[1px] border-[#C7DBEF]" disabled value={''} />
+                    <input type="number" id="amount" className="input text-[14px] text-gray-60 font-semibold bg-gray-30 border-[1px] border-[#C7DBEF]" disabled value={formData?.amount} />
                 </div>
+
+                {/**verifiy meter number */}
+                {
+                    formData?.smartCardNumber?.length >= 10 && formData?.serviceProviderCode && smartCardName === '' && (
+                        <div className="flex items-center gap-3">
+                            <div className=''>
+                                <div className="loading-spinner-small border-[8px] flex items-center justify-center h-[8px] w-[8px] rounded-full"></div>   
+                            </div>
+                            <p className="text-second-color text-[14px] font-semibold">Fetching Details...</p>
+                        </div>
+                    )
+                }
+                {
+                    smartCardName && (
+                        <p className="text-second-color text-[14px] font-semibold">CARD NAME: {smartCardName}</p>
+                    )
+                }
+
             </div>
         </div>
 

@@ -304,3 +304,32 @@ export async function downloadReciept({id}){
         return res
     }
 }
+
+
+//CABLE TV
+//buy cable Tv Plan
+export async function buyCableTvPlan(formData){
+    try {
+        const res = await axios.post(`/cabletv/buyCableTvPlan`, formData, {withCredentials: true})
+        //console.log('buy cabeletv',res)
+        if(res.data){
+            return res
+        }
+    } catch (error) {
+        const res = error.response || 'Unable to buy cable tv'
+        toast.error(res.data.data)
+        //console.log('BUY CABLETV', error)
+        return res
+    }
+}
+
+//validate smart card number
+export async function validateCardNumber({id, number}) {
+    try {
+        const res = await axios.post('/cabletv/validateCardNumber', {id, number}, {withCredentials: true})
+        return res
+    } catch (error) {
+        console.log('UNable to validate name:', error)
+        return res
+    }
+}

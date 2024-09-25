@@ -1,30 +1,34 @@
 export const providers = [
     {
-        _id: '1',
-        code: '1',
-        slugName: 'dstv',
-        name: 'DSTV',
-        img: ''
-    },
-    {
         _id: '2',
         code: '2',
+        slugName: 'dstv',
+        name: 'DSTV',
+        img: '',
+        disabled: '',
+    },
+    {
+        _id: '1',
+        code: '1',
         slugName: 'gotv',
         name: 'GOTV',
-        img: ''
+        img: '',
+        disabled: '',
     },
     {
         _id: '3',
         code: '3',
         slugName: 'startimes',
         name: 'Startimes',
-        img: ''
+        img: '',
+        disabled: '',
     },
     {
         _id: '4',
         code: '4',
         slugName: 'showmax',
         name: 'Showmax',
-        img: ''
+        img: '',
+        disabled: true,
     },
 ]

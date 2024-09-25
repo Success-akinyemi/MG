@@ -56,24 +56,24 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
     const handleNext = () => {
         if(!formData.networkCode){
             toast.error('Select a network')
-            return
+            return;
         }
         if(!formData.phoneNumber){
             toast.error('Enter Phone Number')
-            return
+            return;
         }
         const mobileRegex = /^(090|091|080|081|070|071)\d{8}$/;
         if (!mobileRegex.test(formData.phoneNumber)) {
             toast.error('Invalid phone number format')
-            return
+            return;
         }
         if(!formData.planId){
             toast.error('Select bundle')
-            return
+            return;
         }
         if(!formData.price){
             toast.error('Enter Amount')
-            return
+            return;
         }
         const timeStamp = Date.now()
         setFormData({ ...formData, status: 'Initiated' , totalAmount: formData?.price, transactionId: timeStamp })

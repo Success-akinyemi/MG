@@ -1,9 +1,9 @@
 import TransctionHistroyModel from "../../model/TransactionHistroy.js";
 import UserModel from "../../model/User.js";
-import fetch from 'node-fetch';  // Ensure you're using node-fetch or another fetch polyfill
+import fetch from 'node-fetch'; 
 
 export async function buyAirtime(req, res) {
-    console.log('first HELLO');
+    //console.log('first HELLO');
     const { networkCode, phoneNumber, amount, transactionId, networkName, totalAmount, status } = req.body;
     const { _id, email } = req.user;
 

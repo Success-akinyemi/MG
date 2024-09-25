@@ -57,7 +57,7 @@ function BuyData({toggleMenu, showMenu, formData, setFormData, setSelectedCard})
     
                 try {
                     const res = await buyData(formData); 
-                    console.log('BUY DATA', res)
+                    //console.log('BUY DATA', res)
                     if(res.status === 406 || 500){
                         setSelectedCard('transactionFailed')
                     }

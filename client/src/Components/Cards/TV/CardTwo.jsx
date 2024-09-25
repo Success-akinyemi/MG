@@ -27,7 +27,7 @@ function CardTwo({ formData, setFormData, setActiveCard, setIsLoading, setSelect
               </span>
               <span className="flex items-center justify-between">
                 <h3 className="text-[14.5px] text-gray-70 font-normal">Plan</h3>
-                <p className="text-[14.5px] font-medium text-gray-80">{formData?.bundlePlan}</p>
+                <p className="text-[14.5px] font-medium text-gray-80">{formData?.desc}</p>
               </span>
               <span className="flex items-center justify-between">
                 <h3 className="text-[14.5px] text-gray-70 font-normal">Amount</h3>

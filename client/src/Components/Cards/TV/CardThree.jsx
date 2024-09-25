@@ -2,7 +2,7 @@ import LogoImg from '../../../assets/logo.png'
 import Button from '../../Helpers/Button'
 import ButtonTwo from '../../Helpers/ButtonTwo'
 
-function CardThree({ formData, setFormData, setActiveCard }) {
+function CardThree({ formData, setFormData, setActiveCard, transactionData }) {
 
   const handleDownloadRecipt = () => {
 

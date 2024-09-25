@@ -105,6 +105,11 @@ label{
   animation: loading-spinner 0.8s ease infinite;
 }
 
+.loading-spinner-small {
+  @apply border-second-color border-t-transparent border-r-transparent border-b-transparent border-l-second-color rounded-full;
+  animation: loading-spinner 0.9s ease infinite;
+}
+
 .spin-pending-img{
   animation: img-spinner 0.8s ease infinite;
 }

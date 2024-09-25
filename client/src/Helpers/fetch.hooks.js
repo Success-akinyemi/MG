@@ -51,3 +51,27 @@ export function useFetchUserTransaction(query){
 
     return transactionData
 }
+
+//FETCH ALL CABLETV PLANS
+export function useFetchCableTvPlans(query){
+    const [ cabletvplan, setCabletvplan] = useState({ isFetchingCableTvPlans: true, cabletvplan: null, cabletvplanStatus: null, cabletvplanServerError: null, })
+    useEffect(() => {
+        const fetchcabletvPlan = async () => {
+            try {
+                const { data, status} = !query ? await axios.get(`/cabletv/getAllCableTv`, {withCredentials: true}) : await axios.get(`/cabletv/getAllCableTv/${query}`, {withCredentials: true})
+                //console.log('Data from Hooks>>>', data, 'STATUS', status)
+
+                if(status === 200){
+                    setCabletvplan({ isFetchingCableTvPlans: false, cabletvplan: data, cabletvplanStatus: status, cabletvplanServerError: null})
+                } else{
+                    setCabletvplan({ isFetchingCableTvPlans: false, cabletvplan: null, cabletvplanStatus: status, cabletvplanServerError: null})
+                }
+            } catch (error) {
+                setCabletvplan({ isFetchingCableTvPlans: false, cabletvplan: null, cabletvplanStatus: null, cabletvplanServerError: error})
+            }
+        }
+        fetchcabletvPlan()
+    }, [query])
+
+    return cabletvplan
+}
