@@ -6,12 +6,17 @@ import Sidebar from "../Components/Sidebar";
 import TopNav from "../Components/TopNav";
 import toast from "react-hot-toast";
 import Loading from "../Components/Modals/Loading";
+import { signInSuccess } from "../Redux/user/userSlice";
+import { useDispatch } from "react-redux";
+import { buyElectricBill } from "../Helpers/api";
 
 function PayElectricBill({ toggleMenu, showMenu, formData, setFormData, setSelectedCard }) {
+    const dispatch = useDispatch()
     const [ activeCard, setActiveCard ] = useState('cardOne')
     const [ cardOne, setCardOne ] = useState(false)
     const [ cardTwo, setCardTwo ] = useState(false)
     const [ cardThree, setCardThree ] = useState(false)
+    const [ transactionData, setTransactionData ] = useState()
 
     const [ isLoading, setIsLoading ] = useState(false)
 
@@ -43,21 +48,44 @@ function PayElectricBill({ toggleMenu, showMenu, formData, setFormData, setSelec
     }
 
     //HANDLE CARD THREE SHOULD ONLY COME AFTRE API CALL
-    const handleCardThree = () => {
-        setCardOne(true)
-        setCardTwo(true)
-        setCardThree(true)
-        setActiveCard('cardThree')
-    }
 
     useEffect(() => {
+      const handleElectricPurchase = async () => {
         if(formData.proceed){
-            setSelectedCard(null)
-            setIsLoading(true)
-            //make api call to server here
-            //HANDLE CARD THREE SHOULD ONLY COME AFTRE API CALL
-            //set formData to empty {} after res from server
+          setSelectedCard(null)
+          setIsLoading(true)
+          
+          try {
+              console.log('first call2')
+              const res = await buyElectricBill(formData); 
+              //console.log('BUY DATA', res)
+              if(res.status === 406 || 500){
+                  setFormData({ ...formData, proceed: false })
+                  setSelectedCard('transactionFailed')
+              }
+
+              if(res.status === 206){
+                  toast.success(res.data.msg)
+                  dispatch(signInSuccess(res?.data?.data))
+                  setFormData({})
+                  setCardOne(true)
+                  setCardTwo(true)
+                  setCardThree(true)
+                  setActiveCard('cardThree')
+                  setTransactionData(res?.data?.transaction)
+                  setSelectedCard('transactionSuccessful')
+              }
+              // HANDLE CARD THREE SHOULD ONLY COME AFTER API CALL
+
+          } catch (error) {
+
+          } finally {
+              setIsLoading(false);
+          }
         }
+      }
+
+      handleElectricPurchase();
     }, [formData])
   return (
     <div className="flex w-full min-h-[100vh]">
@@ -137,7 +165,6 @@ function PayElectricBill({ toggleMenu, showMenu, formData, setFormData, setSelec
                   ></span>
                 </div>
                 <div
-                  onClick={handleCardThree}
                   className="flex flex-col flex-1 cursor-pointer text-center gap-[8px]"
                 >
                   <p
@@ -183,6 +210,7 @@ function PayElectricBill({ toggleMenu, showMenu, formData, setFormData, setSelec
                 )}
                 {activeCard === "cardThree" && (
                   <CardThree
+                    transactionData={transactionData}
                     setActiveCard={setActiveCard}
                     formData={formData}
                     setFormData={setFormData}

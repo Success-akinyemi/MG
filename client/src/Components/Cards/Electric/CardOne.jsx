@@ -56,7 +56,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             };
         
             fetchData();
-        }, [formData?.smartCardNumber, formData?.serviceProviderCode])
+        }, [formData?.meterNumber, formData?.providerCode])
 
     const handleNext = () => {
         if(!formData.meterNumber){
@@ -73,6 +73,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         }
         if(!formData.amount){
             toast.error('Enter Amount')
+            return
+        }
+        if(!formData.phoneNumber){
+            toast.error('Enter phone number')
             return
         }
         const timeStamp = Date.now()
@@ -123,6 +127,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Amount</label>
                     <input type="text" onChange={handleChange} id="amount" defaultValue={formData?.amount} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="₦5,000" />
+                </div>
+                <div className="inputGroup gap-[6px]">
+                    <label className="label text-[14px]">Phone Number</label>
+                    <input type="text" onChange={handleChange} id="phoneNumber" defaultValue={formData?.phoneNumber} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="07032529431" />
                 </div>
 
                 {/**verifiy meter number */}

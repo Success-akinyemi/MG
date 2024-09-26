@@ -345,3 +345,19 @@ export async function validateMeterNumber({providerCode, meterNumber}) {
         return res
     }
 }
+
+//buy cable Tv Plan
+export async function buyElectricBill(formData){
+    try {
+        const res = await axios.post(`/electric/buyElectricBill`, formData, {withCredentials: true})
+        //console.log('buy cabeletv',res)
+        if(res.data){
+            return res
+        }
+    } catch (error) {
+        const res = error.response || 'Unable to buy cable tv'
+        toast.error(res.data.data)
+        //console.log('BUY CABLETV', error)
+        return res
+    }
+}

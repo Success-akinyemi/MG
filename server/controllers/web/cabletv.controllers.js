@@ -1,6 +1,7 @@
 import CableTvPlanModel from "../../model/CableTvPlans.js"
 import axios from 'axios'
 import UserModel from "../../model/User.js"
+import TransctionHistroyModel from "../../model/TransactionHistroy.js";
 
 export async function buyCableTvPlan(req, res){
     //console.log(req.body)
@@ -37,7 +38,7 @@ export async function buyCableTvPlan(req, res){
 
         console.log('API RESPONSE FOR DATA', payCableTvPlan?.data)
         const dataResponse = payCableTvPlan?.data
-        if (dataResponse.Status === 'successful') {
+        if (dataResponse.Status.toLowerCase() === 'successful') {
             // Debit user
             getUser.acctBalance -= Number(dataPlan.price);
             await getUser.save();
@@ -54,7 +55,7 @@ export async function buyCableTvPlan(req, res){
                 status: dataResponse.Status,
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,
-                serviceId: dataResponse.id
+                serviceId: Date.now()
             });
 
             const { amount, ...transactionData } = newTransaction._doc;
@@ -153,6 +154,7 @@ export async function validateCardNumber(req, res) {
             return res.status(200).json({ success: true, data:cardName })
         } catch(error) {
             console.log('ERROR UNABLE TO GET NAME', error)
+            res.end()
         }
     } catch (error) {
         console.log('UNABLE TO VERIFY SMART CARD NAME', error)
