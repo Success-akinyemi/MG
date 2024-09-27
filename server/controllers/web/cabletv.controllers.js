@@ -39,10 +39,11 @@ export async function buyCableTvPlan(req, res){
         console.log('API RESPONSE FOR DATA', payCableTvPlan?.data)
         const dataResponse = payCableTvPlan?.data
         if (dataResponse.Status.toLowerCase() === 'successful') {
+            
             // Debit user
             getUser.acctBalance -= Number(dataPlan.price);
             await getUser.save();
-
+            
             // Create new transaction
             const newTransaction = await TransctionHistroyModel.create({
                 userId: _id,

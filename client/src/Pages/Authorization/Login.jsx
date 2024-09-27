@@ -29,7 +29,7 @@ function Login() {
       setShowPassword((prev) => !prev)
   }
 
-  useEffect(() => {console.log(formData)}, [formData])
+  //useEffect(() => {console.log(formData)}, [formData])
   const handleLogin = async (e) => {
     e.preventDefault()
     if(!formData.emailOrMobile){

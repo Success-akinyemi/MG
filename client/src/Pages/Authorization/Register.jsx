@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SideImg from '../../assets/left-section.png'
 import Button from '../../Components/Helpers/Button'
 import { IoIosArrowBack } from "react-icons/io";
@@ -18,6 +18,18 @@ function Register() {
     const [ showConfirmPassword, setShowconfirmPassword ] = useState(false)
     const [ formData, setFormData ] = useState({})
     const [ isLoading, setIsLoading ] = useState(false)
+
+        //REFF
+        const location = useLocation();
+        const queryParams = new URLSearchParams(location.search);
+        const refParams = queryParams.get("ref");
+        const referredBy = refParams;
+    
+        useEffect(() => {
+            if(referredBy){
+                setFormData({ ...formData, referredBy: referredBy })
+            }
+        }, [])
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.id]: e.target.value })

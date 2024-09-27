@@ -2,18 +2,62 @@ import { Link } from 'react-router-dom';
 import FilterImg from '../assets/filter.png'
 import Sidebar from '../Components/Sidebar'
 import TopNav from '../Components/TopNav'
-//import { transactionHistroy } from '../Data/transactionHistroy'
+import { filterOptions } from '../Data/filterOptions'
 import { TbCurrencyNaira } from "react-icons/tb";
 import ErrorRed from '../assets/error-red.png'
 import ErrorYellow from '../assets/error-yellow.png'
 import ErrorGreen from '../assets/error-green.png'
 import { useFetchUserTransaction } from '../Helpers/fetch.hooks';
+import { useEffect, useState } from 'react';
 
 
 function TranscationHistroy({toggleMenu, showMenu}) {
     const { isFetchingUserTransction, userTransaction } = useFetchUserTransaction()
+    const [ filterOption, setFilterOption ] = useState(false)
+    const [ filterValue, setFilterValue ] = useState(filterOptions[0].value)
+    const [filteredTransactions, setFilteredTransactions] = useState([]);
     
-    const transactionHistroy = userTransaction?.data
+    const transactionHistroy = userTransaction?.data || []
+
+    const handleFilterOptions = () => {
+        setFilterOption((prev) => !prev)
+    }
+
+    const handleSelectedFilter = (value) => {
+        setFilterOption(false)
+        setFilterValue(value)
+    }
+    
+    useEffect(() => {
+        if (!transactionHistroy.length) return;
+
+        let filtered = [...transactionHistroy];
+
+        switch (filterValue) {
+            case 'latest':
+                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                break;
+            case 'oldest':
+                filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                break;
+            case 'successful':
+                filtered = filtered.filter(item => item.status.toLowerCase() === 'successful');
+                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                break;
+            case 'initiated':
+                filtered = filtered.filter(item => item.status.toLowerCase() === 'initiated');
+                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                break;
+            case 'failed':
+                filtered = filtered.filter(item => item.status.toLowerCase() === 'failed');
+                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                break;
+            default:
+                break;
+        }
+
+        setFilteredTransactions(filtered);
+    }, [filterValue, transactionHistroy]);
     
     const getOrdinalSuffix = (day) => {
         if (day > 3 && day < 21) return 'th'; // Special case for 11-13
@@ -60,11 +104,26 @@ function TranscationHistroy({toggleMenu, showMenu}) {
                     <TopNav toggleMenu={toggleMenu} showMenu={showMenu} title={'Transaction Histroy'} />
                 </div>
                 
-                <div className="flex-col mt-8">
-                    <div className="flex p-2 w-[190px] cursor-pointer rounded-[12px] border-[1px] border-gray-30 bg-gray-10 items-center gap-2">
+                <div className="flex-col mt-8 relative">
+                    <div onClick={handleFilterOptions} className=" flex p-2 w-[190px] cursor-pointer rounded-[12px] border-[1px] border-gray-30 bg-gray-10 items-center gap-2">
                         <img className='w-[15.6px] h-[9.6px]' alt='filter' src={FilterImg} />
                         <p className="text-[16px] text-color-4">Filter</p>
                     </div>
+                        {
+                            filterOption && (
+                                <div className='absolute z-40 top-[50px] left-0 flex p-2 w-[190px] rounded-[12px] border-[1px] border-gray-30 bg-gray-10 items-center gap-2'>
+                                    <div className='flex flex-col w-full'>
+                                        {
+                                            filterOptions.map((item) => (
+                                                <div key={item.value} onClick={() => handleSelectedFilter(item.value)} className={`w-full hover:text-color-3 font-semibold cursor-pointer p-2 border-b-[1px] border-b-gray-30 ${ filterValue === item.value ? 'text-color-3' : 'text-color-2'}`}>
+                                                    {item.text}
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            )
+                        }
 
                     <table className='overflow-y-auto mt-12 h-full w-[96%] border-collapse'>
     <thead className='w-full text-center phone:text-start'>
@@ -87,7 +146,7 @@ function TranscationHistroy({toggleMenu, showMenu}) {
                 </div>
             ) : (
 
-                transactionHistroy?.map((item) => (
+                filteredTransactions?.map((item) => (
                     <tr key={item._id} className='border-b border-gray-30'>
                         <td className='p-2'>
                             <Link to={`/transaction/${item._id}`} className='flex gap-2 items-center'>

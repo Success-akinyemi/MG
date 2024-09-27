@@ -361,3 +361,34 @@ export async function buyElectricBill(formData){
         return res
     }
 }
+
+//AIRTIME TO CASH
+//Check for airtime to cash availablity
+export async function checkAirtime2CashAvailbe(formData) {
+    try {
+        const res = await axios.post('/airtimeToCash/checkAirtime2CashAvailbe', formData, { withCredentials: true })
+        if(res.data){
+            return res
+        }
+    } catch (error) {
+        const res = error.response || 'Unable initialze transfer process'
+        toast.error(res.data.data)
+        //console.log('UNABLE CHECK AVAILABILTY OF AIRTIME TO CASH', error)
+        return res
+    }
+}
+
+//validate airtime transfer
+export async function validateAirtimeTransfer(formData) {
+    try {
+        const res = await axios.post('/airtimeToCash/validateAirtimeTransfer', formData, { withCredentials: true })
+        if(res.data){
+            return res
+        }
+    } catch (error) {
+        const res = error.response || 'Unable validate airtime transfer process'
+        toast.error(res.data.data)
+        //console.log('UNABLE TO VALIDATE AIRTIME TRANSFER', error)
+        return res
+    }
+}

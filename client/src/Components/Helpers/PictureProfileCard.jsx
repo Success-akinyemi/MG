@@ -49,6 +49,7 @@ function PictureProfileCard() {
           },
           (error) => {
               setImageError('Unable to Upload image')   
+              console.log('Unable to Upload image',error)
           },
           () => {
               getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => 

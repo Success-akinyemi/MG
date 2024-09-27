@@ -235,7 +235,7 @@ export async function login(req, res){
 
 //SIGNUP AND LOGIN WITH GOOGLE
 export async function google(req, res){
-    const { name, email, photo } = req.body
+    const { name, email, photo, referredBy } = req.body
     console.log(req.body)
     try {
         const user = await UserModel.findOne({ email: email })
@@ -264,6 +264,22 @@ export async function google(req, res){
             const referralLink = `${process.env.CLIENT_URL}/register?ref=${newUser._id}`;
             newUser.referralLink = referralLink
             await newUser.save()
+
+            //handle referral
+            if (referredBy) {
+                if (!referrer.referrals.includes(newUser._id)) {
+                    const referrer = await UserModel.findById(referredBy);
+                    if (referrer) {
+                        referrer.referrals.push(newUser._id);
+                        await referrer.save();
+                        newUser.referredBy = referrer._id;
+                        await newUser.save();
+                    } else {
+                        console.log('REFERRER NOT FOUND');
+                    }
+                }
+            }
+
             const token = newUser.getSignedToken();
             const pinSet = newUser.pin ? true : false 
             const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = newUser._doc

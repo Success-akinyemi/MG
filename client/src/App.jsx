@@ -36,6 +36,7 @@ import FAQ from './Pages/FAQ'
 import Blogs from './Pages/Blogs'
 import BlogPage from './Pages/BlogPage'
 import ReportTransaction from './Components/Modals/ReportTransaction'
+import AirtimeToCashInfo from './Components/Modals/AirtimeToCashInfo'
 
 function App() {
   const [ selectedCard, setSelectedCard ] = useState(null)
@@ -112,6 +113,12 @@ function App() {
             <ReportTransaction formData={formData} setFormData={setFormData} setSelectedCard={setSelectedCard} />
           </div>
         )
+      case 'airtimeToCashInfo':
+        return (
+          <div>
+            <AirtimeToCashInfo setSelectedCard={setSelectedCard} />
+          </div>
+        )  
     }
   }
 

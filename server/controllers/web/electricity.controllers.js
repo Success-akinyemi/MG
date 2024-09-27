@@ -10,6 +10,9 @@ export async function buyElectricBill(req, res) {
         if(!providerCode || !meterNumber || !amount || !phoneNumber){
             return(406).json({ success: false, data: 'Fill all required Fields' })
         }
+        if(amount < 1000){
+            return(406).json({ success: false, data: 'minimium anount is NGN1000' })
+        }
         const getUser = await UserModel.findById({ _id: _id})
 
         const payNepaLight = await axios.post(
@@ -33,8 +36,9 @@ export async function buyElectricBill(req, res) {
 
         const dataResponse = payNepaLight?.data
         if (dataResponse.Status.toLowerCase() === 'successful') {
+            const fullAmount = 100 + Number(amount)
             //debit user
-            getUser.acctBalance -= Number(amount);
+            getUser.acctBalance -= fullAmount;
             await getUser.save();
         
             // Create new transaction
@@ -45,7 +49,7 @@ export async function buyElectricBill(req, res) {
                 platform: providerName,
                 number: meterNumber,
                 amount: amount,
-                totalAmount: amount,
+                totalAmount: fullAmount,
                 status: dataResponse.Status,
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,

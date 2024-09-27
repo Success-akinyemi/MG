@@ -119,3 +119,21 @@ label{
     transform: rotate(-360deg);
   }
 }
+
+/* Custom scrollbar styles */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #D7E1f4; /* Track color */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #869DCB; /* Handle color */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #6882B6; /* Handle hover color */
+}

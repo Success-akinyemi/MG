@@ -35,7 +35,7 @@ function CardTwo({ formData, setFormData, setActiveCard, setIsLoading, setSelect
               </span>
               <span className="flex items-center justify-between">
                 <h3 className="text-[14.5px] text-gray-70 font-normal">Total Payable Amount</h3>
-                <p className="text-[14.5px] font-medium text-gray-80">{formData?.totalAmount}</p>
+                <p className="text-[14.5px] font-medium text-gray-80">{Number(formData?.totalAmount) + 100}</p>
               </span>
               <span className="flex items-center justify-between">
                 <h3 className="text-[14.5px] text-gray-70 font-normal">Transaction ID</h3>

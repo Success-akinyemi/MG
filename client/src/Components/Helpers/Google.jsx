@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import GoogleImg from '../../assets/google.png'
 import { app } from '../../firebase'
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth'
@@ -9,6 +9,13 @@ import { signInSuccess } from '../../Redux/user/userSlice'
 function Google({text, isLoading, setIsLoading}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+          
+  //handle referal
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const refParams = queryParams.get("ref");
+  const referredBy = refParams;
+      
 
   const handleOAuth = async () => {
     try {
@@ -22,8 +29,10 @@ function Google({text, isLoading, setIsLoading}) {
           name: result?.user.displayName,
           email: result?.user.email,
           photo: result?.user.photoURL,
+          referredBy: referredBy ? referredBy : ''
         };
-
+        
+        console.log(formData)
         const res = await oAuth(formData)
         if(res.pinSet === false){
           localStorage.setItem('subsumtoken', res?.token)

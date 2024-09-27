@@ -8,6 +8,7 @@ import NineMobileImg from '../assets/9mobile2.png'
 import DSTVIMG from '../assets/dstv.png'
 import StartimesImg from '../assets/startimes.png'
 import ShowMaxImg from '../assets/showmax.png'
+import LOGOIMG from '../assets/logo.png'
 import { useFetchUserTransaction } from "../Helpers/fetch.hooks";
 import { GoDownload } from "react-icons/go";
 import { BiError } from "react-icons/bi";
@@ -104,7 +105,14 @@ const handleReportTransaction = () => {
             <div className="flex flex-col gap-8 w-[500px] phone:w-[94%] mt-8">
                 <div className="flex items-center justify-between">
                     <img 
-                      src={item?.platform === 'MTN' ? MTNImg : ''} 
+                      src={
+                            item?.platform.toLowerCase() === 'mtn' ? MTNImg 
+                            : item?.platform.toLowerCase() === 'glo8' ? GloImg 
+                            : item?.platform.toLowerCase() === 'airtel' ? AirtelImg 
+                            : item?.platform.toLowerCase() === 'dstv' ? DSTVIMG
+                            : item?.platform.toLowerCase() === 'startimes' ? StartimesImg
+                            : LOGOIMG
+                          } 
                       alt={item?.service} 
                       className={`w-[108px]`} 
                     />

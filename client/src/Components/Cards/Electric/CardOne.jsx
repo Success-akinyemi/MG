@@ -75,6 +75,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter Amount')
             return
         }
+        if(formData.amount < 1000){
+            toast.error('minimium anount is NGN1000')
+            return
+        }
         if(!formData.phoneNumber){
             toast.error('Enter phone number')
             return

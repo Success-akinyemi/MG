@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Sidebar from "../Components/Sidebar"
 import TopNav from "../Components/TopNav"
 import CardOne from "../Components/Cards/AirtimeToCash/CardOne"
@@ -13,6 +13,10 @@ function AirtimeToCash({toggleMenu, showMenu, formData, setFormData, setSelected
     const [ cardThree, setCardThree ] = useState(false)
 
     const [ isLoading, setIsLoading ] = useState(false)
+
+    useEffect(() => {
+      setSelectedCard('airtimeToCashInfo')
+    }, []); 
 
     const handleCardOne = () => {
         setCardTwo(false)
@@ -42,7 +46,9 @@ function AirtimeToCash({toggleMenu, showMenu, formData, setFormData, setSelected
     }
 
     const handleCardThree = () => {
-        
+        setCardOne(true)
+        setCardTwo(true)
+        setCardThree(true)
         setActiveCard('cardThree')
     }
 

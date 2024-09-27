@@ -43,11 +43,6 @@ export async function buyAirtime(req, res) {
 
         const runBuyAirtime = await response.json();
 
-        //console.log('API URL:', `${process.env.HUSMODATA_URL}/topup`);
-        //console.log('API KEY:', process.env.HUSMODATA_API_KEY);
-        //console.log('Data being sent to API:', data);
-        //console.log('API RESPONSE:', runBuyAirtime);
-
         const airtimeResponse = runBuyAirtime;
 
         if (airtimeResponse.Status === 'successful') {
