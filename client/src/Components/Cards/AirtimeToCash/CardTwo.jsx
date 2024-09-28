@@ -3,7 +3,7 @@ import { checkAirtime2CashAvailbe, validateAirtimeTransfer } from "../../../Help
 import ButtonTwo from "../../Helpers/ButtonTwo";
 import toast from "react-hot-toast";
 
-function CardTwo({ formData, setFormData, setActiveCard }) {
+function CardTwo({ formData, setFormData, setActiveCard, setSelectedCard, setTransactionData, setCardOne, setCardTwo, setCardThree }) {
   const [ isLoading, setIsLoading ] = useState(false)
   const [ msg, setMsg ] = useState()
   const [ mobileNumber, setMobileNumber ] = useState()
@@ -48,8 +48,25 @@ function CardTwo({ formData, setFormData, setActiveCard }) {
     }
     try {
       setIsLoading(true)
-      const res = validateAirtimeTransfer(formData)
+      const res = await validateAirtimeTransfer(formData)
       console.log('VALDATE RES', res)
+
+      if(res.status === 406 || 500){
+        setFormData({ ...formData, proceed: false })
+        setSelectedCard('transactionFailed')
+    }
+
+    if(res.status === 206){
+        toast.success(res.data.msg)
+        setFormData({})
+        setCardOne(true)
+        setCardTwo(true)
+        setCardThree(true)
+        setActiveCard('cardThree')
+        setTransactionData(res?.data?.transaction)
+        setSelectedCard('transactionSuccessful')
+    }
+
     } catch (error) {
       
     } finally {
@@ -101,11 +118,13 @@ function CardTwo({ formData, setFormData, setActiveCard }) {
                 </div>
               ) : msg ? (
                 <div className="flex flex-col items-center justify-center gap-3">
+                    <small className="text-error" >please Do not refresh this page</small>
                     <p className="text-gray-90 text-center font-semibold">{msg}</p>
                     <h4 className="text-gray-90 text-[18px]">Network: {mobileNetwork}</h4>
                     <h2 className="font-bold text-[20px] text-success">Transfer {formData?.amount} to {mobileNumber}</h2>
 
                     <ButtonTwo onClick={handleValidateAirtime} text={'I Have Transfer the Airtime'} />
+                    <small className="text-error uppercase font-semibold">Only Click on the button after you have transfer the airtime</small>
                 </div>
               ) : (
                 ''

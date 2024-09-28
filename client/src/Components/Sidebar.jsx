@@ -39,7 +39,7 @@ function Sidebar() {
     <div className="pad5 w-[304px] phone:w-[90%] h-[100vh] bg-gray-20 flex flex-col">
         <img src={LogoImg} alt='subsum logo' className='w-[162px] h-[31px]' />
 
-        <div className='flex flex-col gap-[10px] w-full h-full overflow-y-auto mt-12'>
+        <div className='flex flex-col gap-[10px] w-full h-full phone:h-[80vh] overflow-y-auto mt-12'>
             {
                 sidebarMenus.map((item, idx) => {
                     const Icon = item.icon;

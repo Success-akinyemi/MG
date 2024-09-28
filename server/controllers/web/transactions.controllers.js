@@ -2,6 +2,8 @@ import TransctionHistroyModel from "../../model/TransactionHistroy.js"
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import UserModel from "../../model/User.js";
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const getOrdinalSuffix = (day) => {
     if (day > 3 && day < 21) return 'th'; // Special case for 11-13
@@ -66,6 +68,8 @@ export async function fetchAUserTransaction(req, res) {
 }
 
 //DOWNLOAD TRANSACTION RECIEPT
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 export async function downloadReciept(req, res) {
     const { id } = req.body
     console.log('first', id)
@@ -83,21 +87,30 @@ export async function downloadReciept(req, res) {
  
          const doc = new PDFDocument({ size: [164, 365], margin: 4 });
          const stream = fs.createWriteStream(outputFilePath);
+         const logoImg = path.join(__dirname, '../../assests/logo.png'); 
          doc.pipe(stream);
  
          // Add content to the PDF
-         doc.font('Times-Roman')
-             .fontSize(12)
-             .text('SUBSSUM TRANSACTION RECEIPT', { align: 'center' });
- 
-         doc.font('Times-Roman')
-             .fontSize(10) 
-             .text(`Receipt: ${findTransaction.transactionId}`, { align: 'center' })
-             .text(`Date: ${formatDate(findTransaction.createdAt)}`, { align: 'center' });
+         doc.moveDown(2);
+         doc.image(logoImg, { width: 80, align: 'left' })
+         doc.moveDown(2);
+         doc.fillColor('#4169E1')
+            .font('Helvetica-Bold')
+             .fontSize(11)
+             .text('TRANSACTION RECEIPT', { align: 'left' });
+         
+         doc.moveDown(0.5)
+         doc.fillColor('#000')
+            .font('Helvetica-Oblique')
+             .fontSize(7)
+             .text(`Receipt no: ${findTransaction.transactionId}`, { align: 'left' }, )
+             .moveDown(0.2)
+             .text(`Date: ${formatDate(findTransaction?.createdAt)}`, { align: 'right' })
          
          doc.moveDown(2);
-         doc.font('Times-Roman')
-             .fontSize(11)
+         doc.fillColor('#000')
+            .font('Helvetica-Oblique')
+             .fontSize(9)
              .text('Customer Name:', { align: 'left' })
              .text(`${findUser.firstName ? findUser.firstName : ''} ${findUser.lastName ? findUser.lastName : ''}`)
              .moveDown(0.5)
@@ -118,10 +131,26 @@ export async function downloadReciept(req, res) {
              
              
          doc.moveDown(2);
-         doc.font('Times-Roman')
-             .fontSize(9)
-             .text('Built and powered by:', { align: 'center' })
-             .text('Fresh Tech Innovation ltd', { align: 'center' })
+         const backgroundColor = '#4169E1'; // Your desired background color
+         const textColor = '#FFFFFF'; // White text color
+         const text = 'SUBSIDARY OF FRESHTECH INNOVATIONS LTD';
+         const textWidth = doc.widthOfString(text);
+         const textHeight = 12; // Approximate height; adjust if necessary
+         const padding = 4; // Padding around the text
+         
+         const x = 5; // X position
+         const y = doc.y; // Y position (current y)
+         
+         // Draw the background rectangle
+         doc.fillColor(backgroundColor)
+            .rect(x - padding, y - padding, textWidth + padding * 2, textHeight + padding * 2) // Background rectangle
+            .fill();
+         
+         // Set the text color and add the text
+         doc.fillColor(textColor)
+            .font('Times-Roman')
+            .fontSize(8)
+            .text(text, x, y); // Add text on top of the rectangle
 
          doc.end();
  

@@ -4,10 +4,16 @@ const PendingAirtimeToCashSchema = new mongoose.Schema({
     networkCode: {
         type: String
     },
+    networkValue: {
+        type: String
+    },
     networkName: {
         type: String
     },
     phoneNumber: {
+        type: String
+    },    
+    sitePhoneNumber: {
         type: String
     },    
     amount: {

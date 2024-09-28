@@ -6,6 +6,7 @@ const router = express.Router()
 
 router.post('/checkAirtime2CashAvailbe', Protect, controllers.checkAirtime2CashAvailbe)
 router.post('/validateAirtimeTransfer', Protect, controllers.validateAirtimeTransfer )
+router.post('/airtimeToCashWebhook', controllers.airtimeToCashWebhook) //webhook api endpoint
 
 
 

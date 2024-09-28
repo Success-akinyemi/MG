@@ -14,6 +14,8 @@ function AirtimeToCash({toggleMenu, showMenu, formData, setFormData, setSelected
 
     const [ isLoading, setIsLoading ] = useState(false)
 
+    const [ transactionData, setTransactionData ] = useState()
+
     useEffect(() => {
       setSelectedCard('airtimeToCashInfo')
     }, []); 
@@ -45,12 +47,15 @@ function AirtimeToCash({toggleMenu, showMenu, formData, setFormData, setSelected
         setActiveCard('cardTwo')
     }
 
-    const handleCardThree = () => {
-        setCardOne(true)
-        setCardTwo(true)
-        setCardThree(true)
-        setActiveCard('cardThree')
-    }
+    {/**
+      
+      const handleCardThree = () => {
+          setCardOne(true)
+          setCardTwo(true)
+          setCardThree(true)
+          setActiveCard('cardThree')
+      }
+    */}
 
   return (
     <div className="flex w-full min-h-[100vh]">
@@ -121,7 +126,6 @@ function AirtimeToCash({toggleMenu, showMenu, formData, setFormData, setSelected
                   ></span>
                 </div>
                 <div
-                  onClick={handleCardThree}
                   className="flex flex-col flex-1 cursor-pointer text-center gap-[8px]"
                 >
                   <p
@@ -155,12 +159,12 @@ function AirtimeToCash({toggleMenu, showMenu, formData, setFormData, setSelected
                             }
                             {
                                 activeCard === 'cardTwo' && (
-                                    <CardTwo setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} />
+                                    <CardTwo setSelectedCard={setSelectedCard} setTransactionData={setTransactionData} setCardOne={setCardOne} setCardTwo={setCardTwo} setCardThree={setCardThree} setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} />
                                 )
                             }
                             {
                                 activeCard === 'cardThree' && (
-                                    <CardThree setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} />
+                                    <CardThree transactionData={transactionData} setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} />
                                 )
                             }
                         </div>
