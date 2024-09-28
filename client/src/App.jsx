@@ -37,6 +37,8 @@ import Blogs from './Pages/Blogs'
 import BlogPage from './Pages/BlogPage'
 import ReportTransaction from './Components/Modals/ReportTransaction'
 import AirtimeToCashInfo from './Components/Modals/AirtimeToCashInfo'
+import QuickBuyAirtime from './Pages/QuickBuy/QuickBuyAirtime'
+import QuickBuyData from './Pages/QuickBuy/QuickBuyData'
 
 function App() {
   const [ selectedCard, setSelectedCard ] = useState(null)
@@ -170,6 +172,11 @@ function App() {
           <Route path='/reset-email-sent' element={<ResetEmailSent />} />
           <Route path='/:id/verify/:token' element={<VerifyUser />} />
           <Route path='/login' element={<Login />} />
+
+          //QUICK BUY OPTIONS
+          <Route path='/quickbuy-airtime' element={<QuickBuyAirtime setSelectedCard={setSelectedCard} />} />
+          <Route path='/quickbuy-data' element={<QuickBuyData setSelectedCard={setSelectedCard} />} />
+
 
           <Route element={<AuthorizeUser />} >
             <Route path='create-pin' element={<CreatePin />} />

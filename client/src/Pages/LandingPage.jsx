@@ -12,7 +12,7 @@ import WhyChoseUs from "../Components/WhyChoseUs"
 function LandingPage() {
   return (
     <div className="flex min-h-[100vh] flex-col">
-        <Navbar />
+        <Navbar showBtn={true} />
 
         <div className='small-pc:pad6 pad4 w-full mt-[8rem]'>
             <Hero />

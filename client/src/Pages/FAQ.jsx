@@ -12,7 +12,7 @@ function FAQ() {
     }
   return (
     <div className="flex flex-col min-h-[100vh]">
-        <Navbar />
+        <Navbar showBtn={true} />
 
         <div className="mt-20 flex flex-col">
             <div className="bg-gradient-to-r from-blue-700 to-blue-900 w-full items-center justify-center">

@@ -15,7 +15,7 @@ router.post('/deleteDataPlan',  controllers.deleteDataPlan)
 
 
 //GET ROUTES
-router.get('/fetAllDataPlans', Protect,  controllers.fetAllDataPlans)
+router.get('/fetAllDataPlans',  controllers.fetAllDataPlans)
 router.get('/adminFetAllDataPlans',  controllers.adminFetAllDataPlans)
 
 

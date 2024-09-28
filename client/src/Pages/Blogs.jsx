@@ -23,7 +23,7 @@ function Blogs() {
 
   return (
     <div className="flex min-h-[100vh] flex-col">
-        <Navbar />
+        <Navbar showBtn={true} />
 
         <div className="flex flex-col gap-[64px] medium-pc:pad6 pad4 w-full mt-[8rem] items-center justify-center">
             <div className="flex flex-col gap-6 items-center justify-center">

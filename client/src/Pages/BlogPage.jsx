@@ -8,7 +8,7 @@ function BlogPage() {
     const pathName = loc.pathname.split('/')[2]
   return (
     <div className='flex flex-col min-h-[100vh]'>
-        <Navbar />
+        <Navbar showBtn={true} />
 
         <div className='small-pc:pad6 pad4 mt-[6rem]'>
             BlogPage {pathName}

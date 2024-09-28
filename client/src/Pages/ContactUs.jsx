@@ -39,7 +39,7 @@ function ContactUs() {
     ]
   return (
     <div className="flex flex-col min-h-[100vh]">
-        <Navbar />
+        <Navbar showBtn={true} />
 
         <div className="relative small-pc:flex-col small-pc:gap-12 phone:gap-20 mt-20 bg-gradient-to-r from-blue-700 to-blue-900 pt-16 pb-16 pl-20 pr-20 tablet:pl-[20px] tablet:pr-[20px] flex">
             <div className="flex flex-col gap-16 w-[355px] small-phone:w-[90%] z-10">
