@@ -154,6 +154,10 @@ export async function airtimeToCashWebhook(req, res) {
         }
         
         if(status === 'Completed'){
+            if(findTransaction.status === 'Successful'){
+                console.log('PREVIOUSLY VERIFIED')
+                return res.json({code: 101, status: "Completed", message :"Completed" })
+            }
             findTransaction.status = 'Successful'
             findTransaction.amount = amount
             await findTransaction.save()
