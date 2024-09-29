@@ -6,7 +6,7 @@ import { registerMail } from '../../middleware/mailer.js';
 
 export async function checkAirtime2CashAvailbe(req, res){
     //console.log('CHECK AVAI', req.body)
-    
+    console.log(`URL>>>>  ${process.env.SERVER_URL}/api/web/airtimeToCash/airtimeToCashWebhook/`)
     const { networkCode, networkName, phoneNumber, amount, status, totalAmount, transactionId } = req.body
     const { _id, email } = req.user
     try {
