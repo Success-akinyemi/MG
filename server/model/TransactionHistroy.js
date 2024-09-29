@@ -43,6 +43,12 @@ const TransctionHistroySchema = new mongoose.Schema({
     },
     credit: {
         type: Boolean
+    },
+    slug:{
+        type:String
+    },
+    isUserLogin: {
+        type: Boolean
     }
 },
 {

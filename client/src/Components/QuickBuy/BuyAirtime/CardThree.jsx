@@ -5,7 +5,7 @@ import ButtonTwo from '../../Helpers/ButtonTwo'
 import LoadingBtn from '../../Helpers/LoadingBtn';
 import { downloadReciept } from '../../../Helpers/api';
 
-function CardThree({ formData, setFormData, setActiveCard, transactionData }) {
+function CardThree({ formData, setFormData, setActiveCard, transactionData, setSelectedCard}) {
   const [ isLoading, setIsLoading ] = useState(false)
 
   useEffect(() => {
@@ -21,6 +21,10 @@ function CardThree({ formData, setFormData, setActiveCard, transactionData }) {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleReportTransaction = () => {
+    setSelectedCard('reportTransaction')
   }
 
   const getOrdinalSuffix = (day) => {
@@ -99,7 +103,7 @@ const formatDate = (dateString) => {
                 <>
                   <ButtonTwo onClick={() => handleDownloadRecipt(transactionData?.transactionId)} text={'Download Recept'} />
     
-                  <Button bg={false} name={'Report Transaction'} link={'support'} styles={`text-error bg-gray-10 border-[2px]`} />
+                  <Button bg={false} name={'Report Transaction'} onClick={handleReportTransaction} styles={`text-error bg-gray-10 border-[2px]`} />
                 </>
               )
             }

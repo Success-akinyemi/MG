@@ -34,12 +34,24 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Invalid phone number format')
             return
         }
+        if(!formData.email){
+            toast.error('Enter Email Address')
+            return
+        }
         if(!formData.amount){
             toast.error('Enter Amount')
             return
         }
+        if(formData.amount < 50){
+            toast.error('Minimum airtime purchase amount is 50')
+            return
+        }
         const timeStamp = Date.now()
-        setFormData({ ...formData, status: 'Initiated' , totalAmount: formData?.amount, transactionId: timeStamp })
+        setFormData({ 
+            ...formData, status: 'Initiated' , 
+            totalAmount: formData.amount >= 2400 && formData?.amount <= 3000 ? Math.ceil(Number(Number(formData?.amount) + ((formData?.amount * 7) / 100) )) : Math.ceil(Number(Number(formData?.amount) + ((formData?.amount * 5) / 100) )), 
+            transactionId: timeStamp 
+        })
         setActiveCard('cardTwo')
         setCardOne(true)
     }
@@ -70,6 +82,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                         <label className="label text-[14px]">Phone Number</label>
                         <input type="text" onChange={handleChange} defaultValue={formData?.phoneNumber} id="phoneNumber" className="input text-[14px] text-gray-60 font-semibold" placeholder="08094562627" />
                     </div>
+                </div>
+                <div className="inputGroup w-full flex-1">
+                    <label className="label text-[14px]">Email Address</label>
+                    <input type="email" onChange={handleChange} defaultValue={formData?.email} id="email" className="input text-[14px] text-gray-60 font-semibold" placeholder="email@gmail.com" />
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Amount</label>

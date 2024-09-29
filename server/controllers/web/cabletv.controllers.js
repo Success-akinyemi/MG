@@ -18,6 +18,10 @@ export async function buyCableTvPlan(req, res){
         }
         const getUser = await UserModel.findById({ _id: _id})
 
+        if (Number(findcabletvplan?.price) > getUser.acctBalance) {
+            return res.status(406).json({ success: false, data: 'Insufficient Wallet Balance' });
+        }
+
         const payCableTvPlan = await axios.post(
             `${process.env.HUSSY_URL}/cabletv/`,
             {
@@ -56,7 +60,9 @@ export async function buyCableTvPlan(req, res){
                 status: dataResponse.Status,
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,
-                serviceId: Date.now()
+                serviceId: Date.now(),
+                slug: 'CableTv',
+                isUserLogin: true
             });
 
             const { amount, ...transactionData } = newTransaction._doc;

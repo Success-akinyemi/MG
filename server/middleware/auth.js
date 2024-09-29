@@ -1,6 +1,6 @@
 import jsonwebtoken from 'jsonwebtoken'
 import UserModel from '../model/User.js';
-
+import axios from 'axios'
 //authorize user routes
 export const Protect = async (req, res, next) => {
     const token = req.cookies.subsumtoken;
@@ -87,6 +87,48 @@ export const ValidateTransactionPin = async (req, res, next) => {
     } else {
       return res.status(403).json({ success: false, data: 'User Forbidden Please Login' });
     }
+  }
+};
+
+//Validate transaction payment of quick buy
+export const ValidateQuickBuyPayment = async (req, res, next) => {
+  const { paymentDetails } = req.body
+  console.log('DETAILS>>',paymentDetails)
+
+  try {
+    //check transaction
+    const verifyTransfer = await axios.get(
+      `${process.env.PAYSTACK_VERIFY_URL}/${paymentDetails?.reference}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.PAYSTACK_TEST_SK}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    console.log('PAYSTACK VERIFY DATA>>',verifyTransfer.data);
+    const response = verifyTransfer.data
+    if(response.data.status === 'success'){
+      const amountPaid = Number((response.data.amount) / 100)
+      const transcationRef = response.data.reference,
+      status = response.data.status
+
+      const transactionData = {
+        amountPaid,
+        transcationRef,
+        status
+      }
+
+      req.paymentDetails = transactionData
+      next()
+    } else {
+      return res.status(406).json({ success: false, data: 'Payment not Valid' })
+    }
+
+  } catch (err) {
+    console.log('ERROR VALIDATING PAYMENT TRANSACTION FROM PAYSTACK', err)
+    res.end()
   }
 };
 

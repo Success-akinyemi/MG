@@ -250,6 +250,8 @@ export async function verifyPaymentTransactions(req, res){
                     paymentMethod: channel,
                     transactionId: transactionRef,
                     credit: true,
+                    isUserLogin: true,
+                    slug: 'Funding'
                 };
                 const createdTransaction = await TransctionHistroyModel.create(transactionData);
                 //console.log('Transaction>>', createdTransaction)
@@ -307,6 +309,8 @@ export async function verifyPaymentTransactions(req, res){
                     paymentMethod: data.paymentMethod,
                     transactionId: data.transactionReference,
                     credit: true,
+                    isUserLogin: true,
+                    slug: 'Funding'
                 }
                 
                 const createdTransaction = await TransctionHistroyModel.create(transactionData);

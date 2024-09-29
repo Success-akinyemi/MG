@@ -5,6 +5,7 @@ import toast from "react-hot-toast"
 import CardOne from "../../Components/QuickBuy/BuyAirtime/CardOne"
 import CardTwo from "../../Components/QuickBuy/BuyAirtime/CardTwo"
 import CardThree from "../../Components/QuickBuy/BuyAirtime/CardThree"
+import { quickBuyAirtime } from "../../Helpers/api"
 
 function QuickBuyAirtime({ setSelectedCard }) {
     const [ formData, setFormData ] = useState({})
@@ -38,6 +39,53 @@ function QuickBuyAirtime({ setSelectedCard }) {
         setActiveCard('cardTwo')
     }
 
+    const componentProps = {
+        email: formData?.email,
+        amount: Number(formData?.totalAmount * 100),
+        metadata: {
+          name: formData?.email,
+          phone: formData?.phoneNumber,
+        },
+        publicKey: `${import.meta.env.VITE_APP_PAYSTACK_PK}`,
+        text: "Pay Now",
+        onSuccess: async (data) => {
+          const updatedFormData = { ...formData, paymentDetails: data }; 
+          setFormData(updatedFormData); 
+        
+          //console.log('PAYMENT SUCCESS', data, updatedFormData);
+          try {
+            setIsLoading(true)
+            const res = await quickBuyAirtime(updatedFormData)
+            //console.log('first quick', res)
+
+            if(res.status === 406 || 500){
+                setFormData({ ...formData, proceed: false })
+                setSelectedCard('transactionFailed')
+            }
+
+            if(res.status === 206){
+                toast.success(res.data.msg)
+                setFormData({})
+                setCardOne(true)
+                setCardTwo(true)
+                setCardThree(true)
+                setActiveCard('cardThree')
+                setTransactionData(res?.data?.transaction)
+                setSelectedCard('transactionSuccessful')
+            }
+
+          } catch (error) {
+            
+          } finally {
+            setIsLoading(false)
+          }
+    
+        }, 
+        onClose: () => {
+          setSelectedCard('transactionFailed')
+        },
+      }
+
   return (
     <div className='flex flex-col min-h-[100vh]'>
         <Navbar showBtn={true} />
@@ -69,12 +117,12 @@ function QuickBuyAirtime({ setSelectedCard }) {
                                     }
                                     {
                                         activeCard === 'cardTwo' && (
-                                            <CardTwo setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} setIsLoading={setIsLoading} isLoading={isLoading} setSelectedCard={setSelectedCard} />
+                                            <CardTwo setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} setIsLoading={setIsLoading} isLoading={isLoading} setSelectedCard={setSelectedCard} componentProps={componentProps} />
                                         )
                                     }
                                     {
                                         activeCard === 'cardThree' && (
-                                            <CardThree setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} transactionData={transactionData} />
+                                            <CardThree setActiveCard={setActiveCard} formData={formData} setFormData={setFormData} transactionData={transactionData} setSelectedCard={setSelectedCard} />
                                         )
                                     }
                                 </div>

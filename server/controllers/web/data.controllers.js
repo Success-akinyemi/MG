@@ -58,7 +58,9 @@ export async function buyData(req, res){
                 status: dataResponse.Status,
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,
-                serviceId: dataResponse.id
+                serviceId: dataResponse.id,
+                slug: 'Data',
+                isUserLogin: true
             });
 
             const { amount, ...transactionData } = newTransaction._doc;

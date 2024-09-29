@@ -15,6 +15,10 @@ export async function buyElectricBill(req, res) {
         }
         const getUser = await UserModel.findById({ _id: _id})
 
+        if (amount > getUser.acctBalance) {
+            return res.status(406).json({ success: false, data: 'Insufficient Wallet Balance' });
+        }
+
         const payNepaLight = await axios.post(
             `${process.env.HUSSY_URL}/electricity/`,
             {
@@ -53,7 +57,9 @@ export async function buyElectricBill(req, res) {
                 status: dataResponse.Status,
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,
-                serviceId: Date.now()
+                serviceId: Date.now(),
+                slug: 'Electricity',
+                isUserLogin: true,
             });
 
             const { amount, ...transactionData } = newTransaction._doc;

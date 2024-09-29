@@ -45,12 +45,12 @@ function Hero() {
                                 <p className="text-[20px] phone:text-[12.51px] text-center text-gray-60 font-semibold">Data</p>
                             </div>
                         </Link>
-                        <div className="flex items-center justify-center bg-gray-20 h-[158.6px] w-[158.6px] tablet:h-[99.17px] tablet:w-[99.17px] rounded-[24.56px] tablet:rounded-[15.36px]">
+                        <Link to='/quickbuy-electric' className="flex items-center justify-center bg-gray-20 h-[158.6px] w-[158.6px] tablet:h-[99.17px] tablet:w-[99.17px] rounded-[24.56px] tablet:rounded-[15.36px]">
                             <div className="flex flex-col gap-[13.3px]">
                                 <img className='phone:w-[51.19px]' src={ElectricityImg} alt="Electricity" />
                                 <p className="text-[20px] phone:text-[12.51px] text-center text-gray-60 font-semibold">Electricity</p>
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
                     <div className="flex items-center gap-4">

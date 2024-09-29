@@ -107,6 +107,8 @@ export async function validateAirtimeTransfer(req, res) {
                 paymentMethod: 'Transfer',
                 transactionId: findPendingTransfer.transactionId,
                 serviceId: findPendingTransfer.transactionId,
+                slug: 'AirtimeToCash',
+                isUserLogin: true
             })
     
             transactionInfoDetails = createAirtimeToCashTransction
@@ -151,7 +153,8 @@ export async function airtimeToCashWebhook(req, res) {
         const findTransaction = await TransctionHistroyModel.findOne({ transactionId: ref })
         const getUser = await UserModel.findOne({ email: findTransaction.email })
         if(!findTransaction){
-            return res.end()
+            console.log('TRANSACTION NOT FOUND')
+            return res.json({code: 101, status: "Completed", message :"Completed" })
         }
         
         if(status === 'Completed'){

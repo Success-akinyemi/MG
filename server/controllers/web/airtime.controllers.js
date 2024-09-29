@@ -62,7 +62,9 @@ export async function buyAirtime(req, res) {
                 status: airtimeResponse.Status,
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,
-                serviceId: airtimeResponse.id
+                serviceId: airtimeResponse.id,
+                slug: 'Airtime',
+                isUserLogin: true
             });
 
             const { amount, ...transactionData } = newTransaction._doc;

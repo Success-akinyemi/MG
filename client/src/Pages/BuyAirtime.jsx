@@ -50,7 +50,7 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
     
                 try {
                     const res = await buyAirtime(formData);
-                    console.log('BUY Airtime', res)
+                    //console.log('BUY Airtime', res)
                     if(res.status === 406 || 500){
                         setFormData({ ...formData, proceed: false })
                         setSelectedCard('transactionFailed')

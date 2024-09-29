@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import LogoImg from '../../../assets/logo.png'
 import Button from '../../Helpers/Button'
 import ButtonTwo from '../../Helpers/ButtonTwo'
+import { downloadReciept } from '../../../Helpers/api';
 
 function CardThree({ formData, setFormData, setActiveCard, transactionData, setSelectedCard }) {
   const [ isLoading, setIsLoading ] = useState(false)
@@ -79,7 +80,7 @@ const handleReportTransaction = () => {
               <p className={`text-[14px] text-gray-80 font-medium`}>{transactionData?.service}</p>
             </span>
             <span className='flex items-center justify-between'>
-              <h3 className='font-normal text-[14px] text-gray-70'>Network</h3>
+              <h3 className='font-normal text-[14px] text-gray-70'>Platform</h3>
               <p className={`text-[14px] text-gray-80 font-medium`}>{transactionData?.platform}</p>
             </span>
             <span className='flex items-center justify-between'>

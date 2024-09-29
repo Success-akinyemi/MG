@@ -392,3 +392,68 @@ export async function validateAirtimeTransfer(formData) {
         return res
     }
 }
+
+//QUICK BUY
+// /quick buy Airtime
+export async function quickBuyAirtime(updatedFormData){
+    try {
+        const res = await axios.post(`/quickbuy/quickBuyAirtime`, updatedFormData)
+        //console.log('buy data',res)
+        if(res.data){
+            return res
+        }
+    } catch (error) {
+        const res = error.response || 'Unable to buy airtime'
+        toast.error(res.data.data)
+        //console.log('BUY DATA', error)
+        return res
+    }
+}
+
+//quick buy Data
+export async function quickBuyData(formData){
+    try {
+        const res = await axios.post(`/quickbuy/quickBuyData`, formData)
+        //console.log('buy data',res)
+        if(res.data){
+            return res
+        }
+    } catch (error) {
+        const res = error.response || 'Unable to buy data'
+        toast.error(res.data.data)
+        //console.log('BUY DATA', error)
+        return res
+    }
+}
+
+//quick buy CableTv
+export async function quickBuyCableTv(formData){
+    try {
+        const res = await axios.post(`/quickbuy/quickBuyCableTv`, formData)
+        //console.log('buy data',res)
+        if(res.data){
+            return res
+        }
+    } catch (error) {
+        const res = error.response || 'Unable to pay cable tv'
+        toast.error(res.data.data)
+        //console.log('BUY DATA', error)
+        return res
+    }
+}
+
+//quick buy Electricity
+export async function quickBuyElectricity(formData){
+    try {
+        const res = await axios.post(`/quickbuy/quickBuyElectricity`, formData)
+        //console.log('buy data',res)
+        if(res.data){
+            return res
+        }
+    } catch (error) {
+        const res = error.response || 'Unable to buy electricity'
+        toast.error(res.data.data)
+        //console.log('BUY DATA', error)
+        return res
+    }
+}

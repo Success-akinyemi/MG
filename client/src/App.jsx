@@ -39,6 +39,7 @@ import ReportTransaction from './Components/Modals/ReportTransaction'
 import AirtimeToCashInfo from './Components/Modals/AirtimeToCashInfo'
 import QuickBuyAirtime from './Pages/QuickBuy/QuickBuyAirtime'
 import QuickBuyData from './Pages/QuickBuy/QuickBuyData'
+import QuickBuyElectricity from './Pages/QuickBuy/QuickBuyElectricity'
 
 function App() {
   const [ selectedCard, setSelectedCard ] = useState(null)
@@ -176,6 +177,8 @@ function App() {
           //QUICK BUY OPTIONS
           <Route path='/quickbuy-airtime' element={<QuickBuyAirtime setSelectedCard={setSelectedCard} />} />
           <Route path='/quickbuy-data' element={<QuickBuyData setSelectedCard={setSelectedCard} />} />
+          <Route path='/quickbuy-electric' element={<QuickBuyElectricity setSelectedCard={setSelectedCard} />} />
+
 
 
           <Route element={<AuthorizeUser />} >
