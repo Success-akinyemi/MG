@@ -64,10 +64,11 @@ export async function buyAirtime(req, res) {
                 transactionId: transactionId,
                 serviceId: airtimeResponse.id,
                 slug: 'Airtime',
-                isUserLogin: true
+                isUserLogin: true,
+                income: Number(airtimeResponse.amount) - Number(airtimeResponse.paid_amount)
             });
 
-            const { amount, ...transactionData } = newTransaction._doc;
+            const { amount, income, ...transactionData } = newTransaction._doc;
             const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = getUser._doc;
 
             return res.status(206).json({

@@ -6,7 +6,7 @@ const router = express.Router()
 
 //POST ROUTES
 router.post('/buyElectricBill', Protect, ValidateTransactionPin, controllers.buyElectricBill )
-router.post('/validateMeterNumber', Protect, controllers.validateMeterNumber)
+router.post('/validateMeterNumber', controllers.validateMeterNumber)
 
 //PUT ROUTES
 

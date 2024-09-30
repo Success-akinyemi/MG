@@ -76,11 +76,15 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             return
         }
         if(formData.amount < 1000){
-            toast.error('minimium anount is NGN1000')
+            toast.error('minimium anount is NGN 1000')
             return
         }
         if(!formData.phoneNumber){
             toast.error('Enter phone number')
+            return
+        }
+        if(!formData.email){
+            toast.error('Enter Email')
             return
         }
         const timeStamp = Date.now()

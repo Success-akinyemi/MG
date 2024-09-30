@@ -49,6 +49,9 @@ const TransctionHistroySchema = new mongoose.Schema({
     },
     isUserLogin: {
         type: Boolean
+    },
+    income: {
+        type: Number,
     }
 },
 {

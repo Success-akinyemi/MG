@@ -14,8 +14,8 @@ router.post('/deletetvs',  controllers.deletetvs )
 
 
 //GET ROUTES
-router.get('/getAllCableTv', Protect, controllers.getAllCableTv)
-router.get('/getAllCableTv/:id', Protect, controllers.getACableTv)
+router.get('/getAllCableTv', controllers.getAllCableTv)
+router.get('/getAllCableTv/:id', controllers.getACableTv)
 
 //PUT ROUTES
 

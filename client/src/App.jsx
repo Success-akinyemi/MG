@@ -40,6 +40,7 @@ import AirtimeToCashInfo from './Components/Modals/AirtimeToCashInfo'
 import QuickBuyAirtime from './Pages/QuickBuy/QuickBuyAirtime'
 import QuickBuyData from './Pages/QuickBuy/QuickBuyData'
 import QuickBuyElectricity from './Pages/QuickBuy/QuickBuyElectricity'
+import QuickBuyCableTv from './Pages/QuickBuy/QuickBuyCableTv'
 
 function App() {
   const [ selectedCard, setSelectedCard ] = useState(null)
@@ -178,6 +179,8 @@ function App() {
           <Route path='/quickbuy-airtime' element={<QuickBuyAirtime setSelectedCard={setSelectedCard} />} />
           <Route path='/quickbuy-data' element={<QuickBuyData setSelectedCard={setSelectedCard} />} />
           <Route path='/quickbuy-electric' element={<QuickBuyElectricity setSelectedCard={setSelectedCard} />} />
+          <Route path='/quickbuy-tv' element={<QuickBuyCableTv setSelectedCard={setSelectedCard} />} />
+
 
 
 

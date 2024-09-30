@@ -42,7 +42,7 @@ export async function buyCableTvPlan(req, res){
 
         console.log('API RESPONSE FOR DATA', payCableTvPlan?.data)
         const dataResponse = payCableTvPlan?.data
-        if (dataResponse.Status.toLowerCase() === 'successful') {
+        if (dataResponse.status.toLowerCase() === 'success') {
             
             // Debit user
             getUser.acctBalance -= Number(dataPlan.price);
@@ -57,15 +57,16 @@ export async function buyCableTvPlan(req, res){
                 number: smartCardNumber,
                 amount: findcabletvplan.costPrice,
                 totalAmount: findcabletvplan.price,
-                status: dataResponse.Status,
+                status: 'Successsful',
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,
                 serviceId: Date.now(),
                 slug: 'CableTv',
-                isUserLogin: true
+                isUserLogin: true,
+                income: Number(findcabletvplan.price) - (findcabletvplan.costPrice)
             });
 
-            const { amount, ...transactionData } = newTransaction._doc;
+            const { amount, income, ...transactionData } = newTransaction._doc;
             const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = getUser._doc;
 
             return res.status(206).json({

@@ -64,10 +64,11 @@ export async function quickBuyAirtime(req, res){
             newTransaction.amount = airtimeResponse.paid_amount,
             newTransaction.status = airtimeResponse.Status,
             newTransaction.serviceId = airtimeResponse.id,
+            newTransaction.income = Number(fullAmount) - Number(airtimeResponse.paid_amount)
 
             await newTransaction.save()
 
-            const { amount, ...transactionData } = newTransaction._doc;
+            const { amount, income, ...transactionData } = newTransaction._doc;
             return res.status(206).json({
                 success: true,
                 msg: `NGN${airtimeResponse.amount} ${airtimeResponse.plan_network} Airtime purchase successful`,
@@ -78,12 +79,12 @@ export async function quickBuyAirtime(req, res){
             newTransaction.status = 'Failed',
             await newTransaction.save()
 
-            console.log('QUICK BUY AIRTIME ERROR FROM API>>', error)
+            console.log('QUICK BUY AIRTIME ERROR FROM API>>')
             return res.status(406).json({ success: false, data: 'Airtime purchase failed' });
         }
 
     } catch (error) {
-        console.log('QUICK BUY AIRTIME ERROR>>', error)
+        console.log('QUICK BUY AIRTIME ERROR FROM API>>', error)
         res.status(500).json({ success: false, data: 'Airtime purchase failed'})    
     }
 }
@@ -157,9 +158,10 @@ export async function quickBuyData(req, res){
             newTransaction.status = dataResponse.Status
             newTransaction.platform = dataResponse.plan_network
             newTransaction.serviceId = dataResponse.id
+            newTransaction.income = Number(dataPlan.price) - Number(dataResponse.plan_amount)
             await newTransaction.save()
 
-            const { amount, ...transactionData } = newTransaction._doc;
+            const { amount, income, ...transactionData } = newTransaction._doc;
             return res.status(206).json({
                 success: true,
                 msg: `${dataResponse.plan_name} ${dataResponse.plan_network} Data purchase successful`,
@@ -170,30 +172,104 @@ export async function quickBuyData(req, res){
             newTransaction.status = 'Failed',
             await newTransaction.save()
 
-            console.log('QUICK BUY DATA ERROR FROM API>>', error)
+            console.log('QUICK BUY DATA ERROR FROM API>>')
             return res.status(406).json({ success: false, data: 'Data purchase failed' });
         }
 
     } catch (error) {
-        console.log('first', error)
-        res.status(500).json({ success: false, data: ''})   
-    }
-}
-
-//buy cableTv with logging
-export async function quickBuyCableTv(req, res){
-    const { amountPaid, transcationRef, status} = req.paymentDetails
-    try {
-        
-    } catch (error) {
-        console.log('first', error)
-        res.status(500).json({ success: false, data: ''})   
+        console.log('QUICK BUY DATA ERROR FROM API>>', error)
+        res.status(500).json({ success: false, data: 'Data purchase failed'})   
     }
 }
 
 //buy electricity with logging
 export async function quickBuyElectricity(req, res){
-    const { amountPaid, transcationRef, status} = req.paymentDetails
+    const { providerName, providerCode, meterNumber, amount, totalAmount, transactionId, status } = req.body
+    const { amountPaid, transcationRef, status: paymentStatus } = req.paymentDetails
+    try {
+        let fullAmount
+        fullAmount = Math.ceil(Number(Number(amountPaid) - ((amountPaid * 1.5) / 100) ))
+        if(Number(fullAmount) < Number(amount)){
+            console.log('first aa1', fullAmount, amount)
+            return res.status(406).json({ success: false, data: 'Invalid amount sent' })
+        }
+        if(Number(amount) >= 2400){
+            fullAmount = Math.ceil(Number(Number(amountPaid) - ((amountPaid * 1.5) / 100) ) - 100)
+        }
+        console.log('first aa3', fullAmount, amount)
+
+        let finalAmount = Number(fullAmount) < Number(amount) ? Number(fullAmount) : Number(amount)
+        
+        const payNepaLight = await axios.post(
+            `${process.env.HUSSY_URL}/electricity/`,
+            {
+                "provider": providerCode, 
+                "meternumber": meterNumber,
+                "amount": Number(finalAmount),
+                "metertype":"prepaid/postpaid",
+                "phone": phoneNumber,
+                "ref": transactionId,
+            },
+            {
+                headers: {
+                    "Authorization": `Token ${process.env.HUSSY_API_KEY}`,
+                    "Content-Type": 'application/json',
+                    "Accept" : '*/*'
+                },
+            }
+        )
+
+        // Create new transaction
+        const newTransaction = await TransctionHistroyModel.create({
+            userId: _id,
+            email: email,
+            service: `Electric bills`,
+            platform: providerName,
+            number: meterNumber,
+            amount: amount,
+            totalAmount: fullAmount,
+            status: status,
+            paymentMethod: 'Paystack',
+            transactionId: transactionId,
+            serviceId: transactionId,
+            slug: 'Electricity',
+            isUserLogin: false,
+            income: Number(fullAmount) - Number(amount)
+        });
+
+        const dataResponse = payNepaLight?.data
+        console.log('ELECTRICITY RESPONSE', dataResponse)
+        if (dataResponse.status.toLowerCase() === 'success') {
+            newTransaction.platform = dataResponse?.disco_name
+            newTransaction.serviceId = dataResponse?.token
+            newTransaction.income = Number(fullAmount) - Number(amount)
+            newTransaction.status = 'Successfull'
+            await newTransaction.save()
+
+            const { amount, income, ...transactionData } = newTransaction._doc;
+            return res.status(206).json({
+                success: true,
+                msg: `${dataResponse.plan_name} ${dataResponse.plan_network} Data purchase successful`,
+                data: { success: true, data: `${dataResponse.plan_name} ${dataResponse.plan_network} Data purchase successful` },
+                transaction: transactionData
+            });
+        } else {
+            newTransaction.status = 'Failed',
+            await newTransaction.save()
+
+            console.log('QUICK BUY ELECTRICITIY ERROR FROM API>>')
+            return res.status(406).json({ success: false, data: 'Electricity purchase failed' });
+        }
+
+    } catch (error) {
+        console.log('QUICK BUY ELECTRICITIY ERROR FROM API>>', error)
+        res.status(500).json({ success: false, data: 'Electricity purchase failed' })   
+    }
+}
+
+//buy cableTv with logging
+export async function quickBuyCableTv(req, res){
+    const { amountPaid, transcationRef, status: paymentStatus } = req.paymentDetails
     try {
         
     } catch (error) {

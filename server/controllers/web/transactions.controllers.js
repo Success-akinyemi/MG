@@ -40,7 +40,7 @@ const formatDate = (dateString) => {
 export async function fetchAllUserTransactions(req, res) {
     const { _id } = req.user
     try {
-        const getAllTransctions = await TransctionHistroyModel.find({ userId: _id }).select('-amount')
+        const getAllTransctions = await TransctionHistroyModel.find({ userId: _id }).select('-amount -income')
 
         res.status(200).json({ success: true, data: getAllTransctions })
     } catch (error) {
@@ -54,7 +54,7 @@ export async function fetchAUserTransaction(req, res) {
     const { _id } = req.user
     const { id } = req.params
     try {
-        const getTransction = await TransctionHistroyModel.findById({ _id: id }).select('-amount')
+        const getTransction = await TransctionHistroyModel.findById({ _id: id }).select('-amount -income')
 
         if(getTransction.userId.toString() !== _id.toString()){
             return res.status(403).json({ success: false, data: 'Not allowed to fetch transaction details' })

@@ -60,10 +60,11 @@ export async function buyData(req, res){
                 transactionId: transactionId,
                 serviceId: dataResponse.id,
                 slug: 'Data',
-                isUserLogin: true
+                isUserLogin: true,
+                income: Number(dataPlan.price) - Number(dataResponse.plan_amount)
             });
 
-            const { amount, ...transactionData } = newTransaction._doc;
+            const { amount, income, ...transactionData } = newTransaction._doc;
             const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = getUser._doc;
 
             return res.status(206).json({

@@ -14,8 +14,8 @@ export async function buyElectricBill(req, res) {
             return(406).json({ success: false, data: 'minimium anount is NGN1000' })
         }
         const getUser = await UserModel.findById({ _id: _id})
-
-        if (amount > getUser.acctBalance) {
+        const fullAmount = 100 + Number(amount)
+        if (fullAmount > getUser.acctBalance) {
             return res.status(406).json({ success: false, data: 'Insufficient Wallet Balance' });
         }
 
@@ -39,8 +39,9 @@ export async function buyElectricBill(req, res) {
         )
 
         const dataResponse = payNepaLight?.data
-        if (dataResponse.Status.toLowerCase() === 'successful') {
-            const fullAmount = 100 + Number(amount)
+        console.log('ELECTRICITY RESPONSE', dataResponse)
+        if (dataResponse.status.toLowerCase() === 'success') {
+            
             //debit user
             getUser.acctBalance -= fullAmount;
             await getUser.save();
@@ -50,16 +51,17 @@ export async function buyElectricBill(req, res) {
                 userId: _id,
                 email: email,
                 service: `Electric bills`,
-                platform: providerName,
+                platform: dataResponse?.disco_name,
                 number: meterNumber,
                 amount: amount,
                 totalAmount: fullAmount,
-                status: dataResponse.Status,
+                status: 'Successfull',
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,
-                serviceId: Date.now(),
+                serviceId: dataResponse?.token,
                 slug: 'Electricity',
                 isUserLogin: true,
+                income: Number(fullAmount) - Number(amount)
             });
 
             const { amount, ...transactionData } = newTransaction._doc;
