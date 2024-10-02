@@ -6,7 +6,7 @@ const router = express.Router()
 
 //POST ROUTES
 router.post('/buyCableTvPlan', Protect, ValidateTransactionPin, controllers.buyCableTvPlan )
-router.post('/validateCardNumber', Protect, controllers.validateCardNumber)
+router.post('/validateCardNumber', controllers.validateCardNumber)
 //*
 router.post('/createCableTvPlan',  controllers.createCableTvPlan )
 router.post('/deletetvs',  controllers.deletetvs )

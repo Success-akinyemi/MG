@@ -1,6 +1,8 @@
 import fetch from 'node-fetch'; 
 import TransctionHistroyModel from '../../model/TransactionHistroy.js';
 import DataPlansModel from "../../model/DataPlans.js"
+import CableTvPlanModel from '../../model/CableTvPlans.js';
+import { registerMail } from '../../middleware/mailer.js';
 
 //buy airtime with logging
 export async function quickBuyAirtime(req, res){
@@ -145,7 +147,7 @@ export async function quickBuyData(req, res){
             status: status,
             paymentMethod: 'Paystack',
             transactionId: transactionId,
-            serviceId: transactionId,
+            serviceId: transcationRef,
             slug: 'Data',
             isUserLogin: false
         });
@@ -231,7 +233,7 @@ export async function quickBuyElectricity(req, res){
             status: status,
             paymentMethod: 'Paystack',
             transactionId: transactionId,
-            serviceId: transactionId,
+            serviceId: transcationRef,
             slug: 'Electricity',
             isUserLogin: false,
             income: Number(fullAmount) - Number(amount)
@@ -241,16 +243,36 @@ export async function quickBuyElectricity(req, res){
         console.log('ELECTRICITY RESPONSE', dataResponse)
         if (dataResponse.status.toLowerCase() === 'success') {
             newTransaction.platform = dataResponse?.disco_name
+            newTransaction.totalAmount = dataResponse?.amount
             newTransaction.serviceId = dataResponse?.token
             newTransaction.income = Number(fullAmount) - Number(amount)
             newTransaction.status = 'Successfull'
             await newTransaction.save()
 
+            //SEND EMAIL TO USER
+            try {
+                await registerMail({
+                    username: email,
+                    userEmail: email,
+                    subject: 'SUCCESSFUL ELECTRIC BILLS PURCHASE',
+                    intro: `Successfull Electricity purchase for ${dataResponse?.disco_name}`,
+                    instructions: `${dataResponse.message} \n ${dataResponse.token}`,
+                    outro: `
+                        Buy Airtime, Data, Cable Tv Subscription Pay Electric bills on Subssum visit ${process.env.MAIL_WEBSITE_LINK} to get started
+                    `,
+                    verifyUrl: `${process.env.MAIL_WEBSITE_LINK}/login`,
+                    text: 'Visit Dashboard',
+                });
+    
+            } catch (error) {
+                console.log('ERROR SENDING ELECTRIC BILLS PURCHASE EMAIL', error);
+            }
+
             const { amount, income, ...transactionData } = newTransaction._doc;
             return res.status(206).json({
                 success: true,
-                msg: `${dataResponse.plan_name} ${dataResponse.plan_network} Data purchase successful`,
-                data: { success: true, data: `${dataResponse.plan_name} ${dataResponse.plan_network} Data purchase successful` },
+                msg: `${dataResponse?.amount} electric bill for ${providerName} purchase successful`,
+                data: { success: true, data: `${dataResponse?.amount}  electric bill for ${providerName} purchase successful` },
                 transaction: transactionData
             });
         } else {
@@ -269,11 +291,95 @@ export async function quickBuyElectricity(req, res){
 
 //buy cableTv with logging
 export async function quickBuyCableTv(req, res){
+    console.log('PAYMENT', req.paymentDetails)
+    console.log('BODY', req.body)
+    const { planId, serviceProviderName, smartCardNumber, status, transactionId, email, desc, amount, totalAmount } = req.body
     const { amountPaid, transcationRef, status: paymentStatus } = req.paymentDetails
     try {
+        const findcabletvplan = await CableTvPlanModel.findById({ _id : planId })
+        if(!findcabletvplan){
+            return res.status(406).status({ success: false, data: 'Cable Tv with plan ID not found '})
+        }
+
+        // Create new transaction
+        const newTransaction = await TransctionHistroyModel.create({
+            userId: email,
+            email: email,
+            service: `${desc}`,
+            platform: findcabletvplan.platformName,
+            number: smartCardNumber,
+            amount: findcabletvplan.costPrice,
+            totalAmount: findcabletvplan.price,
+            status: status,
+            paymentMethod: 'Paystack',
+            transactionId: transactionId,
+            serviceId: transcationRef,
+            slug: 'CableTv',
+            isUserLogin: false,
+            income: Number(findcabletvplan.price) - (findcabletvplan.costPrice)
+        });
+        if(!planId || !smartCardNumber){
+            return res.status(406).json({ success: false, data: 'Fill all required fileds'})
+        }
+
+        let fullAmount
+        fullAmount = Math.ceil(Number(Number(amountPaid) - ((amountPaid * 1.5) / 100) ))
+        if(Number(fullAmount) < Number(amount)){
+            console.log('first aa1', fullAmount, amount)
+            return res.status(406).json({ success: false, data: 'Invalid amount sent' })
+        }
+        if(Number(amount) >= 2400){
+            fullAmount = Math.ceil(Number(Number(amountPaid) - ((amountPaid * 1.5) / 100) ) - 100)
+        }
+        console.log('first aa3', fullAmount, amount)
+
+        if(findcabletvplan.price > fullAmount){
+            return res.status(406).json({ success: false, data: 'Insufficient Funds Transfered' })
+        }
+
+        const payCableTvPlan = await axios.post(
+            `${process.env.HUSSY_URL}/cabletv/`,
+            {
+                "provider": findcabletvplan?.platformCode,
+                "plan": findcabletvplan?.planId,
+                "iucnumber": smartCardNumber,
+                "subtype":"renew/change",
+                "ref": transactionId
+            },
+            {
+                headers: {
+                    "Authorization": `Token ${process.env.HUSSY_API_KEY}`,
+                    "Content-Type": 'application/json',
+                    "Accept" : '*/*'
+                },
+            }
+        )
+
+        console.log('API RESPONSE FOR CABLE TV', payCableTvPlan?.data)
+        const dataResponse = payCableTvPlan?.data
+        if (dataResponse.status.toLowerCase() === 'success') {
+            newTransaction.status = 'Successsful'
+            newTransaction.income = Number(fullAmount) - (findcabletvplan.costPrice)
+            await newTransaction.save()
+
+            const { amount, income, ...transactionData } = newTransaction._doc;
+
+            return res.status(206).json({
+                success: true,
+                msg: `${findcabletvplan.planName} for ${findcabletvplan.platformName} purchase successful`,
+                data: { success: true, data: `${findcabletvplan.planName} for ${findcabletvplan.platformName} purchase successful` },
+                transaction: transactionData
+            });
+        } else {
+            newTransaction.status = 'Failed'
+            await newTransaction.save()
+
+            console.log('QUICK BUY CABLE TV ERROR FROM API>>')
+            return res.status(406).json({ success: false, data: 'Cable Tv purchase failed' });
+        }
         
     } catch (error) {
-        console.log('first', error)
-        res.status(500).json({ success: false, data: ''})   
+        console.log('QUICK BUY CABLE TV ERROR FROM API>>>', error)
+        res.status(500).json({ success: false, data: 'able Tv purchase failed'})   
     }
 }
