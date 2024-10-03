@@ -55,7 +55,7 @@ export async function register(req, res) {
         await user.save();
 
         if (referredBy) {
-            if (!referrer.referrals.includes(user._id)) {
+            if (!user.referrals.includes(user._id)) {
                 const referrer = await UserModel.findById(referredBy);
                 if (referrer) {
                     referrer.referrals.push(user._id);

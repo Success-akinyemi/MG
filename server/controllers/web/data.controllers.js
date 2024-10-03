@@ -112,38 +112,40 @@ export async function createDataPlans(req, res) {
     }
 }
 
- export async function updateDataPlans(req, res) {
+export async function updateDataPlans(req, res) {
+
+    const { _id, networkCode, networkName, dataCode, slug, planName, price, costPrice, validity } = req.body;
+    console.log(req.body)
+    try {
+        const findDataPlan = await DataPlansModel.findById({ _id: _id });
+        if(!findDataPlan){
+            return res.status(404).json({ success: false, data: 'No data Plan with this id found'})
+        }
+
+        const updatedDataPlan = await DataPlansModel.findByIdAndUpdate(
+            _id,
+            {
+                $set: {
+                    networkCode,
+                    networkName,
+                    dataCode,
+                    slug,
+                    planName,
+                    price,
+                    costPrice,
+                    validity
+                }
+            },
+            { new: true }
+        );
+        console.log(updatedDataPlan);
+        return res.status(200).json({ success: true, data: `${updatedDataPlan?.planName} has been updated successfully` });
+    } catch (error) {
+        console.log('UNABLE TO UPDATE DATA PLAN', error);
+        return res.status(500).json({ success: false, data: error.message || 'Unable to create new data plan' });
+    }
+}
  
-     const { _id, networkCode, networkName, dataCode, slug, planName, price, costPrice, validity } = req.body;
-     try {
-         const findDataPlan = await DataPlansModel.findById({ _id: _id });
-         if(!findDataPlan){
-             return res.status(404).json({ success: false, data: 'No data Plan with this id found'})
-         }
- 
-         const updatedDataPlan = await DataPlansModel.findByIdAndUpdate(
-             _id,
-             {
-                 $set: {
-                     networkCode,
-                     networkName,
-                     dataCode,
-                     slug,
-                     planName,
-                     price,
-                     costPrice,
-                     validity
-                 }
-             },
-             { new: true }
-         );
-         console.log(updatedDataPlan);
-         return res.status(200).json({ success: true, data: `${updatedDataPlan?.planName} has been updated successfully` });
-     } catch (error) {
-         console.log('UNABLE TO UPDATE DATA PLAN', error);
-         return res.status(500).json({ success: false, data: error.message || 'Unable to create new data plan' });
-     }
- }
 
 
 export async function deleteDataPlan(req, res){
@@ -181,33 +183,32 @@ export async function adminFetAllDataPlans(req, res){
 }
 
 //HELPERS
- /**
-  export async function updateNetworkCodeOfNetwork(req, res) {
-     const { networkName, newNetworkCode } = req.body;
+/**
+ export async function updateDataPlans(req, res) {
+    const { networkName, newNetworkCode } = req.body;
  
-     try {
-         // Find all data plans with the specified networkName
-         const dataPlans = await DataPlansModel.find({ networkName });
+    try {
+        // Find all data plans with the specified networkName
+        const dataPlans = await DataPlansModel.find({ networkName });
  
-         if (dataPlans.length === 0) {
-             return res.status(404).json({ success: false, data: 'No data plans found for this network name' });
-         }
+        if (dataPlans.length === 0) {
+            return res.status(404).json({ success: false, data: 'No data plans found for this network name' });
+        }
  
-         // Update the networkCode for all matching data plans
-         const updatedDataPlans = await DataPlansModel.updateMany(
-             { networkName },
-             { $set: { networkCode: newNetworkCode } }
-         );
+        // Update the networkCode for all matching data plans
+        const updatedDataPlans = await DataPlansModel.updateMany(
+            { networkName },
+            { $set: { networkCode: newNetworkCode } }
+        );
  
-         console.log(`${updatedDataPlans.modifiedCount} plans updated.`);
-         return res.status(200).json({
-             success: true,
-             data: `${updatedDataPlans.modifiedCount} plans have been updated successfully`
-         });
-     } catch (error) {
-         console.log('UNABLE TO UPDATE NETWORK CODE', error);
-         return res.status(500).json({ success: false, data: error.message || 'Unable to update network codes' });
-     }
+        console.log(`${updatedDataPlans.modifiedCount} plans updated.`, updatedDataPlans);
+        return res.status(200).json({
+            success: true,
+            data: `${updatedDataPlans.modifiedCount} plans have been updated successfully`
+        });
+    } catch (error) {
+        console.log('UNABLE TO UPDATE NETWORK CODE', error);
+        return res.status(500).json({ success: false, data: error.message || 'Unable to update network codes' });
+    }
  }
-  * 
-  */
+ */
