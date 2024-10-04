@@ -38,6 +38,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter Amount')
             return
         }
+        const numberRegex = /^[0-9]$/;
+        if(!numberRegex.text(formData?.amount)){
+            toast.error('Invalid amount Number format')
+        }
         const timeStamp = Date.now()
         setFormData({ ...formData, status: 'Initiated' , totalAmount: formData?.amount, transactionId: timeStamp })
         setActiveCard('cardTwo')
@@ -73,7 +77,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Amount</label>
-                    <input type="text" onChange={handleChange} defaultValue={formData?.amount} id="amount" className="input text-[14px] text-gray-60 font-semibold" placeholder="₦5,000" />
+                    <input type="number" onChange={handleChange} defaultValue={formData?.amount} id="amount" className="input text-[14px] text-gray-60 font-semibold" placeholder="₦5,000" />
                 </div>
             </div>
         </div>

@@ -41,10 +41,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         //useEffect to verify smart card name here
         useEffect(() => {
             const fetchData = async () => {
-                if (formData?.meterNumber?.length >= 10 && formData?.providerCode) {
+                if (formData?.meterNumber?.length >= 10 && formData?.providerSlug) {
                     try {
                         setMeterName('')
-                        const res = await validateMeterNumber({ providerCode: formData?.providerCode, meterNumber: formData?.meterNumber });
+                        const res = await validateMeterNumber({ providerSlug: formData?.providerSlug, meterNumber: formData?.meterNumber });
                         console.log('first', res.data.data)
                         if(res.data.data && typeof res.data.data === 'object'){
                             setMeterName(res.data.data.name)
@@ -75,6 +75,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter Amount')
             return
         }
+        const numberRegex = /^[0-9]$/;
+        if(!numberRegex.text(formData?.amount)){
+            toast.error('Invalid amount Number format')
+        }
         if(formData.amount < 1000){
             toast.error('minimium anount is NGN1000')
             return
@@ -82,6 +86,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         if(!formData.phoneNumber){
             toast.error('Enter phone number')
             return
+        }
+        const mobileRegex = /^(090|091|080|081|070|071)\d{8}$/;
+        if (!mobileRegex.test(formData.phoneNumber)) {
+            return res.status(400).json({ success: false, data: 'Invalid phone number' });
         }
         const timeStamp = Date.now()
         setFormData({ ...formData, status: 'Initiated' , totalAmount: formData?.amount, transactionId: timeStamp })
@@ -99,7 +107,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 <div className="flex items-center gap-3 w-full small-phone:flex-col">
                     <div className="inputGroup w-full flex-1">
                         <label className="label text-[14px]">Meter Number</label>
-                        <input type="text" onChange={handleChange} id="meterNumber" defaultValue={formData?.meterNumber} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="14315422742" />
+                        <input type="number" onChange={handleChange} id="meterNumber" defaultValue={formData?.meterNumber} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="14315422742" />
                     </div>
                     <div className="inputGroup w-full flex-1">
                         <label className="label text-[14px]">Meter Type</label>
@@ -130,11 +138,11 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Amount</label>
-                    <input type="text" onChange={handleChange} id="amount" defaultValue={formData?.amount} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="₦5,000" />
+                    <input type="number" onChange={handleChange} id="amount" defaultValue={formData?.amount} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="₦5,000" />
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Phone Number</label>
-                    <input type="text" onChange={handleChange} id="phoneNumber" defaultValue={formData?.phoneNumber} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="07032529431" />
+                    <input type="number" onChange={handleChange} id="phoneNumber" defaultValue={formData?.phoneNumber} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="07032529431" />
                 </div>
 
                 {/**verifiy meter number */}
@@ -150,7 +158,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 }
                 {
                     meterName && (
-                        <p className="text-second-color text-[14px] font-semibold">METER NAME: {meterName}</p>
+                        <p className="text-second-color text-[14px] font-semibold">METER NAME: {meterName.trim()}</p>
                     )
                 }
 

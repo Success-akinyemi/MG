@@ -53,6 +53,8 @@ function CardTwo({ formData, setFormData, setActiveCard, setIsLoading, setSelect
 
               <ButtonTwo onClick={handlePayWithWallet} text={'Pay With Wallet'} />
 
+              {/**
+               * 
               <div className="flex gap-3 w-full phone:flex-col">
                   <div className="rounded-[10px] flex-1 border-[1px] pt-[9px] pr-[8px] pb-[9px] pl-[8px] flex items-center gap-[10px] border-l-gray-30 bg-white">
                     <span className="p-[4px] bg-gray-20 rounded-[6px]">
@@ -67,6 +69,7 @@ function CardTwo({ formData, setFormData, setActiveCard, setIsLoading, setSelect
                     <p className="text-second-color font-semibold text-[16px]">Bank Transfer</p>
                   </div>
               </div>
+               */}
 
             </div>
 

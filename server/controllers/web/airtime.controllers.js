@@ -15,6 +15,11 @@ export async function buyAirtime(req, res) {
 
         const getUser = await UserModel.findById(_id);
 
+        const numberRegex = /^[0-9]$/;
+        if(!numberRegex.text(amount)){
+            return res.status(406).json({ success: false, data: 'Invalid Number format'})
+        }
+
         if (amount < 50) {
             return res.status(406).json({ success: false, data: 'Minimum airtime purchase amount is 50' });
         }

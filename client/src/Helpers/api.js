@@ -336,9 +336,9 @@ export async function validateCardNumber({id, number}) {
 
 //ELECTRICITY
 //validate meter number
-export async function validateMeterNumber({providerCode, meterNumber}) {
+export async function validateMeterNumber({providerSlug, meterNumber}) {
     try {
-        const res = await axios.post('/electric/validateMeterNumber', {providerCode, meterNumber}, {withCredentials: true})
+        const res = await axios.post('/electric/validateMeterNumber', {providerSlug, meterNumber}, {withCredentials: true})
         return res
     } catch (error) {
         console.log('UNable to validate name:', error)

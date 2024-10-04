@@ -19,6 +19,11 @@ export async function checkAirtime2CashAvailbe(req, res){
             return res.status(400).json({ success: false, data: 'Invalid phone number' });
         }
 
+        const numberRegex = /^[0-9]$/;
+        if(!numberRegex.text(amount)){
+            return res.status(406).json({ success: false, data: 'Invalid amount Number format'})
+        }
+
         let networkValue
         let totalValue
         if(networkCode === '1'){

@@ -13,6 +13,10 @@ export async function buyElectricBill(req, res) {
         if(amount < 1000){
             return(406).json({ success: false, data: 'minimium anount is NGN1000' })
         }
+        const numberRegex = /^[0-9]$/;
+        if(!numberRegex.text(amount)){
+            return res.status(406).json({ success: false, data: 'Invalid amount Number format'})
+        }
         const getUser = await UserModel.findById({ _id: _id})
         const fullAmount = 100 + Number(amount)
         if (fullAmount > getUser.acctBalance) {
@@ -84,32 +88,20 @@ export async function buyElectricBill(req, res) {
 }
 
 export async function validateMeterNumber(req, res){
-    const { meterNumber, providerCode } = req.body
+    const { meterNumber, providerSlug, meterType } = req.body
     console.log(req.body)
     try{
         try {
-            if(!meterNumber || !providerCode){
+            if(!meterNumber || !providerSlug){
                 return res.status(400).json({ success: false, data: '' })
             }
             console.log('HI CARD',)
             try{
-                const validateCardNumber = await axios.post(
-                    `${process.env.HUSSY_URL}/electricity/verify/`,
-                    {
-                        "provider": providerCode, 
-                        "meternumber": meterNumber,
-                        "metertype": "prepaid/postpaid"
-                        
-                    },
-                    {
-                        headers: {
-                            "Authorization": `Token ${process.env.HUSSY_API_KEY}`,
-                            "Content-Type": 'application/json',
-                            "Accept" : '*/*'
-                        },
-                    }
+                const validateCardNumber = await axios.get(
+                    `${process.env.GLAD_URL}/v2/validatemeter/?disco_id=${providerSlug}&meter_type=${meterType ? meterType.toLowerCase() : 'prepaid'}&meter_number=${meterNumber}`,
                 )
                 const cardName = validateCardNumber.data
+                console.log('METER NAME', cardName)
     
                 return res.status(200).json({ success: true, data:cardName })
             } catch(error) {
