@@ -19,11 +19,23 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
 
     const handleMeterChange = (e) => {
         const value = e.target.value;
+
+         // Regex to ensure only positive numbers are accepted
+         const amountRegex = /^[0-9]*$/;
+
+         // Check if the input matches the regex
+    if (amountRegex.test(value)) {
+        // Update formData only if the value is valid
+        setFormData({ ...formData, amount: value });
+    } else {
+        // Optionally, you can give feedback to the user here if needed
+        toast.error('Amount must be a positive number');
+    }
         const filterData = meterTypeUsed.find(meterType => meterType.code === value);
         if (filterData) {
             setFormData({ ...formData, meterType: filterData.name });
         }
-    }
+    };
 
     const handleElectricProviderChange = (e) => {
         const value = e.target.value
@@ -34,9 +46,9 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 providerName: filterElectricProvider.name,
                 providerCode: filterElectricProvider.code,
                 providerSlug: filterElectricProvider.slug
-            })
+            });
         }
-    }
+    };
     
         //useEffect to verify smart card name here
         useEffect(() => {

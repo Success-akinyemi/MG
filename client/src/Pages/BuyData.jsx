@@ -26,6 +26,27 @@ function BuyData({toggleMenu, showMenu, formData, setFormData, setSelectedCard})
         setActiveCard('cardOne')
     }
 
+    // const handleCardTwo = () => {
+    //     if(!formData.networkCode){
+    //         toast.error('Select a network')
+    //         return
+    //     }
+    //     if(!formData.phoneNumber){
+    //         toast.error('Enter Phone Number')
+    //         return
+    //     }
+    //     if(!formData.price){
+    //         toast.error('Enter Amount')
+    //         return
+    //     }
+    //     if(!formData.planId){
+    //         toast.error('Select bundle')
+    //         return
+    //     }
+    //     setCardOne(true)
+    //     setActiveCard('cardTwo')
+    // }
+
     const handleCardTwo = () => {
         if(!formData.networkCode){
             toast.error('Select a network')

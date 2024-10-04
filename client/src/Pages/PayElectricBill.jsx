@@ -26,26 +26,70 @@ function PayElectricBill({ toggleMenu, showMenu, formData, setFormData, setSelec
         setActiveCard('cardOne')
     }
 
+    // const handleCardTwo = () => {
+    //     if(!formData.meterNumber){
+    //         toast.error('Enter Meter Number')
+    //         return
+    //     }
+    //     if(!formData.meterType){
+    //         toast.error('Select Meter Type')
+    //         return
+    //     }
+    //     if(!formData.providerCode){
+    //         toast.error('Select Electric Provider')
+    //         return
+    //     }
+    //     if(!formData.amount){
+    //         toast.error('Enter Amount')
+    //         return
+    //     }
+    //     setCardOne(true)
+    //     setActiveCard('cardTwo')
+    // }
+
     const handleCardTwo = () => {
-        if(!formData.meterNumber){
-            toast.error('Enter Meter Number')
-            return
-        }
-        if(!formData.meterType){
-            toast.error('Select Meter Type')
-            return
-        }
-        if(!formData.providerCode){
-            toast.error('Select Electric Provider')
-            return
-        }
-        if(!formData.amount){
-            toast.error('Enter Amount')
-            return
-        }
-        setCardOne(true)
-        setActiveCard('cardTwo')
-    }
+      const meterNumberRegex = /^[0-9]{10,12}$/; // Only numbers, must be between 10-12 digits
+      const amountRegex = /^[0-9]+$/;            // Amount must contain only numbers
+      const alphabetRegex = /^[a-zA-Z]+$/;       // Only alphabets
+  
+      // Validate Meter Number
+      if (!formData.meterNumber) {
+          toast.error('Enter Meter Number');
+          return;
+      }
+  
+      if (!meterNumberRegex.test(formData.meterNumber)) {
+          toast.error('Meter Number must be between 10 and 12 digits and can only contain numbers.');
+          return;
+      }
+  
+      // Validate Amount
+      if (!formData.amount) {
+          toast.error('Enter Amount');
+          return;
+      }
+  
+      if (!amountRegex.test(formData.amount)) {
+          toast.error('Amount can only contain numbers.');
+          return;
+      }
+  
+      // Validate Alphabet Field
+      if (!formData.someAlphabetField) {
+          toast.error('Enter a valid input with alphabets.');
+          return;
+      }
+  
+      if (!alphabetRegex.test(formData.someAlphabetField)) {
+          toast.error('This field can only contain alphabets.');
+          return;
+      }
+  
+      // If all validations pass, proceed with the next steps
+      // Continue with further logic here...
+  };
+  
+  
 
     //HANDLE CARD THREE SHOULD ONLY COME AFTRE API CALL
 

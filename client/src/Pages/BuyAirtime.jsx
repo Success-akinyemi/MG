@@ -26,21 +26,66 @@ function BuyAirtime({toggleMenu, showMenu, setSelectedCard, formData, setFormDat
         setActiveCard('cardOne')
     }
 
+    // const handleCardTwo = () => {
+    //     if(!formData.networkCode){
+    //         toast.error('Select a network')
+    //         return
+    //     }
+    //     if(!formData.phoneNumber){
+    //         toast.error('Enter Phone Number')
+    //     }
+    //     if(!formData.amount){
+    //         toast.error('Enter Amount')
+    //         return
+    //     }
+    //     setCardOne(true)
+    //     setActiveCard('cardTwo')
+    // }
+
     const handleCardTwo = () => {
-        if(!formData.networkCode){
-            toast.error('Select a network')
-            return
+        const phoneRegex = /^[0-9]{11}$/;  // Phone number must be exactly 11 digits
+        const amountRegex = /^[0-9]+$/;     // Amount must be a positive number
+    
+        if (!formData.networkCode) {
+            toast.error('Select a network');
+            return;
         }
-        if(!formData.phoneNumber){
-            toast.error('Enter Phone Number')
+    
+        if (!formData.phoneNumber) {
+            toast.error('Enter Phone Number');
+            return;
         }
-        if(!formData.amount){
-            toast.error('Enter Amount')
-            return
+    
+        if (!phoneRegex.test(formData.phoneNumber)) {
+            toast.error('Phone Number must be 11 digits and contain only numbers');
+            return;
         }
-        setCardOne(true)
-        setActiveCard('cardTwo')
-    }
+    
+        if (!formData.amount) {
+            toast.error('Enter Amount');
+            return;
+        }
+    
+        // Validate the amount to ensure it contains only numbers
+        if (!amountRegex.test(formData.amount)) {
+            toast.error('Amount must contain only numbers');
+            return;
+        }
+    
+        // If all validations pass, proceed with the next steps
+        setCardOne(true);
+        setActiveCard('cardTwo');
+    };
+
+      // Restrict the input in the amount field in real-time
+    const handleAmountChange = (e) => {
+        const inputValue = e.target.value;
+        // Only allow numeric input, replacing any non-numeric characters with an empty string
+        const numericValue = inputValue.replace(/[^0-9]/g, ''); 
+
+        setFormData({ ...formData, amount: numericValue });
+    };
+    
 
     useEffect(() => {
         const handleAirtimePurchase = async () => {

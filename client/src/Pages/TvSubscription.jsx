@@ -32,19 +32,56 @@ function TvSubscription({
     setActiveCard("cardOne");
   };
 
+  // const handleCardTwo = () => {
+  //   if (!formData.serviceProviderCode) {
+  //     toast.error("Select a service provider");
+  //     return;
+  //   }
+  //   if (!formData.smartCardNumber) {
+  //     toast.error("Enter smart card Number");
+  //     return;
+  //   }
+  //   //check for selected bundle (bundlePlan bundleId) and smart card name
+  //   setCardOne(true);
+  //   setActiveCard("cardTwo");
+  // };
+
   const handleCardTwo = () => {
+    const smartCardNumberRegex = /^[0-9]{10,12}$/; // Only numbers, should be between 10-12 digits
+    const smartCardNameRegex = /^[a-zA-Z\s]+$/;    // Only alphabets and spaces
+
     if (!formData.serviceProviderCode) {
-      toast.error("Select a service provider");
-      return;
+        toast.error("Select a service provider");
+        return;
     }
+    
     if (!formData.smartCardNumber) {
-      toast.error("Enter smart card Number");
-      return;
+        toast.error("Enter smart card Number");
+        return;
     }
-    //check for selected bundle (bundlePlan bundleId) and smart card name
+
+    // Validate smart card number
+    if (!smartCardNumberRegex.test(formData.smartCardNumber)) {
+        toast.error("Smart card number must be between 10 and 12 digits and can only contain numbers.");
+        return;
+    }
+
+    // Hypothetical field: Validate smart card name
+    if (!formData.smartCardName) {
+        toast.error("Enter smart card name");
+        return;
+    }
+
+    if (!smartCardNameRegex.test(formData.smartCardName)) {
+        toast.error("Smart card name can only contain alphabets and spaces.");
+        return;
+    }
+
+    // Check for selected bundle (bundlePlan bundleId) and smart card name
     setCardOne(true);
     setActiveCard("cardTwo");
-  };
+};
+
 
   //HANDLE CARD THREE SHOULD ONLY COME AFTRE API CALL
   useEffect(() => {

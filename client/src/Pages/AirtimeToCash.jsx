@@ -27,25 +27,42 @@ function AirtimeToCash({toggleMenu, showMenu, formData, setFormData, setSelected
     }
 
     const handleCardTwo = () => {
-        if(!formData.networkCode){
-            toast.error('Select a network')
-            return
-        }
-        if(!formData.phoneNumber){
-            toast.error('Enter Phone Number')
-            return
-        }
-        if(!formData.amount){
-            toast.error('Enter Amount')
-            return
-        }
-        if(!formData.airtimeSharePin){
-            toast.error('Enter Airtime share Pin')
-            return
-        }
-        setCardOne(true)
-        setActiveCard('cardTwo')
-    }
+      const phoneRegex = /^[0-9]{11}$/;  // Phone number must be exactly 11 digits
+      const pinRegex = /^[0-9]{4}$/;     // Airtime share PIN must be exactly 4 digits
+    
+      if (!formData.networkCode) {
+        toast.error('Select a network');
+        return;
+      }
+    
+      if (!formData.phoneNumber) {
+        toast.error('Enter Phone Number');
+        return;
+      }
+    
+      if (!phoneRegex.test(formData.phoneNumber)) {
+        toast.error('Phone Number must be 11 digits and contain only numbers');
+        return;
+      }
+    
+      if (!formData.amount) {
+        toast.error('Enter Amount');
+        return;
+      }
+    
+      if (!formData.airtimeSharePin) {
+        toast.error('Enter Airtime share Pin');
+        return;
+      }
+    
+      if (!pinRegex.test(formData.airtimeSharePin)) {
+        toast.error('Airtime share Pin must be 4 digits and contain only numbers');
+        return;
+      }
+    
+      // Proceed with further processing if all validations pass
+    };
+    
 
     {/**
       

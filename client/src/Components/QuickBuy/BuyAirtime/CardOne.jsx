@@ -42,6 +42,14 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter Amount')
             return
         }
+
+        //validate that the amount is a number 
+        const amountRegex = /^[0-9]+$/; //Regex to match positive integer 
+        if (!amountRegex.test(formData.amount)){
+            toast.error('Amount must be a positive number');
+            return;
+        }
+
         if(formData.amount < 50){
             toast.error('Minimum airtime purchase amount is 50')
             return
