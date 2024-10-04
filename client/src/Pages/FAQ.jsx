@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Footer from "../Components/Footer"
 import Navbar from "../Components/Helpers/Navbar"
 import { faqOptions } from "../Data/faq"
@@ -9,7 +9,16 @@ function FAQ() {
 
     const handleFaqChange = (faq) => {
         setFaqOption(faq)
-    }
+    };
+
+    useEffect(() => {
+        //scroll to the top of the page when the component mounts
+        window.scrollTo({
+            top:0,
+            left:0,
+            behavior: "smooth", //optional: can be changed to "auto" for instant scroll
+        });
+    },[]);
   return (
     <div className="flex flex-col min-h-[100vh]">
         <Navbar showBtn={true} />

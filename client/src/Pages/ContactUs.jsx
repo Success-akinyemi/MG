@@ -9,6 +9,7 @@ import { FaInstagram } from "react-icons/fa";
 import { LiaTelegramPlane } from "react-icons/lia";
 import { CiLinkedin } from "react-icons/ci";
 import { MdOutlineEmail } from "react-icons/md";
+import { useEffect } from "react";
 
 function ContactUs() {
     const socials = [
@@ -36,7 +37,15 @@ function ContactUs() {
             text: 'Telegram',
             icon: LiaTelegramPlane
         }
-    ]
+    ];
+    useEffect(() =>{
+        //scroll to the top of the page when the component mounts
+        window.scrollTo({
+            top:0,
+            left: 0,
+            behavior : "smooth", //optional: can be changed to "auto" for instant scroll
+        });
+    },[]); //This effect runs only once when the component mouts
   return (
     <div className="flex flex-col min-h-[100vh]">
         <Navbar showBtn={true} />
