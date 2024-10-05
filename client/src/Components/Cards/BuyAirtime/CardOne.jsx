@@ -1,9 +1,13 @@
 import toast from "react-hot-toast"
 import { network } from "../../../Data/networks"
 import ButtonTwo from "../../Helpers/ButtonTwo"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { validatePhoneNumberAsync } from '../../../Helpers/phoneNumberValidator'
 
 function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
+    const [ numberSuccess, setNumberSuccess ] = useState()
+    const [ numberError, setNumberError ] = useState([])
+    const [ phoneNumberMisMatched, setPhoneNumberMisMatched ] = useState()
 
     const networks = network
     useEffect(() => {
@@ -19,6 +23,35 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         const filterData = networks.filter(networks => networks.code === value)
         setFormData({ ...formData, networkCode: filterData[0].code, networkName: filterData[0].name })
     }
+
+    //VALIDATE PHONE NUMBER
+    useEffect(() => {
+        const validatePhoneNumber = async () => {
+            if(formData.phoneNumber?.length >= 11){
+                try {
+                    const result = await validatePhoneNumberAsync(formData.phoneNumber);
+                    
+                    if(result.telco.toLowerCase() !== formData.networkName.toLowerCase()){
+                        setPhoneNumberMisMatched(`Phone number Entered is an ${result.telco} number`)
+                        setNumberError()
+                        setNumberSuccess()
+                    } else{
+                        setPhoneNumberMisMatched()
+                        setNumberError()
+                        setNumberSuccess(result.telco)
+                    }
+                    //console.log(result);
+                } catch (error) {
+                    setNumberError(error?.errors)
+                    setNumberSuccess()
+                    setPhoneNumberMisMatched()
+                    //console.error('Error validating phone number:', error);
+                }
+            }
+        }
+
+        validatePhoneNumber()
+    }, [formData.phoneNumber])
     
     const handleNext = () => {
         if(!formData.networkCode){
@@ -38,8 +71,8 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter Amount')
             return
         }
-        const numberRegex = /^[0-9]$/;
-        if(!numberRegex.text(formData?.amount)){
+        const numberRegex = /^\d+$/;
+        if(!numberRegex.test(formData?.amount)){
             toast.error('Invalid amount Number format')
         }
         const timeStamp = Date.now()
@@ -80,7 +113,24 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     <input type="number" onChange={handleChange} defaultValue={formData?.amount} id="amount" className="input text-[14px] text-gray-60 font-semibold" placeholder="₦5,000" />
                 </div>
             </div>
+
+            <div>
+                {
+                    numberError?.length > 0 ? (
+                        numberError.map((e, i) => (
+                            <p key={i} className="text-error text-[14px]" >{e}</p>
+                        ))
+                    ) : phoneNumberMisMatched ? (
+                        <p>{phoneNumberMisMatched}</p>
+                    ) : numberSuccess ? (
+                        <p>{numberSuccess}</p>
+                    ) : (
+                        ''
+                    )
+                }
+            </div>
         </div>
+
 
         <ButtonTwo onClick={handleNext} text={'Proceed'} />
     </div>

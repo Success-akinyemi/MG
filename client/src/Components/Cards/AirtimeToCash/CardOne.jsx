@@ -57,6 +57,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter Amount')
             return
         }
+        const numberRegex = /^\d+$/;
+        if(!numberRegex.test(formData?.amount)){
+            toast.error('Invalid amount Number format')
+        }
         if(formData.amount < 100){
             toast.error('Minimium Amount is 100')
             return
@@ -96,7 +100,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Amount</label>
-                    <input type="text" onChange={handleChange} id="amount" defaultValue={formData?.amount} className="input text-[14px] text-gray-60 placeholder:text-gray-60" placeholder="₦5,000" />
+                    <input type="number" onChange={handleChange} id="amount" defaultValue={formData?.amount} className="input text-[14px] text-gray-60 placeholder:text-gray-60" placeholder="₦5,000" />
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Credited Amount</label>

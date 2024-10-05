@@ -13,8 +13,8 @@ export async function buyElectricBill(req, res) {
         if(amount < 1000){
             return(406).json({ success: false, data: 'minimium anount is NGN1000' })
         }
-        const numberRegex = /^[0-9]$/;
-        if(!numberRegex.text(amount)){
+        const numberRegex = /^\d+$/;
+        if(!numberRegex.test(amount)){
             return res.status(406).json({ success: false, data: 'Invalid amount Number format'})
         }
         const getUser = await UserModel.findById({ _id: _id})

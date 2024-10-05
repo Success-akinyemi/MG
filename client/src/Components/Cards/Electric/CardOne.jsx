@@ -75,9 +75,10 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter Amount')
             return
         }
-        const numberRegex = /^[0-9]$/;
-        if(!numberRegex.text(formData?.amount)){
+        const numberRegex = /^\d+$/;
+        if(!numberRegex.test(Number(formData?.amount))){
             toast.error('Invalid amount Number format')
+            return;
         }
         if(formData.amount < 1000){
             toast.error('minimium anount is NGN1000')

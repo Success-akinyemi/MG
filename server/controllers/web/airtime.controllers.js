@@ -15,8 +15,8 @@ export async function buyAirtime(req, res) {
 
         const getUser = await UserModel.findById(_id);
 
-        const numberRegex = /^[0-9]$/;
-        if(!numberRegex.text(amount)){
+        const numberRegex = /^\d+$/;
+        if(!numberRegex.test(amount)){
             return res.status(406).json({ success: false, data: 'Invalid Number format'})
         }
 
