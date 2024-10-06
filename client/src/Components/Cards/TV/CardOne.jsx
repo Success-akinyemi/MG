@@ -15,7 +15,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
     //console.log('first', cabletvplan?.data)
 
     useEffect(() => {
-        console.log('FORM',formData)
+        //console.log('FORM',formData)
     } , [formData])
 
     const handleChange = (e) => {
@@ -67,9 +67,9 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 try {
                     setSmartCardName('')
                     const res = await validateCardNumber({ id: formData?.serviceProviderCode, number: formData?.smartCardNumber });
-                    console.log('first', res.data.data)
+                    //console.log('first', res.data.data)
                     if(res.data.data && typeof res.data.data === 'object'){
-                        setSmartCardName(res.data.data.name)
+                        setSmartCardName(res.data.data.name ? res.data.data.name : res.data.data.msg)
                     }
                 } catch (error) {
                     console.error("Error fetching data:", error);

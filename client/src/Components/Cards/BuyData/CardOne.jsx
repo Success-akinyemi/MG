@@ -4,8 +4,12 @@ import ButtonTwo from "../../Helpers/ButtonTwo"
 import { useEffect, useState } from "react"
 //import { dataPlans } from "../../../Data/dataPlans"
 import { useFetchDataPlans } from "../../../Helpers/fetch.hooks"
+import { validatePhoneNumberAsync } from "../../../Helpers/phoneNumberValidator"
 
 function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
+    const [ numberSuccess, setNumberSuccess ] = useState()
+    const [ numberError, setNumberError ] = useState([])
+    const [ phoneNumberMisMatched, setPhoneNumberMisMatched ] = useState()
     const { dataPlans, isFetchingDataPlans } = useFetchDataPlans()
     const [availablePlans, setAvailablePlans] = useState([]);
     const [amount, setAmount] = useState();
@@ -21,7 +25,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         setFormData({ ...formData, proceed: false });
     }, []);
     useEffect(() => {
-        console.log('FORM',formData)
+        //console.log('FORM',formData)
     } , [formData])
 
     const handleNetworkChange = (e) => {
@@ -51,6 +55,41 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         }
     };
 
+        //VALIDATE PHONE NUMBER
+        useEffect(() => {
+            const validatePhoneNumber = async () => {
+                if(formData.phoneNumber?.length >= 11){
+                    try {
+                        const result = await validatePhoneNumberAsync(formData.phoneNumber);
+                        
+                        if(result.telco.toLowerCase() !== formData.networkName.toLowerCase()){
+                            setPhoneNumberMisMatched(`Phone number Entered is an ${result.telco} number`)
+                            setNumberError()
+                            setNumberSuccess()
+                        } 
+                        if(result.telco.toLowerCase() === formData.networkName.toLowerCase()){
+                            setPhoneNumberMisMatched()
+                            setNumberError()
+                            setNumberSuccess(result.telco)
+                        }
+                        //console.log(result);
+                    } catch (error) {
+                        setNumberError(error?.errors)
+                        setNumberSuccess()
+                        setPhoneNumberMisMatched()
+                        //console.error('Error validating phone number:', error);
+                    }
+                } 
+                if(formData.phoneNumber?.length < 11 ){
+                    setPhoneNumberMisMatched()
+                    setNumberError()
+                    setNumberSuccess()
+                }
+            }
+    
+            validatePhoneNumber()
+        }, [formData.phoneNumber, formData.networkName])
+
 
     
     const handleNext = () => {
@@ -74,6 +113,9 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         if(!formData.price){
             toast.error('Enter Amount')
             return;
+        }
+        if(numberError?.length > 0){
+            return
         }
         const timeStamp = Date.now()
         setFormData({ ...formData, status: 'Initiated' , totalAmount: formData?.price, transactionId: timeStamp })
@@ -105,7 +147,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     </div>
                     <div className="inputGroup w-full flex-1">
                         <label className="label text-[14px]">Phone Number</label>
-                        <input type="text" onChange={handleChange} defaultValue={formData?.phoneNumber} id="phoneNumber" className="input text-[14px] text-gray-60 font-semibold" placeholder="08094562627" />
+                        <input type="number" onChange={handleChange} defaultValue={formData?.phoneNumber} id="phoneNumber" className="input text-[14px] text-gray-60 font-semibold" placeholder="08094562627" />
                     </div>
                 </div>
                 <div className="inputGroup gap-[6px]">
@@ -125,6 +167,22 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     <label className="label text-[14px]">Amount</label>
                     <input type="number" id="amount" className="input text-[14px] text-gray-60 font-semibold bg-gray-30 border-[1px] border-[#C7DBEF]" disabled value={formData?.price} />
                 </div>
+            </div>
+
+            <div>
+                {
+                    numberError?.length > 0 ? (
+                        numberError.map((e, i) => (
+                            <p key={i} className="text-error text-[14px]" >{e}</p>
+                        ))
+                    ) : phoneNumberMisMatched ? (
+                        <p className="text-warning text-[14px]">{phoneNumberMisMatched}</p>
+                    ) : numberSuccess ? (
+                        <p className="text-success text-[14px]">{''}</p>
+                    ) : (
+                        ''
+                    )
+                }
             </div>
         </div>
 

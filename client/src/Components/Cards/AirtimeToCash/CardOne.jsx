@@ -4,6 +4,9 @@ import ButtonTwo from "../../Helpers/ButtonTwo"
 import { useEffect, useState } from "react"
 
 function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
+    const [ numberSuccess, setNumberSuccess ] = useState()
+    const [ numberError, setNumberError ] = useState([])
+    const [ phoneNumberMisMatched, setPhoneNumberMisMatched ] = useState()
     const [ creditedAmount, setCreditedAmount ] = useState()
     
     const handleChange = (e) => {
@@ -43,6 +46,41 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         }
 
     } , [formData, formData.amount, formData.networkCode])
+
+        //VALIDATE PHONE NUMBER
+        useEffect(() => {
+            const validatePhoneNumber = async () => {
+                if(formData.phoneNumber?.length >= 11){
+                    try {
+                        const result = await validatePhoneNumberAsync(formData.phoneNumber);
+                        
+                        if(result.telco.toLowerCase() !== formData.networkName.toLowerCase()){
+                            setPhoneNumberMisMatched(`Phone number Entered is an ${result.telco} number`)
+                            setNumberError()
+                            setNumberSuccess()
+                        } 
+                        if(result.telco.toLowerCase() === formData.networkName.toLowerCase()){
+                            setPhoneNumberMisMatched()
+                            setNumberError()
+                            setNumberSuccess(result.telco)
+                        }
+                        //console.log(result);
+                    } catch (error) {
+                        setNumberError(error?.errors)
+                        setNumberSuccess()
+                        setPhoneNumberMisMatched()
+                        //console.error('Error validating phone number:', error);
+                    }
+                } 
+                if(formData.phoneNumber?.length < 11 ){
+                    setPhoneNumberMisMatched()
+                    setNumberError()
+                    setNumberSuccess()
+                }
+            }
+    
+            validatePhoneNumber()
+        }, [formData.phoneNumber, formData.networkName])
     
     const handleNext = () => {
         if(!formData.networkCode){
@@ -63,6 +101,9 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         }
         if(formData.amount < 100){
             toast.error('Minimium Amount is 100')
+            return
+        }
+        if(numberError?.length > 0){
             return
         }
         const timeStamp = Date.now()
@@ -95,7 +136,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     </div>
                     <div className="inputGroup w-full flex-1">
                         <label className="label text-[14px]">Phone Number</label>
-                        <input type="text" onChange={handleChange} defaultValue={formData?.phoneNumber} id="phoneNumber" className="input text-[14px] text-gray-60 placeholder:text-gray-60" placeholder="08094562627" />
+                        <input type="number" onChange={handleChange} defaultValue={formData?.phoneNumber} id="phoneNumber" className="input text-[14px] text-gray-60 placeholder:text-gray-60" placeholder="08094562627" />
                     </div>
                 </div>
                 <div className="inputGroup gap-[6px]">
@@ -106,6 +147,22 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     <label className="label text-[14px]">Credited Amount</label>
                     <input type="number" id="creditedAmount" className="input text-[14px] text-gray-60 font-semibold bg-gray-30 border-[1px] border-[#C7DBEF]" disabled value={creditedAmount} />
                 </div>
+            </div>
+
+            <div>
+                {
+                    numberError?.length > 0 ? (
+                        numberError.map((e, i) => (
+                            <p key={i} className="text-error text-[14px]" >{e}</p>
+                        ))
+                    ) : phoneNumberMisMatched ? (
+                        <p className="text-warning text-[14px]">{phoneNumberMisMatched}</p>
+                    ) : numberSuccess ? (
+                        <p className="text-success text-[14px]">{''}</p>
+                    ) : (
+                        ''
+                    )
+                }
             </div>
         </div>
 

@@ -158,11 +158,12 @@ export async function validateCardNumber(req, res) {
                 }
             )
             const cardName = validateCardNumber.data
+            console.log('CARD DATA:', cardName)
 
             return res.status(200).json({ success: true, data:cardName })
         } catch(error) {
-            console.log('ERROR UNABLE TO GET NAME', error)
-            res.end()
+            console.log('ERROR UNABLE TO GET NAME', error.response.data)
+            return res.status(200).json({ success: true, data: error.response.data })
         }
     } catch (error) {
         console.log('UNABLE TO VERIFY SMART CARD NAME', error)

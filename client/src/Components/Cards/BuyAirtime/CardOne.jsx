@@ -35,7 +35,8 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                         setPhoneNumberMisMatched(`Phone number Entered is an ${result.telco} number`)
                         setNumberError()
                         setNumberSuccess()
-                    } else{
+                    } 
+                    if(result.telco.toLowerCase() === formData.networkName.toLowerCase()){
                         setPhoneNumberMisMatched()
                         setNumberError()
                         setNumberSuccess(result.telco)
@@ -47,11 +48,16 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     setPhoneNumberMisMatched()
                     //console.error('Error validating phone number:', error);
                 }
+            } 
+            if(formData.phoneNumber?.length < 11 ){
+                setPhoneNumberMisMatched()
+                setNumberError()
+                setNumberSuccess()
             }
         }
 
         validatePhoneNumber()
-    }, [formData.phoneNumber])
+    }, [formData.phoneNumber, formData.networkName])
     
     const handleNext = () => {
         if(!formData.networkCode){
@@ -69,6 +75,9 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         }
         if(!formData.amount){
             toast.error('Enter Amount')
+            return
+        }
+        if(numberError?.length > 0){
             return
         }
         const numberRegex = /^\d+$/;
@@ -105,7 +114,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                     </div>
                     <div className="inputGroup w-full flex-1">
                         <label className="label text-[14px]">Phone Number</label>
-                        <input type="text" onChange={handleChange} defaultValue={formData?.phoneNumber} id="phoneNumber" className="input text-[14px] text-gray-60 font-semibold" placeholder="08094562627" />
+                        <input type="number" onChange={handleChange} defaultValue={formData?.phoneNumber} id="phoneNumber" className="input text-[14px] text-gray-60 font-semibold" placeholder="08094562627" />
                     </div>
                 </div>
                 <div className="inputGroup gap-[6px]">
@@ -121,9 +130,9 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                             <p key={i} className="text-error text-[14px]" >{e}</p>
                         ))
                     ) : phoneNumberMisMatched ? (
-                        <p>{phoneNumberMisMatched}</p>
+                        <p className="text-warning text-[14px]">{phoneNumberMisMatched}</p>
                     ) : numberSuccess ? (
-                        <p>{numberSuccess}</p>
+                        <p className="text-success text-[14px]">{''}</p>
                     ) : (
                         ''
                     )
