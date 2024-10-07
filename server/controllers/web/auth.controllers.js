@@ -115,19 +115,20 @@ export async function verifyNewUser(req, res, next){
             return res.status(400).json({ success: false, data: 'Invalid Link'})
         }
 
-        const token = await TokenModel.findOne({
+        const findToken = await TokenModel.findOne({
             userId: user._id,
             token: req.params.token
         })
+        //console.log('TOKEN', findToken)
 
-        if(!token){
+        if(!findToken){
             return res.status(400).json({ success: false, data: 'Invalid Link'})
         }
 
         //await UserModel.updateOne({ _id: user._id, verified: true})
         user.verified = true;
         await user.save()
-        const deleteToken = await TokenModel.findByIdAndDelete({ _id: token._id })
+        const deleteToken = await TokenModel.findByIdAndDelete({ _id: findToken._id })
         
         sendToken(user, 200, res)
 
@@ -166,7 +167,7 @@ export async function login(req, res){
         const isMatch = await user.matchPasswords(password);
 
         if(!isMatch){
-            return res.status(403).json({ success: false, data: 'Invalid Password'})
+            return res.status(403).json({ success: false, data: 'Invalid Credentials'})
         }
 
         if(!user.verified){
@@ -176,6 +177,7 @@ export async function login(req, res){
                     userId: user._id,
                     token: crypto.randomBytes(32).toString('hex')
                 }).save()
+                
         
                 const verifyUrl = `${process.env.MAIL_WEBSITE_LINK}/${user._id}/verify/${token.token}`
         

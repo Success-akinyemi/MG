@@ -20,6 +20,7 @@ function Login() {
   const [ formData, setFormData ] = useState({})
   const [ isLoading, setIsLoading ] = useState(false)
   const [ remeberMe, setRemeberMe ] = useState(false)
+  const [ errorResponse , setErrorResponse ] = useState()
 
   const handleChange = (e) => {
       setFormData({...formData, [e.target.id]: e.target.value })
@@ -36,11 +37,11 @@ function Login() {
       toast.error('Enter Email')
       return
     }
-    //const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    //if(!emailPattern.test(formData.emailOrMobile)){
-    //    toast.error('Please enter a valid email')
-    //    return
-    //}
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if(!emailPattern.test(formData.emailOrMobile)){
+        toast.error('Please enter a valid email')
+        return
+    }
     if(!formData.password){
       toast.error('Enter Password')
       return
@@ -48,6 +49,14 @@ function Login() {
     try {
       setIsLoading(true)
       const res = await loginUser(formData)
+      if(res.data.success === false){
+        setErrorResponse(res.data.data);
+        setTimeout(() => {
+            setErrorResponse();
+        }, 2000);
+
+        return
+      }
       if(res.isVerified === false){
         navigate("/signup-successful", {
           state: { resMsg: res?.data },
@@ -88,7 +97,9 @@ function Login() {
                     Home
                 </Link>
 
-                <img src={LogoImg} alt="logo of subsum" className="hidden phone:flex phone:w-[108.97px] phone:h-[25px]" />
+                <Link to='/'>
+                    <img src={LogoImg} alt="logo of subsum" className="hidden phone:flex phone:w-[108.97px] phone:h-[25px]" />
+                </Link>
 
                 <Button name={'Sign Up'} link={'register'} bg={true} />
             </div>
@@ -139,6 +150,9 @@ function Login() {
                                             Recover Password
                                         </Link>
                                 </div>
+
+                                {/**ERROR RESPONSE */}
+                                <p className="text-center text-error font-semibold">{errorResponse}</p>
 
                             </div>
                             {

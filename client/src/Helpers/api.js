@@ -11,9 +11,11 @@ export async function registerUser(formData){
             return res.data
         }
     } catch (error) {
-        const errorMsg = error.response.data.data || 'Unable to register User'
-        toast.error(errorMsg)
+        //const errorMsg = error.response.data.data || 'Unable to register User'
+        //toast.error(errorMsg)
         //console.log('REGISTER ERROR', error)
+        const res = error.response || 'Unable to register user'
+        return res
     }
 }
 
@@ -22,9 +24,11 @@ export async function loginUser(formData){
         const res = await axios.post('/auth/login', formData, {withCredentials: true})
         return res.data
     } catch (error) {
-        const errorMsg = error.response.data.data || 'Unable to Login User'
-        toast.error(errorMsg)
+        //const errorMsg = error.response.data.data || 'Unable to Login User'
+        //toast.error(errorMsg)
         //console.log('LOGIN ERROR', error)
+        const res = error.response || 'Unable to login user'
+        return res
     }
 }
 

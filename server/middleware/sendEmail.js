@@ -24,7 +24,8 @@ const sendEmail = (options) => {
         if(err){
             console.log('ERROR FROM NODEMON>>', err)
         }else{
-            console.log('INFORMATION FROM NODEMON>>', info)
+            console.log('EMAIL SENT SUCCESSFUL')
+            //console.log('INFORMATION FROM NODEMON>>', info)
         }
     })
 }

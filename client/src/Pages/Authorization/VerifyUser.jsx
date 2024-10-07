@@ -39,7 +39,7 @@ function VerifyUser() {
                 {
                     errorMsg ? (
                         <div className="flex flex-col gap-3">
-                            <p className="font-semibold">{errorMsg}</p>
+                            <p className="font-semibold text-error text-center">{errorMsg}</p>
                             <ButtonTwo onClick={relaod} text={'Retry'} />
                         </div>
                     ) : (

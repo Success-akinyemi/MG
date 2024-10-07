@@ -5,10 +5,6 @@ import { useState } from "react";
 
 function SignupSuccessful() {
   const location = useLocation();
-  const [ servermsg, setServermsg ] = useState()
-  if(location?.state?.resMsg){
-    setServermsg(location?.state?.resMsg)
-  }
   const msg = 'An email has been Sent to your account for confirmation. Please click the link to finalize your account setup successfully';  
 
   return (
@@ -16,9 +12,9 @@ function SignupSuccessful() {
         <Navbar showBtn={false} />
 
         <div className="pad3 mt-[110px] w-[500px] phone:w-[90%] bg-white rounded-[12px] flex flex-col gap-[24px] border-[1px] border-gray-30">
-            <div className="flex items-center w-full gap-[24px]">
+            <div className="flex items-center w-full gap-[24px] phone:flex-col">
                 <div>
-                  <img src={EnvelopImg} alt="envelop" className='w-[200px] h-[113.5px]' />
+                  <img src={EnvelopImg} alt="envelop" className='w-[200px] h-[113.5px] phone:h-auto phone:w-[100px]' />
                 </div>
 
                 <div className="flex flex-col gap-[16px]">
@@ -32,7 +28,10 @@ function SignupSuccessful() {
                 </div>
 
             </div>
-            <p className="font-semibold text-[14px] text-center text-second-color">{servermsg}</p>
+            {/**
+            <p className="font-semibold text-[14px] text-center text-second-color">{servermsg ? servermsg : ''}</p>
+             * 
+             */}
         </div>
 
     </div>

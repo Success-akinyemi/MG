@@ -6,6 +6,7 @@ import { validateMeterNumber } from "../../../Helpers/api"
 
 function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
     const [ meterName, setMeterName ] = useState('') 
+    const [ metereValid, setMeterValid ] = useState('') 
 
     const meterTypeUsed = meterType
     const providers = electricProviders
@@ -14,7 +15,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         setFormData({ ...formData, [e.target.id]: e.target.value })
     }
     useEffect(() => {
-        console.log('FORM',formData)
+        //console.log('FORM',formData)
     } , [formData])
 
     const handleMeterChange = (e) => {
@@ -53,13 +54,14 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         //useEffect to verify smart card name here
         useEffect(() => {
             const fetchData = async () => {
-                if (formData?.meterNumber?.length >= 10 && formData?.providerCode) {
+                if (formData?.meterNumber?.length >= 10 && formData?.providerSlug) {
                     try {
                         setMeterName('')
-                        const res = await validateMeterNumber({ providerCode: formData?.providerCode, meterNumber: formData?.meterNumber });
-                        console.log('first', res.data.data)
+                        const res = await validateMeterNumber({ providerSlug: formData?.providerSlug, meterNumber: formData?.meterNumber });
+                        //console.log('first', res.data.data)
                         if(res.data.data && typeof res.data.data === 'object'){
                             setMeterName(res.data.data.name)
+                            setMeterValid(res.data.data.invalid)
                         }
                     } catch (error) {
                         console.error("Error fetching data:", error);
@@ -68,7 +70,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             };
         
             fetchData();
-        }, [formData?.meterNumber, formData?.providerCode])
+        }, [formData?.meterNumber, formData?.providerSlug])
 
     const handleNext = () => {
         if(!formData.meterNumber){
@@ -175,7 +177,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 }
                 {
                     meterName && (
-                        <p className="text-second-color text-[14px] font-semibold">METER NAME: {meterName}</p>
+                        <p className={`${metereValid ? 'text-error' : 'text-second-color'} text-[14px] font-semibold`}>METER NAME: {meterName.trim()}</p>
                     )
                 }
 

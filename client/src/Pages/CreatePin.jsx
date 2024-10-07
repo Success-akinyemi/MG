@@ -34,11 +34,12 @@ function CreatePin() {
     const handleCreatePin = async (e) => {
         e.preventDefault()
         const pinCodeLength = pinInput.join('')
+        setFormData({...setFormData, pin: pinCodeLength})
         if(pinCodeLength?.length !== 4){
             toast.error('Enter Transaction Pin Code')
             return;
         }
-        setFormData({...setFormData, pin: pinInput.join('')})
+        
         try {
             setIsLoading(true)
             if(!formData.pin){

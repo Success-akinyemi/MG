@@ -29,7 +29,9 @@ function Hero() {
             </div>
 
             <div className="flex flex-col mt-[2rem]">
-                <p className="text-gray-90 text-[16px] phone:text-[14px] mb-[1.5rem] font-normal">What are you buying today?</p>
+                <p className="text-gray-90 text-[16px] phone:text-[14px] mb-[1.5rem] font-normal">Buy Data, Airtime, Electric bills, Cable Tv subscription with creating an account?</p>
+
+                <h3 className='mb-[1.5rem] font-semibold text-primary-color'>Click and Get Started Here 👇</h3>
 
                 <div className="flex gap-4 flex-col">
                     <div className="flex items-center gap-4 phone:gap-[10px]">

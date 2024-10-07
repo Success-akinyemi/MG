@@ -18,6 +18,12 @@ function Register() {
     const [ showConfirmPassword, setShowconfirmPassword ] = useState(false)
     const [ formData, setFormData ] = useState({})
     const [ isLoading, setIsLoading ] = useState(false)
+    const [ errorResponse , setErrorResponse ] = useState()
+    const [ passwordError, setPasswordError ] = useState()
+    const [ confirmPasswordError, setConfirmPasswordError ] = useState()
+
+    const specialChars = /[!@#$%^&*()_+{}[\]\\|;:'",.<>?]/
+
 
         //REFF
         const location = useLocation();
@@ -42,7 +48,23 @@ function Register() {
         setShowconfirmPassword((prev) => !prev)
     }
 
-    //useEffect(() => {console.log(formData)}, [formData])
+    useEffect(() => {
+        //const tesst = numberRegex.test(formData.firstName)
+        //console.log(formData)
+        if(formData.password?.length >= 1 && formData.password?.length < 6){
+            setPasswordError('Password must be 6 characters long')
+        } else if(!specialChars.test(formData.password) && formData.password?.length >= 6){
+            setPasswordError('Password must contain at least one special character')
+        } else {
+            setPasswordError()
+        }
+
+        if(formData.password !== formData.confirmPassword && formData.confirmPassword >= 1){
+            setConfirmPasswordError('Password do not match')
+        } else {
+            setConfirmPasswordError()
+        }
+    }, [formData.password, formData.confirmPassword])
 
     const handleSignup = async (e) => {
         e.preventDefault()
@@ -55,12 +77,21 @@ function Register() {
             toast.error('Please enter a valid email')
             return
         }
+        const numberRegex = /^[^0-9]*$/;
         if(!formData.firstName){
             toast.error(`Enter First Name`)
             return
         }
+        if(!numberRegex.test(formData?.firstName)){
+            toast.error(`First Name must not contain numbers`)
+            return
+        }
         if(!formData.lastName){
             toast.error(`Enter Last Name`)
+            return
+        }
+        if(!numberRegex.test(formData?.lastName)){
+            toast.error(`Last Name must not contain numbers`)
             return
         }
         if(!formData.password){
@@ -72,7 +103,7 @@ function Register() {
             return
         }
 
-        const specialChars = /[!@#$%^&*()_+{}[\]\\|;:'",.<>?]/
+        
         if(!specialChars.test(formData.password)){
             toast.error('Password must contain at least one special character')
             return
@@ -90,6 +121,14 @@ function Register() {
         try {
             setIsLoading(true)
             const res = await registerUser(formData)
+            if(res.data.success === false){
+                setErrorResponse(res.data.data);
+                setTimeout(() => {
+                    setErrorResponse();
+                }, 2000);
+        
+                return
+              }
             
             if(res.success){
                 navigate("/signup-successful", {
@@ -118,7 +157,9 @@ function Register() {
                     Home
                 </Link>
 
-                <img src={LogoImg} alt="logo of subsum" className="hidden phone:flex phone:w-[108.97px] phone:h-[25px]" />
+                <Link to='/'>
+                    <img src={LogoImg} alt="logo of subsum" className="hidden phone:flex phone:w-[108.97px] phone:h-[25px]" />
+                </Link>
 
                 <Button name={'Login'} link={'login'} bg={true} />
             </div>
@@ -154,31 +195,39 @@ function Register() {
                                 </div>
                                 <div className='inputGroup relative'>
                                     <label className='label'>Password</label>
-                                    <input className='input' type={showPassword ? 'text' : 'password'} id='password' onChange={handleChange} placeholder='Gabon4351' />
-                                    <div onClick={seePassword} className='absolute right-[10px] bottom-[10px] text-[20px] cursor-pointer'>
-                                        {
-                                            showPassword ? (
-                                                <FaEye />
-                                            ) : (
-                                                <FaRegEyeSlash />
-                                            )
-                                        }
+                                    <div className='relative w-full'>
+                                        <input className='input w-full' type={showPassword ? 'text' : 'password'} id='password' onChange={handleChange} placeholder='Gabon4351' />
+                                        <div onClick={seePassword} className={`absolute right-[10px] bottom-[15px] z-10 text-[20px] cursor-pointer`}>
+                                            {
+                                                showPassword ? (
+                                                    <FaEye />
+                                                ) : (
+                                                    <FaRegEyeSlash />
+                                                )
+                                            }
+                                        </div>
                                     </div>
+                                    <p className='text-[14px] text-error min-h-3 font-semibold'>{passwordError}</p>
                                 </div>
                                 <div className='inputGroup relative'>
                                     <label className='label'>Confirm Password</label>
-                                    <input className='input' type={showConfirmPassword ? 'text' : 'password'} id='confirmPassword' onChange={handleChange} placeholder='Gabon4351' />
-                                    <div onClick={seeConfirmPassword} className='absolute right-[10px] bottom-[10px] text-[20px] cursor-pointer'>
-                                        {
-                                            showConfirmPassword ? (
-                                                <FaEye />
-                                            ) : (
-                                                <FaRegEyeSlash />
-                                            )
-                                        }
+                                    <div className='relative w-full'>
+                                        <input className='input w-full' type={showConfirmPassword ? 'text' : 'password'} id='confirmPassword' onChange={handleChange} placeholder='Gabon4351' />
+                                        <div onClick={seeConfirmPassword} className='absolute right-[10px] bottom-[15px] z-10 text-[20px] cursor-pointer'>
+                                            {
+                                                showConfirmPassword ? (
+                                                    <FaEye />
+                                                ) : (
+                                                    <FaRegEyeSlash />
+                                                )
+                                            }
+                                        </div>
                                     </div>
+                                    <p className='text-[14px] text-error min-h-3 font-semibold'>{confirmPasswordError}</p>
                                 </div>
                             </div>
+                            {/**ERROR TEXT */}
+                            <p className="text-center text-error font-semibold">{errorResponse}</p>
                             {
                                 isLoading ? (
                                     <LoadingBtn />

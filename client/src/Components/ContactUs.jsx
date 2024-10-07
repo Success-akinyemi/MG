@@ -18,7 +18,7 @@ function ContactUs() {
 
                 <div>
                     <div className='bg-[#0373DB] w-[50%] tablet:w-[70%] phone:w-[90%] flex items-center justify-center pt-[17.39px] pb-[17.39px] pl-[51.16px] pr-[51.16px] rounded-[10.23px]'>
-                        <Link className='text-white'>
+                        <Link to='/contact' className='text-white'>
                             Contact Us
                         </Link>
                     </div>

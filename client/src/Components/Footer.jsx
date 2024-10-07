@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { FaFacebookF } from "react-icons/fa";
 import { RiTwitterXLine } from "react-icons/ri";
 import { FaInstagram } from "react-icons/fa";
@@ -9,6 +9,11 @@ import { useEffect, useState } from "react";
 
 function Footer() {
     const [menu, setMenu] = useState (''); // state to track the active menu
+    const location = useLocation();
+  
+    const isActive = (path) => {
+      return location.pathname === path;
+    };
 
     //Effect to scroll to top when the menu changes 
     useEffect(()=> {
@@ -16,29 +21,45 @@ function Footer() {
             window.scrollTo(0,0); //scroll to the top of the page
         }
     }, [menu]); //Trigger this effect when 'menu' changes 
+
+    const menuList = [
+        {
+            name: 'About Us',
+            link: ''
+        },
+        {
+            name: 'Contact',
+            link: 'contact'
+        },
+        {
+            name: 'FAQs',
+            link: 'faq'
+        },
+        {
+            name: 'Blogs',
+            link: 'blogs'
+        }
+    ]
   return (
     <div className="small-pc:pad6 pad4 pt-8 pb-8 bg-primary-color w-full relative flex flex-col">
         <div className=" flex  gap-[55.25px] mb-24 small-pc:flex-col">
             <div className="flex flex-col gap-[24.56px]">
                 <h2 className="text-gray-30 font-semibold text-[20.46px]">Quick Links</h2>
                 <div className="flex flex-col gap-[16.37px] text-gray-40 text-[16.37px] font-normal">
-                    {/* <Link>About Us</Link>
-                    <Link to='/contact'>Contact</Link>
-                    <Link to='/faq'>FAQs</Link>
-                    <Link to='/blogs'>Blogs</Link> */}
-                    <Link  to='/about'  onClick={() => setMenu('about')}  className={`transition-all duration-300 ${menu === 'about' ? 'text-second-color font-semibold' : ''}`}> About Us</Link>
-                    <Link to='/contact' onClick={() => setMenu('contact')}  className={`transition-all duration-300 ${menu === 'contact' ? 'text-second-color font-semibold' : ''}`}>  Contact</Link>
-                    <Link  to='/faq' onClick={() => setMenu('faq')}  className={`transition-all duration-300 ${menu === 'faq' ? 'text-second-color font-semibold' : ''}`}>FAQs</Link>
-                    {/* <Link to='/blogs' onClick={() => setMenu('blogs')} className={menu === 'blogs' ? 'active' : ''}>Blogs</Link> */}
-                    <Link to='/blogs' onClick={() => {setMenu('blogs')}} className={`transition-all duration-300 ${menu === 'blogs' ? 'text-second-color font-semibold' : ''}`}>Blogs</Link>
-
+                    {
+                        menuList.map((item, idx) => (
+                            <Link key={idx} to={item.link ? `/${item.link}` :''} className={`${isActive(`/${item.link}`) ? 'text-white font-semibold' : ''} hover:text-white`}>
+                                {item.name}
+                            </Link>
+                        ))
+                    }
                 </div>
             </div>
             <div className="flex flex-col gap-[24.56px]">
                 <h2 className="text-gray-30 font-semibold text-[20.46px]">Contact Us</h2>
                 <div className="flex flex-col gap-[16.37px] text-gray-40 text-[16.37px] font-normal">
                     <a href="tel:2347089075584">07089075584</a>
-                    <a href="mailto:subssum32@gmail.com" className="text-inherit">subssum32@gmail.com</a>
+                    <a href="mailto:subssum23@gmail.com" className="text-inherit">subssum23@gmail.com</a>
                     <p>13, Femi Aderibigbe Close</p>
                     <p>Ifako Gbagada, Lagos.</p>
                 </div>

@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import ContactUs from "../Components/ContactUs"
 import Features from "../Components/Features"
 import Footer from "../Components/Footer"
@@ -10,6 +11,14 @@ import OurServices from "../Components/OurServices"
 import WhyChoseUs from "../Components/WhyChoseUs"
 
 function LandingPage() {
+    useEffect(() =>{
+        //scroll to the top of the page when the component mounts
+        window.scrollTo({
+            top:0,
+            left: 0,
+            behavior : "smooth", //optional: can be changed to "auto" for instant scroll
+        });
+    },[]); //This effect runs only once when the component mouts
   return (
     <div className="flex min-h-[100vh] flex-col">
         <Navbar showBtn={true} />

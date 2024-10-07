@@ -34,7 +34,7 @@ export const registerMail = async ({ username, userEmail, subject, instructions,
             action: {
                 instructions: instructions,
                 button: {
-                    color: '#014601',
+                    color: '#33b5e5',
                     text: text,
                     link: verifyUrl || ''
                 }

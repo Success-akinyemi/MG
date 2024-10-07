@@ -2,6 +2,7 @@ import toast from "react-hot-toast"
 import { network } from "../../../Data/networks"
 import ButtonTwo from "../../Helpers/ButtonTwo"
 import { useEffect, useState } from "react"
+import { validatePhoneNumberAsync } from "../../../Helpers/phoneNumberValidator"
 
 function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
     const [ numberSuccess, setNumberSuccess ] = useState()
@@ -24,7 +25,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
     }, []);
     
     useEffect(() => {
-        console.log('FORM',formData)
+        //console.log('FORM',formData)
 
         if(!formData.amount || formData.amount < 100){
             setCreditedAmount()
