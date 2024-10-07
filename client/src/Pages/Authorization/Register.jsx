@@ -169,7 +169,7 @@ function Register() {
                     Sign up
                 </div>
 
-                <form onSubmit={handleSignup} className='flex flex-col gap-[24px] w-full'>
+                <form onSubmit={handleSignup} className='flex flex-col gap-[24px] w-full mb-4'>
                     <Google setIsLoading={setIsLoading} isLoading={isLoading} text={'Sign up with Google'} />
 
                     <div className='flex items-center justify-center gap-[14px] w-full'>
@@ -236,9 +236,15 @@ function Register() {
                                     <ButtonTwo onClick={handleSignup} text={'Create Account'} />
                                 )
                             }
+                            
+                            <p className='text-center text-gray-50 font-semibold'>
+                                Already have an account? {' '}
+                                <Link to='/login' className='text-gray-90'>Login here</Link>
+                            </p>
+
                         </div>
                     </div>
-
+                    
                 </form>
             </div>
 

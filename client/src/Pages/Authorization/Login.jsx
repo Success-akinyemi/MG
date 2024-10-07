@@ -163,9 +163,15 @@ function Login() {
                                     <ButtonTwo onClick={handleLogin} text={'Login'} />
                                 )
                             }
+
+<                           p className='text-center text-gray-50 font-semibold'>
+                                New User? {' '}
+                                <Link to='/register' className='text-gray-90'>Register here</Link>
+                            </p>
+
                         </div>
                     </div>
-
+                    
                 </form>
             </div>
 
