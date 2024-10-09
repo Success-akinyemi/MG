@@ -179,9 +179,9 @@ function Login() {
                                 )
                             }
 
-<                           p className='text-center text-gray-50 font-semibold'>
+                            <p className='text-center text-gray-90 font-semibold'>
                                 New User? {' '}
-                                <Link to='/register' className='text-gray-90'>Register here</Link>
+                                <Link to='/register' className='text-gray-50'>Register here</Link>
                             </p>
 
                         </div>

@@ -22,6 +22,7 @@ function Register() {
     const [ passwordError, setPasswordError ] = useState()
     const [ confirmPasswordError, setConfirmPasswordError ] = useState()
 
+    const [ emailError, setEmailError ] = useState()
     const [ firstNameError, setFirstNameError ] = useState()
     const [ lastNameError, setLastNameError ] = useState()
 
@@ -85,53 +86,86 @@ function Register() {
     const handleSignup = async (e) => {
         e.preventDefault()
         if(!formData.email){
-            toast.error('Enter Email')
+            setEmailError('Enter Email');
+            setTimeout(() => {
+                setEmailError();
+            }, 2000);
             return
         }
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if(!emailPattern.test(formData.email)){
-            toast.error('Please enter a valid email')
+            setEmailError('Please enter a valid email');
+            setTimeout(() => {
+                setEmailError();
+            }, 2000);
             return
         }
         
         if(!formData.firstName){
-            toast.error(`Enter First Name`)
+            setFirstNameError('Enter First Name');
+            setTimeout(() => {
+                setFirstNameError();
+            }, 2000);
             return
         }
         if(!numberRegex.test(formData?.firstName)){
-            toast.error(`First Name must not contain numbers`)
+            setFirstNameError('First Name must not contain numbers');
+            setTimeout(() => {
+                setFirstNameError();
+            }, 2000);
             return
         }
         if(!formData.lastName){
-            toast.error(`Enter Last Name`)
+            setLastNameError('Enter Last Name');
+            setTimeout(() => {
+                setLastNameError();
+            }, 2000);
             return
         }
         if(!numberRegex.test(formData?.lastName)){
-            toast.error(`Last Name must not contain numbers`)
+            setLastNameError('Last Name must not contain numbers');
+            setTimeout(() => {
+                setLastNameError();
+            }, 2000);
             return
         }
         if(!formData.password){
-            toast.error('Enter Password')
+            setPasswordError('Enter Password');
+            setTimeout(() => {
+                setPasswordError();
+            }, 2000);
             return
         }
         if(!formData.confirmPassword){
-            toast.error('Enter Confirm Password')
+            setConfirmPasswordError('Enter Confirm Password');
+            setTimeout(() => {
+                setConfirmPasswordError();
+            }, 2000);
             return
         }
 
         
         if(!specialChars.test(formData.password)){
-            toast.error('Password must contain at least one special character')
+            setPasswordError('Password must contain at least one special character');
+            setTimeout(() => {
+                setPasswordError();
+            }, 2000);
             return
         }
 
         if(formData.password.length < 6){
-            toast.error('Password must be 6 characters long')
+            setPasswordError('Password must be 6 characters long');
+            setTimeout(() => {
+                setPasswordError();
+            }, 2000);
             return
         }
 
         if(formData.password !== formData.confirmPassword){
-            toast.error('Password do not match')
+            setConfirmPasswordError('Password do not match');
+            setTimeout(() => {
+                setConfirmPasswordError();
+            }, 2000);
             return
         }
         try {
@@ -200,6 +234,7 @@ function Register() {
                                 <div className='inputGroup'>
                                     <label className='label'>Email Address</label>
                                     <input className='input' type='email' id='email' onChange={handleChange} placeholder='wabdotmail@gmail.com' />
+                                    <p className='text-[14px] text-error font-semibold'>{emailError}</p>
                                 </div>
                                 <div className='inputGroup'>
                                     <label className='label'>First Name</label>
@@ -255,9 +290,9 @@ function Register() {
                                 )
                             }
                             
-                            <p className='text-center text-gray-50 font-semibold'>
+                            <p className='text-center text-gray-90 font-semibold'>
                                 Already have an account? {' '}
-                                <Link to='/login' className='text-gray-90'>Login here</Link>
+                                <Link to='/login' className='text-gray-50'>Login here</Link>
                             </p>
 
                         </div>
