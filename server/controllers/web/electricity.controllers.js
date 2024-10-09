@@ -55,7 +55,7 @@ export async function buyElectricBill(req, res) {
             const newTransaction = await TransctionHistroyModel.create({
                 userId: _id,
                 email: email,
-                service: `Electric bills`,
+                service: `Electric bills. ${dataResponse?.token}`,
                 platform: providerName,
                 number: meterNumber,
                 amount: inputAmount, // Use inputAmount here
