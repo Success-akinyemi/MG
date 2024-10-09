@@ -15,7 +15,7 @@ function Features() {
             </div>
             
             <div className="bg-[#0373DB] pt-[17.39px] pb-[17.39px] pl-[51.16px] pr-[51.16px] rounded-[10.23px] mt-12">
-                <Link className='link text-white font-semibold text-[16px]'>
+                <Link to='/register' className='link text-white font-semibold text-[16px]'>
                     Get Started
                 </Link>
             </div>
