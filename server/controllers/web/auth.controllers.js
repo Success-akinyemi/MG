@@ -269,7 +269,7 @@ export async function google(req, res){
 
             //handle referral
             if (referredBy) {
-                if (!referrer.referrals.includes(newUser._id)) {
+                if (!newUser.referrals.includes(newUser._id)) {
                     const referrer = await UserModel.findById(referredBy);
                     if (referrer) {
                         referrer.referrals.push(newUser._id);

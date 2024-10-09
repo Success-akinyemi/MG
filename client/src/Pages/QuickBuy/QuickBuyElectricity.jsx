@@ -41,6 +41,10 @@ function QuickBuyElectricity({ setSelectedCard }) {
             toast.error('Enter Amount')
             return
         }
+        if(formData.amount < 1000){
+            toast.error('Minimium amount is 1000')
+            return
+        }
         setCardOne(true)
         setActiveCard('cardTwo')
     }
