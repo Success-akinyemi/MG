@@ -21,6 +21,8 @@ function Login() {
   const [ isLoading, setIsLoading ] = useState(false)
   const [ remeberMe, setRemeberMe ] = useState(false)
   const [ errorResponse , setErrorResponse ] = useState()
+  const [ emailError, setEmailError ] = useState()
+  const [ passwordError, setPasswordError ] = useState()
 
   const handleChange = (e) => {
       setFormData({...formData, [e.target.id]: e.target.value })
@@ -34,16 +36,25 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault()
     if(!formData.emailOrMobile){
-      toast.error('Enter Email')
+      setEmailError('Enter Email');
+      setTimeout(() => {
+          setEmailError();
+      }, 2000);
       return
     }
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if(!emailPattern.test(formData.emailOrMobile)){
-        toast.error('Please enter a valid email')
+        setEmailError('Please enter a valid email');
+        setTimeout(() => {
+            setEmailError();
+        }, 2000);
         return
     }
     if(!formData.password){
-      toast.error('Enter Password')
+      setPasswordError('Enter Password');
+      setTimeout(() => {
+          setPasswordError();
+      }, 2000);
       return
     }
     try {
@@ -124,19 +135,23 @@ function Login() {
                                 <div className='inputGroup'>
                                     <label className='label'>Email Address</label>
                                     <input className='input' type='text' id='emailOrMobile' onChange={handleChange} placeholder='wabdotmail@gmail.com' />
+                                    <p className="text-center text-error font-semibold">{emailError}</p>
                                 </div>
                                 <div className='inputGroup relative'>
                                     <label className='label'>Password</label>
-                                    <input className='input' type={showPassword ? 'text' : 'password'} id='password' onChange={handleChange} placeholder='Gabon4351' />
-                                    <div onClick={seePassword} className='absolute right-[10px] bottom-[10px] text-[20px] cursor-pointer'>
-                                        {
-                                            showPassword ? (
-                                                <FaEye />
-                                            ) : (
-                                                <FaRegEyeSlash />
-                                            )
-                                        }
+                                    <div className="relative w-full">
+                                        <input className='input w-full' type={showPassword ? 'text' : 'password'} id='password' onChange={handleChange} placeholder='Gabon4351' />
+                                        <div onClick={seePassword} className='absolute right-[10px] bottom-[10px] text-[20px] cursor-pointer'>
+                                            {
+                                                showPassword ? (
+                                                    <FaEye />
+                                                ) : (
+                                                    <FaRegEyeSlash />
+                                                )
+                                            }
+                                        </div>
                                     </div>
+                                    <p className="text-center text-error font-semibold">{passwordError}</p>
                                 </div>
                                 <div className='flex items-center justify-between tablet:flex-col-reverse'>
                                         <div className="flex items-center gap-[8px]">
