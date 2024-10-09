@@ -3,22 +3,24 @@ import UserModel from '../../model/User.js'
 import TransctionHistroyModel from "../../model/TransactionHistroy.js";
 
 export async function buyElectricBill(req, res) {
-    console.log(req.body)
-    const { providerCode, providerName, meterNumber, amount, transactionId, phoneNumber, meterType, } = req.body
-    const { _id, email } = req.user
+    console.log(req.body);
+    const { providerCode, providerName, meterNumber, amount: inputAmount, transactionId, phoneNumber, meterType } = req.body; // Rename here
+    const { _id, email } = req.user;
+    
     try {
-        if(!providerCode || !meterNumber || !amount || !phoneNumber){
-            return(406).json({ success: false, data: 'Fill all required Fields' })
+        if (!providerCode || !meterNumber || !inputAmount || !phoneNumber) {
+            return res.status(406).json({ success: false, data: 'Fill all required Fields' });
         }
-        if(amount < 1000){
-            return(406).json({ success: false, data: 'minimium anount is NGN1000' })
+        if (inputAmount < 1000) {
+            return res.status(406).json({ success: false, data: 'Minimum amount is NGN1000' });
         }
         const numberRegex = /^\d+$/;
-        if(!numberRegex.test(amount)){
-            return res.status(406).json({ success: false, data: 'Invalid amount Number format'})
+        if (!numberRegex.test(inputAmount)) {
+            return res.status(406).json({ success: false, data: 'Invalid amount Number format' });
         }
-        const getUser = await UserModel.findById({ _id: _id})
-        const fullAmount = 100 + Number(amount)
+        
+        const getUser = await UserModel.findById({ _id: _id });
+        const fullAmount = 100 + Number(inputAmount); // Use inputAmount here
         if (fullAmount > getUser.acctBalance) {
             return res.status(406).json({ success: false, data: 'Insufficient Wallet Balance' });
         }
@@ -28,8 +30,8 @@ export async function buyElectricBill(req, res) {
             {
                 "provider": providerCode, 
                 "meternumber": meterNumber,
-                "amount": Number(amount),
-                "metertype":"prepaid/postpaid",
+                "amount": Number(inputAmount), // Use inputAmount here
+                "metertype": meterType ? meterType.toLowerCase() : 'prepaid',
                 "phone": phoneNumber,
                 "ref": transactionId,
             },
@@ -37,16 +39,15 @@ export async function buyElectricBill(req, res) {
                 headers: {
                     "Authorization": `Token ${process.env.HUSSY_API_KEY}`,
                     "Content-Type": 'application/json',
-                    "Accept" : '*/*'
+                    "Accept": '*/*'
                 },
             }
-        )
+        );
 
-        const dataResponse = payNepaLight?.data
-        console.log('ELECTRICITY RESPONSE', dataResponse)
+        const dataResponse = payNepaLight?.data;
+        console.log('ELECTRICITY RESPONSE', dataResponse);
         if (dataResponse.status.toLowerCase() === 'success') {
-            
-            //debit user
+            // Debit user
             getUser.acctBalance -= fullAmount;
             await getUser.save();
         
@@ -55,25 +56,25 @@ export async function buyElectricBill(req, res) {
                 userId: _id,
                 email: email,
                 service: `Electric bills`,
-                platform: dataResponse?.disco_name,
+                platform: providerName,
                 number: meterNumber,
-                amount: amount,
+                amount: inputAmount, // Use inputAmount here
                 totalAmount: fullAmount,
-                status: 'Successfull',
+                status: 'Successful',
                 paymentMethod: 'Wallet',
                 transactionId: transactionId,
                 serviceId: dataResponse?.token,
                 slug: 'Electricity',
                 isUserLogin: true,
-                income: Number(fullAmount) - Number(amount)
+                income: Number(fullAmount) - Number(inputAmount) // Use inputAmount here
             });
 
-            const { amount, ...transactionData } = newTransaction._doc;
+            const { amount, ...transactionData } = newTransaction._doc; // Here you can use the amount from newTransaction
             const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = getUser._doc;
 
             return res.status(206).json({
                 success: true,
-                msg: `${amount}  electric bill for ${providerName} purchase successful`,
+                msg: `${inputAmount} electric bill for ${providerName} purchase successful`,
                 data: { success: true, data: userData },
                 transaction: transactionData
             });
@@ -82,10 +83,11 @@ export async function buyElectricBill(req, res) {
         }
         
     } catch (error) {
-        console.log('UNABLE TO BUY ELECTRIC BILL', error)
-        res.status(500).json({ success: false, data: 'Unable to buy electric bill'})
+        console.log('UNABLE TO BUY ELECTRIC BILL', error);
+        res.status(500).json({ success: false, data: 'Unable to buy electric bill' });
     }
 }
+
 
 export async function validateMeterNumber(req, res){
     const { meterNumber, providerSlug, meterType } = req.body
