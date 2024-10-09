@@ -186,21 +186,21 @@ export async function quickBuyData(req, res){
 
 //buy electricity with logging
 export async function quickBuyElectricity(req, res){
-    const { providerName, providerCode, meterNumber, amount, totalAmount, transactionId, status } = req.body
+    const { providerCode, providerName, meterNumber, amount: inputAmount, transactionId, phoneNumber, meterType } = req.body
     const { amountPaid, transcationRef, status: paymentStatus } = req.paymentDetails
     try {
         let fullAmount
         fullAmount = Math.ceil(Number(Number(amountPaid) - ((amountPaid * 1.5) / 100) ))
-        if(Number(fullAmount) < Number(amount)){
-            console.log('first aa1', fullAmount, amount)
+        if(Number(fullAmount) < Number(inputAmount)){
+            console.log('first aa1', fullAmount, inputAmount)
             return res.status(406).json({ success: false, data: 'Invalid amount sent' })
         }
-        if(Number(amount) >= 2400){
+        if(Number(inputAmount) >= 2400){
             fullAmount = Math.ceil(Number(Number(amountPaid) - ((amountPaid * 1.5) / 100) ) - 100)
         }
-        console.log('first aa3', fullAmount, amount)
+        console.log('first aa3', fullAmount, inputAmount)
 
-        let finalAmount = Number(fullAmount) < Number(amount) ? Number(fullAmount) : Number(amount)
+        let finalAmount = Number(fullAmount) < Number(inputAmount) ? Number(fullAmount) : Number(inputAmount)
         
         const payNepaLight = await axios.post(
             `${process.env.HUSSY_URL}/electricity/`,
@@ -228,7 +228,7 @@ export async function quickBuyElectricity(req, res){
             service: `Electric bills`,
             platform: providerName,
             number: meterNumber,
-            amount: amount,
+            amount: inputAmount,
             totalAmount: fullAmount,
             status: status,
             paymentMethod: 'Paystack',
@@ -236,14 +236,14 @@ export async function quickBuyElectricity(req, res){
             serviceId: transcationRef,
             slug: 'Electricity',
             isUserLogin: false,
-            income: Number(fullAmount) - Number(amount)
+            income: Number(fullAmount) - Number(inputAmount)
         });
 
         const dataResponse = payNepaLight?.data
         console.log('ELECTRICITY RESPONSE', dataResponse)
         if (dataResponse.status.toLowerCase() === 'success') {
-            newTransaction.platform = dataResponse?.disco_name
-            newTransaction.totalAmount = dataResponse?.amount
+            newTransaction.platform = providerName
+            newTransaction.totalAmount = finalAmount
             newTransaction.serviceId = dataResponse?.token
             newTransaction.income = Number(fullAmount) - Number(amount)
             newTransaction.status = 'Successfull'
@@ -255,8 +255,8 @@ export async function quickBuyElectricity(req, res){
                     username: email,
                     userEmail: email,
                     subject: 'SUCCESSFUL ELECTRIC BILLS PURCHASE',
-                    intro: `Successfull Electricity purchase for ${dataResponse?.disco_name}`,
-                    instructions: `${dataResponse.message} \n ${dataResponse.token}`,
+                    intro: `Successfull Electricity purchase for ${providerName}`,
+                    instructions: ` ${dataResponse.token}`,
                     outro: `
                         Buy Airtime, Data, Cable Tv Subscription Pay Electric bills on Subssum visit ${process.env.MAIL_WEBSITE_LINK} to get started
                     `,
@@ -272,7 +272,7 @@ export async function quickBuyElectricity(req, res){
             return res.status(206).json({
                 success: true,
                 msg: `${dataResponse?.amount} electric bill for ${providerName} purchase successful`,
-                data: { success: true, data: `${dataResponse?.amount}  electric bill for ${providerName} purchase successful` },
+                data: { success: true, data: `${inputAmount}  electric bill for ${providerName} purchase successful` },
                 transaction: transactionData
             });
         } else {

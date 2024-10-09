@@ -69,7 +69,7 @@ export async function buyElectricBill(req, res) {
                 income: Number(fullAmount) - Number(inputAmount) // Use inputAmount here
             });
 
-            const { amount, ...transactionData } = newTransaction._doc; // Here you can use the amount from newTransaction
+            const { amount, income, ...transactionData } = newTransaction._doc; // Here you can use the amount from newTransaction
             const { resetPasswordToken, resetPasswordExpire, password: hashedFinalPassword, pin, ...userData } = getUser._doc;
 
             return res.status(206).json({
