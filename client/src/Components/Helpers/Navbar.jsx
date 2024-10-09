@@ -20,7 +20,7 @@ function Navbar({showBtn}) {
   }
 
   return (
-    <div className="small-pc:pad6 pad4 bg-gray-10 w-full fixed top-0 left-0 flex justify-between border-b-[1px] border-b-gray-30 z-[999]">
+    <div className="small-pc:pad6 pad4 bg-gray-10 w-full fixed top-0 left-0 flex justify-between border-b-[1px] border-b-gray-30 z-[9999]">
         <Link to='/'>
             <img src={LogoImg} alt='subsum logo' className='w-[162px] phone:w-[108px] phone:h-[25px]' />
         </Link>
