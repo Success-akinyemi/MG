@@ -84,6 +84,15 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
         if(!numberRegex.test(formData?.amount)){
             toast.error('Invalid amount Number format')
         }
+        const amountRegex = /^[0-9]+$/; //Regex to match positive integer 
+        if (!amountRegex.test(formData.amount)){
+            toast.error('Amount must be a positive number');
+            return;
+        }
+        if(Number(formData.amount) < 50){
+            toast.error('Minimium amount is 50')
+            return
+        }
         const timeStamp = Date.now()
         setFormData({ ...formData, status: 'Initiated' , totalAmount: formData?.amount, transactionId: timeStamp })
         setActiveCard('cardTwo')

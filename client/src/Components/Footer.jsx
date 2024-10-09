@@ -58,30 +58,30 @@ function Footer() {
             <div className="flex flex-col gap-[24.56px]">
                 <h2 className="text-gray-30 font-semibold text-[20.46px]">Contact Us</h2>
                 <div className="flex flex-col gap-[16.37px] text-gray-40 text-[16.37px] font-normal">
-                    <a href="tel:2347089075584">07089075584</a>
-                    <a href="mailto:subssum23@gmail.com" className="text-inherit">subssum23@gmail.com</a>
-                    <p>13, Femi Aderibigbe Close</p>
-                    <p>Ifako Gbagada, Lagos.</p>
+                    <a target="_blank" href="tel:2347010686249">0701 068 6249</a>
+                    <a target="_blank" href="mailto:subssum23@gmail.com" className="text-inherit">subssum23@gmail.com</a>
+                    <p>No 22, Bioye Eluwole Close</p>
+                    <p>Lekki, Lagos, Lagos State Nigeria.</p>
                 </div>
             </div>
             <div className="flex flex-col gap-[24.56px]">
                 <h2 className="text-gray-30 font-semibold text-[20.46px]">Social Media</h2>
                 <div className="flex gap-[8.19px] text-gray-40 text-[24px] font-normal">
-                    <Link>
+                    <a target='_blank' href='https://www.facebook.com/Freshtechltd01' >
                         <FaFacebookF />
-                    </Link>
-                    <Link>
+                    </a>
+                    <a target='_blank' href='x.com/subssum_' >
                         <RiTwitterXLine />
-                    </Link>
-                    <Link>
+                    </a>
+                    <a target='_blank' href="Instagram.com/subssum_">
                         <FaInstagram />
-                    </Link>
-                    <Link>
+                    </a>
+                    <a>
                         <RiYoutubeLine />
-                    </Link>
-                    <Link>
+                    </a>
+                    <a target='_blank' href='https://www.linkedin.com/company/freshtech-innovations-ltd/'>
                         <CiLinkedin />
-                    </Link>
+                    </a>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@ function Footer() {
             &copy; copyright subssum
         </p>
 
-        <img alt="bank" src={BankImg} className="absolute right-3 bottom-3 tablet:w-[200px]" />
+        <img alt="bank" src={BankImg} className="absolute right-3 bottom-3 tablet:w-[200px] phone:w-[170px]" />
     </div>
   )
 }

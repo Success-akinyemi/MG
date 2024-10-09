@@ -22,7 +22,11 @@ function Register() {
     const [ passwordError, setPasswordError ] = useState()
     const [ confirmPasswordError, setConfirmPasswordError ] = useState()
 
+    const [ firstNameError, setFirstNameError ] = useState()
+    const [ lastNameError, setLastNameError ] = useState()
+
     const specialChars = /[!@#$%^&*()_+{}[\]\\|;:'",.<>?]/
+    const numberRegex = /^[^0-9]*$/;
 
 
         //REFF
@@ -51,6 +55,18 @@ function Register() {
     useEffect(() => {
         //const tesst = numberRegex.test(formData.firstName)
         //console.log(formData)
+        if(!numberRegex.test(formData?.firstName)){
+            setFirstNameError('First Name must not contain numbers')
+        } else{
+            setFirstNameError()
+        }
+        if(!numberRegex.test(formData?.lastName)){
+            setLastNameError('Last Name must not contain numbers')
+        } else{
+            setLastNameError()
+        }
+
+        //PASSWORD ERROR
         if(formData.password?.length >= 1 && formData.password?.length < 6){
             setPasswordError('Password must be 6 characters long')
         } else if(!specialChars.test(formData.password) && formData.password?.length >= 6){
@@ -64,7 +80,7 @@ function Register() {
         } else {
             setConfirmPasswordError()
         }
-    }, [formData.password, formData.confirmPassword])
+    }, [formData.password, formData.confirmPassword, formData?.firstName, formData?.lastName])
 
     const handleSignup = async (e) => {
         e.preventDefault()
@@ -77,7 +93,7 @@ function Register() {
             toast.error('Please enter a valid email')
             return
         }
-        const numberRegex = /^[^0-9]*$/;
+        
         if(!formData.firstName){
             toast.error(`Enter First Name`)
             return
@@ -187,11 +203,13 @@ function Register() {
                                 </div>
                                 <div className='inputGroup'>
                                     <label className='label'>First Name</label>
-                                    <input className='input' type='text' id='firstName' onChange={handleChange} placeholder='Wahab' />
+                                    <input maxLength={50} className='input' type='text' id='firstName' onChange={handleChange} placeholder='Wahab' />
+                                    <p className='text-[14px] text-error font-semibold'>{firstNameError}</p>
                                 </div>
                                 <div className='inputGroup'>
                                     <label className='label'>Last Name</label>
-                                    <input className='input' type='text' id='lastName' onChange={handleChange} placeholder='Lawal' />
+                                    <input maxLength={50} className='input' type='text' id='lastName' onChange={handleChange} placeholder='Lawal' />
+                                    <p className='text-[14px] text-error font-semibold'>{lastNameError}</p>
                                 </div>
                                 <div className='inputGroup relative'>
                                     <label className='label'>Password</label>

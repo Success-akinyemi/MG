@@ -89,7 +89,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             return;
         }
 
-        if(formData.amount < 50){
+        if(Number(formData.amount) < 50){
             toast.error('Minimum airtime purchase amount is 50')
             return
         }

@@ -15,7 +15,7 @@ function JoinWhatsappCommunity() {
                         </div>
                         <div className="w-full flex flex-col gap-[8px]">
                             <p className="text-[24px] text-center text-gray-70">
-                                Join Our Whatsapp Community
+                                Join Our Whatsapp Channel
                             </p>
                             <span className="text-center text-[16px] text-gray-90">
                                 Stay actively updated, chat and communicate with us
@@ -24,7 +24,7 @@ function JoinWhatsappCommunity() {
                     </div>
 
                     <div className="w-full flex flex-col gap-[16px]">
-                        <a href="https://whatsapp.com" target="_blank" className="pad1 rounded-[10px] flex items-center justify-center text-center bg-second-color hover:bg-second-color-hover text-white " >Join</a>
+                        <a href="https://whatsapp.com/channel/0029Vamiyx99xVJfJQDVhg0b" target="_blank" className="pad1 rounded-[10px] flex items-center justify-center text-center bg-second-color hover:bg-second-color-hover text-white " >Join</a>
                         <Button bg={false} link={'dashboard'} name={'Skip'} />
 
                     </div>

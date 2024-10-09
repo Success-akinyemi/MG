@@ -16,26 +16,32 @@ function ContactUs() {
         {
             text: 'Linkedin',
             icon: CiLinkedin,
+            link: 'https://www.linkedin.com/company/freshtech-innovations-ltd/',
         },
         {
             text: 'Instagram',
             icon: FaInstagram,
+            link: 'https://www.Instagram.com/subssum_',
         },
         {
             text: 'Twitter',
             icon: RiTwitterXLine,
+            link: 'https://www.x.com/subssum_',
         },
         {
             text: 'Facebook',
-            icon: FaFacebookF
+            icon: FaFacebookF,
+            link: 'https://www.facebook.com/Freshtechltd01',
         },
         {
             text: 'Email',
-            icon: MdOutlineEmail
+            icon: MdOutlineEmail,
+            link: 'mailto:subssum23@gmail.com',
         },
         {
             text: 'Telegram',
-            icon: LiaTelegramPlane
+            icon: LiaTelegramPlane,
+            link: '',
         }
     ];
     useEffect(() =>{
@@ -64,17 +70,17 @@ function ContactUs() {
                         socials.map((item, idx) => {
                             const Icon = item.icon;
                             return (
-                                <div key={idx} className="flex items-center gap-1 pt-1 pb-1 pl-2 pr-2 bg-[#ffffff33]">
+                                <a href={item.link} target="_blank" key={idx} className="flex items-center gap-1 pt-1 pb-1 pl-2 pr-2 bg-[#ffffff33]">
                                     <Icon className="text-white text-[24px]" />
                                     <p className="text-[20px] font-normal text-white">{item?.text}</p>
-                                </div>
+                                </a>
                             )
                         })
                     }
                 </div>
             </div>
 
-            <div className="m-auto tablet:flex tablet:justify-center tablet:items-center z-10">
+            <div className="m-auto tablet:flex tablet:justify-center tablet:items-center phone:w-[94%] z-10">
                 <ContactUsForm />
             </div>
 

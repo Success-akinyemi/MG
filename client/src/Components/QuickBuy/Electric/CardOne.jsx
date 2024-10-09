@@ -89,6 +89,12 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
             toast.error('Enter Amount')
             return
         }
+        //validate that the amount is a number 
+        const amountRegex = /^[0-9]+$/; //Regex to match positive integer 
+        if (!amountRegex.test(formData.amount)){
+            toast.error('Amount must be a positive number');
+            return;
+        }
         if(formData.amount < 1000){
             toast.error('minimium anount is NGN 1000')
             return
@@ -153,7 +159,7 @@ function CardOne({ formData, setFormData, setActiveCard, setCardOne }) {
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Amount</label>
-                    <input type="text" onChange={handleChange} id="amount" defaultValue={formData?.amount} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="₦5,000" />
+                    <input type="number" onChange={handleChange} id="amount" defaultValue={formData?.amount} className="input text-[14px] placeholder:text-gray-60 text-gray-60 font-semibold" placeholder="₦5,000" />
                 </div>
                 <div className="inputGroup gap-[6px]">
                     <label className="label text-[14px]">Phone Number</label>

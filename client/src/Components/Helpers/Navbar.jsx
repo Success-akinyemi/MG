@@ -49,7 +49,7 @@ function Navbar({showBtn}) {
             <IoCloseSharp className='text-primary-color' />
           </div>
 
-          <div className='flex items-center mt-auto mb-auto gap-[84px] justify-between w-[856px] flex-wrap'>
+          <div className='flex items-center mt-auto mb-auto gap-[84px] justify-between w-[856px] flex-wrap tablet:flex-col tablet:gap-[24px] z-20 '>
             <div className='flex flex-col gap-[19px]'>
               <h3 className='font-bold text-[20px] text-gray-90'>Buy Services</h3>
 
