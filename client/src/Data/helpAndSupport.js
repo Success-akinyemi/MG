@@ -27,7 +27,7 @@ export const help = [
     },
     {
         id: 3,
-        link: 'https://www.whatsapp.com',
+        link: 'https://whatsapp.com/channel/0029Vamiyx99xVJfJQDVhg0b',
         title: 'Whatsapp',
         text: 'Drop a Message',
         img: BsWhatsapp,
@@ -36,7 +36,7 @@ export const help = [
     },
     {
         id: 4,
-        link: 'tel:2349012345678',
+        link: 'tel:2347010686249',
         title: 'Phone',
         text: 'Call Us',
         img: LiaPhoneVolumeSolid,
@@ -45,7 +45,7 @@ export const help = [
     },
     {
         id: 5,
-        link: 'https://www.whatsapp.com',
+        link: 'https://whatsapp.com/channel/0029Vamiyx99xVJfJQDVhg0b',
         title: 'Report Our Support',
         text: 'Not Satisfied?',
         img: BiErrorCircle,
