@@ -116,6 +116,8 @@ export async function downloadReciept(req, res) {
              .moveDown(0.5)
              .text(`Service: ${findTransaction.service}`)
              .moveDown(0.5)
+             .text(`Service ID: ${findTransaction.serviceId}`)
+             .moveDown(0.5)
              .text(`Platform: ${findTransaction.platform}`)
              .moveDown(0.5)
              .text(`Number: ${findTransaction.number}`)
